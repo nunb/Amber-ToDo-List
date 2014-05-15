@@ -140,36 +140,42 @@ handleInput: anEvent
 initialize
 	super initialize.
 	todos := TodoStorage new.
-	container := 'div#todos ol'.
+	container := '#todos-list'.
 	count := todos size = 0 ifTrue: [ 1 ] ifFalse: [( todos collect: [ :each | each id asNumber ]) sort last + 1 ]
 ! !
 
 !TodoList methodsFor: 'rendering'!
 
 renderBodyOn: html
-	html div
-		id: 'body';
-		class: 'section';
+	html section
+		id: 'todoapp';
 		with: [
                   self renderFormOn: html.
                   self renderTodosOn: html ]
 !
 
 renderFooterOn: html
-	html div
-		id: 'footer';
-		class: 'section';
-		with: [ html p with: 'Example Todo application for Amber Smalltalk by rbistolfi' ]
+	html footer
+		id: 'info';
+		with: [ 
+			html p with: 'Double-click to edit a todo'.
+			html p with: 'Written by rbistolfi'.
+			html p: [
+				html with: 'Part of '.
+				html a href: 'http://todomvc.com'; with: 'TodoMVC']].
 !
 
 renderFormOn: html
 	| input defaultText |
 	defaultText := 'What needs to be done?'.
-	html div
-		id: 'form';
+	html header
+		id: 'header';
 		with: [
+				   html h1: 'todos'.
                    input := html input
+				    id: 'new-todo';
                   	type: 'text';
+					autofocus;
                   	onKeyUp: [ :event |
                                   (event keyCode = 13) ifTrue: [
                                     self handleInput: event.
@@ -185,23 +191,37 @@ renderHeaderOn: html
 !
 
 renderOn: html
-	html div
-		id: 'application';
-		with: [
-                  self renderHeaderOn: html.
-                  self renderBodyOn: html.
-                  self renderFooterOn: html. ]
+	self renderBodyOn: html.
+    self renderFooterOn: html.
 !
 
 renderTodosOn: html
-	html div
-		id: 'todos';
-		with: [
-                  html ol
+	todos size = 0
+		ifFalse: [
+			html section
+				id: 'main';
+				with: [
+				  self renderToggleTodosOn: html.
+                  html ul
+				  	id: 'todos-list';
                   	with: [ todos do: [ :aTodo | 
                                            aTodo onTodoChangedDo: [ :todo | todos at: (todos indexOf: todo) put: todo ].
 	                                   aTodo onDeleteClickedDo: [ :todo | self removeTodo: todo ].
-                                           aTodo renderOn: html ]]]
+                                           aTodo renderOn: html ]]].
+	 		html footer
+				id: 'footer'. ]
+!
+
+renderToggleTodosOn: html
+	| input label |
+	input := html input
+				    id: 'toggle-all';
+                  	type: 'checkbox'.
+	label := html label
+					for: 'toggle-all';
+					with: 'Mark all as complete'.
+	input element.
+	label element.
 ! !
 
 !TodoList class methodsFor: 'not yet classified'!
@@ -229,9 +249,7 @@ getArray
 	| anArray aJSONArray |
 	aJSONArray := storage getItem: 'TodoList'.
 	anArray := aJSONArray ifNil: [ self initializeStorage ] 
-	                      ifNotNil: [ SmalltalkImage current 
-						                readJSObject: (JSON parse: aJSONArray)
-                                    ].
+	                      ifNotNil: [ Smalltalk readJSObject: (JSON parse: aJSONArray) ].
 	^ anArray collect: [ :each | Todo fromDictionary: each ]
 !
 
@@ -239,7 +257,7 @@ indexOf: anObject
 	^ array indexOf: anObject
 !
 
-lenght
+length
 	^ self size
 !
 

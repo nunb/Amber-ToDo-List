@@ -391,7 +391,7 @@ var $1;
 ($ctx1.supercall = true, globals.TodoList.superclass.fn.prototype._initialize.apply(_st(self), []));
 $ctx1.supercall = false;
 self["@todos"]=_st($TodoStorage())._new();
-self["@container"]="div#todos ol";
+self["@container"]="#todos-list";
 $1=_st(_st(self["@todos"])._size()).__eq((0));
 if(smalltalk.assert($1)){
 self["@count"]=(1);
@@ -403,7 +403,7 @@ return _st(_st(each)._id())._asNumber();
 };
 return self}, function($ctx1) {$ctx1.fill(self,"initialize",{},globals.TodoList)})},
 args: [],
-source: "initialize\x0a\x09super initialize.\x0a\x09todos := TodoStorage new.\x0a\x09container := 'div#todos ol'.\x0a\x09count := todos size = 0 ifTrue: [ 1 ] ifFalse: [( todos collect: [ :each | each id asNumber ]) sort last + 1 ]",
+source: "initialize\x0a\x09super initialize.\x0a\x09todos := TodoStorage new.\x0a\x09container := '#todos-list'.\x0a\x09count := todos size = 0 ifTrue: [ 1 ] ifFalse: [( todos collect: [ :each | each id asNumber ]) sort last + 1 ]",
 messageSends: ["initialize", "new", "ifTrue:ifFalse:", "=", "size", "+", "last", "sort", "collect:", "asNumber", "id"],
 referencedClasses: ["TodoStorage"]
 }),
@@ -434,9 +434,8 @@ fn: function (html){
 var self=this;
 return smalltalk.withContext(function($ctx1) { 
 var $1,$2;
-$1=_st(html)._div();
-_st($1)._id_("body");
-_st($1)._class_("section");
+$1=_st(html)._section();
+_st($1)._id_("todoapp");
 $2=_st($1)._with_((function(){
 return smalltalk.withContext(function($ctx2) {
 self._renderFormOn_(html);
@@ -444,8 +443,8 @@ return self._renderTodosOn_(html);
 }, function($ctx2) {$ctx2.fillBlock({},$ctx1,1)})}));
 return self}, function($ctx1) {$ctx1.fill(self,"renderBodyOn:",{html:html},globals.TodoList)})},
 args: ["html"],
-source: "renderBodyOn: html\x0a\x09html div\x0a\x09\x09id: 'body';\x0a\x09\x09class: 'section';\x0a\x09\x09with: [\x0a                  self renderFormOn: html.\x0a                  self renderTodosOn: html ]",
-messageSends: ["id:", "div", "class:", "with:", "renderFormOn:", "renderTodosOn:"],
+source: "renderBodyOn: html\x0a\x09html section\x0a\x09\x09id: 'todoapp';\x0a\x09\x09with: [\x0a                  self renderFormOn: html.\x0a                  self renderTodosOn: html ]",
+messageSends: ["id:", "section", "with:", "renderFormOn:", "renderTodosOn:"],
 referencedClasses: []
 }),
 globals.TodoList);
@@ -457,19 +456,32 @@ protocol: 'rendering',
 fn: function (html){
 var self=this;
 return smalltalk.withContext(function($ctx1) { 
-var $1,$2;
-$1=_st(html)._div();
-_st($1)._id_("footer");
-_st($1)._class_("section");
+var $1,$3,$4,$5,$2;
+$1=_st(html)._footer();
+_st($1)._id_("info");
 $2=_st($1)._with_((function(){
 return smalltalk.withContext(function($ctx2) {
-return _st(_st(html)._p())._with_("Example Todo application for Amber Smalltalk by rbistolfi");
+$3=_st(html)._p();
+$ctx2.sendIdx["p"]=1;
+_st($3)._with_("Double-click to edit a todo");
+$ctx2.sendIdx["with:"]=2;
+_st(_st(html)._p())._with_("Written by rbistolfi");
+$ctx2.sendIdx["with:"]=3;
+return _st(html)._p_((function(){
+return smalltalk.withContext(function($ctx3) {
+_st(html)._with_("Part of ");
+$ctx3.sendIdx["with:"]=4;
+$4=_st(html)._a();
+_st($4)._href_("http://todomvc.com");
+$5=_st($4)._with_("TodoMVC");
+return $5;
+}, function($ctx3) {$ctx3.fillBlock({},$ctx2,2)})}));
 }, function($ctx2) {$ctx2.fillBlock({},$ctx1,1)})}));
 $ctx1.sendIdx["with:"]=1;
 return self}, function($ctx1) {$ctx1.fill(self,"renderFooterOn:",{html:html},globals.TodoList)})},
 args: ["html"],
-source: "renderFooterOn: html\x0a\x09html div\x0a\x09\x09id: 'footer';\x0a\x09\x09class: 'section';\x0a\x09\x09with: [ html p with: 'Example Todo application for Amber Smalltalk by rbistolfi' ]",
-messageSends: ["id:", "div", "class:", "with:", "p"],
+source: "renderFooterOn: html\x0a\x09html footer\x0a\x09\x09id: 'info';\x0a\x09\x09with: [ \x0a\x09\x09\x09html p with: 'Double-click to edit a todo'.\x0a\x09\x09\x09html p with: 'Written by rbistolfi'.\x0a\x09\x09\x09html p: [\x0a\x09\x09\x09\x09html with: 'Part of '.\x0a\x09\x09\x09\x09html a href: 'http://todomvc.com'; with: 'TodoMVC']].",
+messageSends: ["id:", "footer", "with:", "p", "p:", "href:", "a"],
 referencedClasses: []
 }),
 globals.TodoList);
@@ -484,12 +496,16 @@ var input,defaultText;
 return smalltalk.withContext(function($ctx1) { 
 var $1,$3,$5,$4,$2;
 defaultText="What needs to be done?";
-$1=_st(html)._div();
-_st($1)._id_("form");
+$1=_st(html)._header();
+_st($1)._id_("header");
+$ctx1.sendIdx["id:"]=1;
 $2=_st($1)._with_((function(){
 return smalltalk.withContext(function($ctx2) {
+_st(html)._h1_("todos");
 $3=_st(html)._input();
+_st($3)._id_("new-todo");
 _st($3)._type_("text");
+_st($3)._autofocus();
 $4=_st($3)._onKeyUp_((function(event){
 return smalltalk.withContext(function($ctx3) {
 $5=_st(_st(event)._keyCode()).__eq((13));
@@ -504,8 +520,8 @@ return input;
 _st(_st(input)._element())._placeholder_(defaultText);
 return self}, function($ctx1) {$ctx1.fill(self,"renderFormOn:",{html:html,input:input,defaultText:defaultText},globals.TodoList)})},
 args: ["html"],
-source: "renderFormOn: html\x0a\x09| input defaultText |\x0a\x09defaultText := 'What needs to be done?'.\x0a\x09html div\x0a\x09\x09id: 'form';\x0a\x09\x09with: [\x0a                   input := html input\x0a                  \x09type: 'text';\x0a                  \x09onKeyUp: [ :event |\x0a                                  (event keyCode = 13) ifTrue: [\x0a                                    self handleInput: event.\x0a                                    input asJQuery val: '' ] ] ].\x0a\x09input element placeholder: defaultText.",
-messageSends: ["id:", "div", "with:", "type:", "input", "onKeyUp:", "ifTrue:", "=", "keyCode", "handleInput:", "val:", "asJQuery", "placeholder:", "element"],
+source: "renderFormOn: html\x0a\x09| input defaultText |\x0a\x09defaultText := 'What needs to be done?'.\x0a\x09html header\x0a\x09\x09id: 'header';\x0a\x09\x09with: [\x0a\x09\x09\x09\x09   html h1: 'todos'.\x0a                   input := html input\x0a\x09\x09\x09\x09    id: 'new-todo';\x0a                  \x09type: 'text';\x0a\x09\x09\x09\x09\x09autofocus;\x0a                  \x09onKeyUp: [ :event |\x0a                                  (event keyCode = 13) ifTrue: [\x0a                                    self handleInput: event.\x0a                                    input asJQuery val: '' ] ] ].\x0a\x09input element placeholder: defaultText.",
+messageSends: ["id:", "header", "with:", "h1:", "input", "type:", "autofocus", "onKeyUp:", "ifTrue:", "=", "keyCode", "handleInput:", "val:", "asJQuery", "placeholder:", "element"],
 referencedClasses: []
 }),
 globals.TodoList);
@@ -541,19 +557,12 @@ protocol: 'rendering',
 fn: function (html){
 var self=this;
 return smalltalk.withContext(function($ctx1) { 
-var $1,$2;
-$1=_st(html)._div();
-_st($1)._id_("application");
-$2=_st($1)._with_((function(){
-return smalltalk.withContext(function($ctx2) {
-self._renderHeaderOn_(html);
 self._renderBodyOn_(html);
-return self._renderFooterOn_(html);
-}, function($ctx2) {$ctx2.fillBlock({},$ctx1,1)})}));
+self._renderFooterOn_(html);
 return self}, function($ctx1) {$ctx1.fill(self,"renderOn:",{html:html},globals.TodoList)})},
 args: ["html"],
-source: "renderOn: html\x0a\x09html div\x0a\x09\x09id: 'application';\x0a\x09\x09with: [\x0a                  self renderHeaderOn: html.\x0a                  self renderBodyOn: html.\x0a                  self renderFooterOn: html. ]",
-messageSends: ["id:", "div", "with:", "renderHeaderOn:", "renderBodyOn:", "renderFooterOn:"],
+source: "renderOn: html\x0a\x09self renderBodyOn: html.\x0a    self renderFooterOn: html.",
+messageSends: ["renderBodyOn:", "renderFooterOn:"],
 referencedClasses: []
 }),
 globals.TodoList);
@@ -565,32 +574,71 @@ protocol: 'rendering',
 fn: function (html){
 var self=this;
 return smalltalk.withContext(function($ctx1) { 
-var $1,$2;
-$1=_st(html)._div();
-_st($1)._id_("todos");
-$2=_st($1)._with_((function(){
+var $1,$2,$4,$5,$3;
+$1=_st(_st(self["@todos"])._size()).__eq((0));
+if(! smalltalk.assert($1)){
+$2=_st(html)._section();
+_st($2)._id_("main");
+$ctx1.sendIdx["id:"]=1;
+$3=_st($2)._with_((function(){
 return smalltalk.withContext(function($ctx2) {
-return _st(_st(html)._ol())._with_((function(){
+self._renderToggleTodosOn_(html);
+$4=_st(html)._ul();
+_st($4)._id_("todos-list");
+$ctx2.sendIdx["id:"]=2;
+$5=_st($4)._with_((function(){
 return smalltalk.withContext(function($ctx3) {
 return _st(self["@todos"])._do_((function(aTodo){
 return smalltalk.withContext(function($ctx4) {
 _st(aTodo)._onTodoChangedDo_((function(todo){
 return smalltalk.withContext(function($ctx5) {
 return _st(self["@todos"])._at_put_(_st(self["@todos"])._indexOf_(todo),todo);
-}, function($ctx5) {$ctx5.fillBlock({todo:todo},$ctx4,4)})}));
+}, function($ctx5) {$ctx5.fillBlock({todo:todo},$ctx4,5)})}));
 _st(aTodo)._onDeleteClickedDo_((function(todo){
 return smalltalk.withContext(function($ctx5) {
 return self._removeTodo_(todo);
-}, function($ctx5) {$ctx5.fillBlock({todo:todo},$ctx4,5)})}));
+}, function($ctx5) {$ctx5.fillBlock({todo:todo},$ctx4,6)})}));
 return _st(aTodo)._renderOn_(html);
-}, function($ctx4) {$ctx4.fillBlock({aTodo:aTodo},$ctx3,3)})}));
-}, function($ctx3) {$ctx3.fillBlock({},$ctx2,2)})}));
-}, function($ctx2) {$ctx2.fillBlock({},$ctx1,1)})}));
+}, function($ctx4) {$ctx4.fillBlock({aTodo:aTodo},$ctx3,4)})}));
+}, function($ctx3) {$ctx3.fillBlock({},$ctx2,3)})}));
+return $5;
+}, function($ctx2) {$ctx2.fillBlock({},$ctx1,2)})}));
 $ctx1.sendIdx["with:"]=1;
+$3;
+_st(_st(html)._footer())._id_("footer");
+};
 return self}, function($ctx1) {$ctx1.fill(self,"renderTodosOn:",{html:html},globals.TodoList)})},
 args: ["html"],
-source: "renderTodosOn: html\x0a\x09html div\x0a\x09\x09id: 'todos';\x0a\x09\x09with: [\x0a                  html ol\x0a                  \x09with: [ todos do: [ :aTodo | \x0a                                           aTodo onTodoChangedDo: [ :todo | todos at: (todos indexOf: todo) put: todo ].\x0a\x09                                   aTodo onDeleteClickedDo: [ :todo | self removeTodo: todo ].\x0a                                           aTodo renderOn: html ]]]",
-messageSends: ["id:", "div", "with:", "ol", "do:", "onTodoChangedDo:", "at:put:", "indexOf:", "onDeleteClickedDo:", "removeTodo:", "renderOn:"],
+source: "renderTodosOn: html\x0a\x09todos size = 0\x0a\x09\x09ifFalse: [\x0a\x09\x09\x09html section\x0a\x09\x09\x09\x09id: 'main';\x0a\x09\x09\x09\x09with: [\x0a\x09\x09\x09\x09  self renderToggleTodosOn: html.\x0a                  html ul\x0a\x09\x09\x09\x09  \x09id: 'todos-list';\x0a                  \x09with: [ todos do: [ :aTodo | \x0a                                           aTodo onTodoChangedDo: [ :todo | todos at: (todos indexOf: todo) put: todo ].\x0a\x09                                   aTodo onDeleteClickedDo: [ :todo | self removeTodo: todo ].\x0a                                           aTodo renderOn: html ]]].\x0a\x09 \x09\x09html footer\x0a\x09\x09\x09\x09id: 'footer'. ]",
+messageSends: ["ifFalse:", "=", "size", "id:", "section", "with:", "renderToggleTodosOn:", "ul", "do:", "onTodoChangedDo:", "at:put:", "indexOf:", "onDeleteClickedDo:", "removeTodo:", "renderOn:", "footer"],
+referencedClasses: []
+}),
+globals.TodoList);
+
+smalltalk.addMethod(
+smalltalk.method({
+selector: "renderToggleTodosOn:",
+protocol: 'rendering',
+fn: function (html){
+var self=this;
+var input,label;
+return smalltalk.withContext(function($ctx1) { 
+var $1,$2,$3,$4;
+$1=_st(html)._input();
+_st($1)._id_("toggle-all");
+$2=_st($1)._type_("checkbox");
+input=$2;
+$3=_st(html)._label();
+_st($3)._for_("toggle-all");
+$4=_st($3)._with_("Mark all as complete");
+label=$4;
+_st(input)._element();
+$ctx1.sendIdx["element"]=1;
+_st(label)._element();
+return self}, function($ctx1) {$ctx1.fill(self,"renderToggleTodosOn:",{html:html,input:input,label:label},globals.TodoList)})},
+args: ["html"],
+source: "renderToggleTodosOn: html\x0a\x09| input label |\x0a\x09input := html input\x0a\x09\x09\x09\x09    id: 'toggle-all';\x0a                  \x09type: 'checkbox'.\x0a\x09label := html label\x0a\x09\x09\x09\x09\x09for: 'toggle-all';\x0a\x09\x09\x09\x09\x09with: 'Mark all as complete'.\x0a\x09input element.\x0a\x09label element.",
+messageSends: ["id:", "input", "type:", "for:", "label", "with:", "element"],
 referencedClasses: []
 }),
 globals.TodoList);
@@ -726,7 +774,7 @@ protocol: 'accessing',
 fn: function (){
 var self=this;
 var anArray,aJSONArray;
-function $SmalltalkImage(){return globals.SmalltalkImage||(typeof SmalltalkImage=="undefined"?nil:SmalltalkImage)}
+function $Smalltalk(){return globals.Smalltalk||(typeof Smalltalk=="undefined"?nil:Smalltalk)}
 function $JSON(){return globals.JSON||(typeof JSON=="undefined"?nil:JSON)}
 function $Todo(){return globals.Todo||(typeof Todo=="undefined"?nil:Todo)}
 return smalltalk.withContext(function($ctx1) { 
@@ -736,7 +784,7 @@ $1=aJSONArray;
 if(($receiver = $1) == null || $receiver.isNil){
 anArray=self._initializeStorage();
 } else {
-anArray=_st(_st($SmalltalkImage())._current())._readJSObject_(_st($JSON())._parse_(aJSONArray));
+anArray=_st($Smalltalk())._readJSObject_(_st($JSON())._parse_(aJSONArray));
 };
 $2=_st(anArray)._collect_((function(each){
 return smalltalk.withContext(function($ctx2) {
@@ -745,9 +793,9 @@ return _st($Todo())._fromDictionary_(each);
 return $2;
 }, function($ctx1) {$ctx1.fill(self,"getArray",{anArray:anArray,aJSONArray:aJSONArray},globals.TodoStorage)})},
 args: [],
-source: "getArray\x0a\x09| anArray aJSONArray |\x0a\x09aJSONArray := storage getItem: 'TodoList'.\x0a\x09anArray := aJSONArray ifNil: [ self initializeStorage ] \x0a\x09                      ifNotNil: [ SmalltalkImage current \x0a\x09\x09\x09\x09\x09\x09                readJSObject: (JSON parse: aJSONArray)\x0a                                    ].\x0a\x09^ anArray collect: [ :each | Todo fromDictionary: each ]",
-messageSends: ["getItem:", "ifNil:ifNotNil:", "initializeStorage", "readJSObject:", "current", "parse:", "collect:", "fromDictionary:"],
-referencedClasses: ["SmalltalkImage", "JSON", "Todo"]
+source: "getArray\x0a\x09| anArray aJSONArray |\x0a\x09aJSONArray := storage getItem: 'TodoList'.\x0a\x09anArray := aJSONArray ifNil: [ self initializeStorage ] \x0a\x09                      ifNotNil: [ Smalltalk readJSObject: (JSON parse: aJSONArray) ].\x0a\x09^ anArray collect: [ :each | Todo fromDictionary: each ]",
+messageSends: ["getItem:", "ifNil:ifNotNil:", "initializeStorage", "readJSObject:", "parse:", "collect:", "fromDictionary:"],
+referencedClasses: ["Smalltalk", "JSON", "Todo"]
 }),
 globals.TodoStorage);
 
@@ -810,7 +858,7 @@ globals.TodoStorage);
 
 smalltalk.addMethod(
 smalltalk.method({
-selector: "lenght",
+selector: "length",
 protocol: 'accessing',
 fn: function (){
 var self=this;
@@ -818,9 +866,9 @@ return smalltalk.withContext(function($ctx1) {
 var $1;
 $1=self._size();
 return $1;
-}, function($ctx1) {$ctx1.fill(self,"lenght",{},globals.TodoStorage)})},
+}, function($ctx1) {$ctx1.fill(self,"length",{},globals.TodoStorage)})},
 args: [],
-source: "lenght\x0a\x09^ self size",
+source: "length\x0a\x09^ self size",
 messageSends: ["size"],
 referencedClasses: []
 }),
