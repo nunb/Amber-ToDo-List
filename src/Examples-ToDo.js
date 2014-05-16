@@ -121,15 +121,15 @@ $ctx2.sendIdx["li:"]=2;
 return _st(html)._li_((function(){
 return smalltalk.withContext(function($ctx3) {
 $7=_st(html)._a();
-_st($7)._href_("#/selected");
-$8=_st($7)._with_("Selected");
+_st($7)._href_("#/completed");
+$8=_st($7)._with_("Completed");
 return $8;
 }, function($ctx3) {$ctx3.fillBlock({},$ctx2,4)})}));
 }, function($ctx2) {$ctx2.fillBlock({},$ctx1,1)})}));
 $ctx1.sendIdx["with:"]=1;
 return self}, function($ctx1) {$ctx1.fill(self,"renderTodoFiltersOn:",{html:html},globals.FooterSection)})},
 args: ["html"],
-source: "renderTodoFiltersOn: html\x0a\x09html ul\x0a\x09\x09id: 'filters';\x0a\x09\x09with: [\x0a\x09\x09\x09html li: [ html a href: '#/'; with: 'All'. ].\x0a\x09\x09\x09html li: [ html a href: '#/active'; with: 'Active'. ].\x0a\x09\x09\x09html li: [ html a href: '#/selected'; with: 'Selected'. ]].",
+source: "renderTodoFiltersOn: html\x0a\x09html ul\x0a\x09\x09id: 'filters';\x0a\x09\x09with: [\x0a\x09\x09\x09html li: [ html a href: '#/'; with: 'All'. ].\x0a\x09\x09\x09html li: [ html a href: '#/active'; with: 'Active'. ].\x0a\x09\x09\x09html li: [ html a href: '#/completed'; with: 'Completed'. ]].",
 messageSends: ["id:", "ul", "with:", "li:", "href:", "a"],
 referencedClasses: []
 }),
@@ -373,50 +373,87 @@ globals.Todo);
 
 smalltalk.addMethod(
 smalltalk.method({
+selector: "renderCompletedCheckboxOn:",
+protocol: 'rendering',
+fn: function (html){
+var self=this;
+return smalltalk.withContext(function($ctx1) { 
+var $1,$2;
+$1=_st(html)._input();
+_st($1)._type_("checkbox");
+_st($1)._class_("toggle");
+$2=_st($1)._onClick_((function(){
+return smalltalk.withContext(function($ctx2) {
+return self._toggleCompleted();
+}, function($ctx2) {$ctx2.fillBlock({},$ctx1,1)})}));
+return self}, function($ctx1) {$ctx1.fill(self,"renderCompletedCheckboxOn:",{html:html},globals.Todo)})},
+args: ["html"],
+source: "renderCompletedCheckboxOn: html\x0a\x09html input\x0a    \x09type: 'checkbox';\x0a\x09\x09class: 'toggle';\x0a\x09\x09onClick: [ self toggleCompleted ].",
+messageSends: ["type:", "input", "class:", "onClick:", "toggleCompleted"],
+referencedClasses: []
+}),
+globals.Todo);
+
+smalltalk.addMethod(
+smalltalk.method({
+selector: "renderDeleteButtonOn:",
+protocol: 'rendering',
+fn: function (html){
+var self=this;
+return smalltalk.withContext(function($ctx1) { 
+var $1,$2;
+$1=_st(html)._button();
+_st($1)._class_("destroy");
+$2=_st($1)._onClick_((function(){
+return smalltalk.withContext(function($ctx2) {
+return _st(console)._log_("delete me");
+}, function($ctx2) {$ctx2.fillBlock({},$ctx1,1)})}));
+return self}, function($ctx1) {$ctx1.fill(self,"renderDeleteButtonOn:",{html:html},globals.Todo)})},
+args: ["html"],
+source: "renderDeleteButtonOn: html\x0a\x09html button\x0a\x09\x09class: 'destroy';\x0a\x09\x09onClick: [ console log: 'delete me'. ].",
+messageSends: ["class:", "button", "onClick:", "log:"],
+referencedClasses: []
+}),
+globals.Todo);
+
+smalltalk.addMethod(
+smalltalk.method({
 selector: "renderOn:",
 protocol: 'rendering',
 fn: function (html){
 var self=this;
-var input,label,delete_;
+var label;
 return smalltalk.withContext(function($ctx1) { 
-var $1,$3,$4,$5,$6,$2;
-_st(html)._li_((function(){
+var $1,$2,$4,$3,$6,$7,$5;
+$1=_st(html)._li();
+$2=$1;
+$4=self._isDone();
+if(smalltalk.assert($4)){
+} else {
+$3="";
+};
+_st($2)._class_($3);
+$ctx1.sendIdx["class:"]=1;
+_st($1)._id_(self._id());
+$5=_st($1)._with_((function(){
 return smalltalk.withContext(function($ctx2) {
-$1=_st(html)._div();
-_st($1)._class_("view");
-$ctx2.sendIdx["class:"]=1;
-$2=_st($1)._with_((function(){
+$6=_st(html)._div();
+_st($6)._class_("view");
+$7=_st($6)._with_((function(){
 return smalltalk.withContext(function($ctx3) {
-$3=_st(html)._input();
-_st($3)._type_("checkbox");
-_st($3)._class_("toggle");
-$ctx3.sendIdx["class:"]=2;
-$4=_st($3)._onClick_((function(){
-return smalltalk.withContext(function($ctx4) {
-return _st(console)._log_("mark me as done");
-$ctx4.sendIdx["log:"]=1;
-}, function($ctx4) {$ctx4.fillBlock({},$ctx3,3)})}));
-$ctx3.sendIdx["onClick:"]=1;
-input=$4;
-input;
+self._renderCompletedCheckboxOn_(html);
 label=_st(_st(html)._label())._with_(self._text());
 label;
-$5=_st(html)._button();
-_st($5)._class_("destroy");
-$6=_st($5)._onClick_((function(){
-return smalltalk.withContext(function($ctx4) {
-return _st(console)._log_("delete me");
-}, function($ctx4) {$ctx4.fillBlock({},$ctx3,4)})}));
-delete_=$6;
-return delete_;
-}, function($ctx3) {$ctx3.fillBlock({},$ctx2,2)})}));
-$ctx2.sendIdx["with:"]=1;
-return $2;
-}, function($ctx2) {$ctx2.fillBlock({},$ctx1,1)})}));
-return self}, function($ctx1) {$ctx1.fill(self,"renderOn:",{html:html,input:input,label:label,delete_:delete_},globals.Todo)})},
+return self._renderDeleteButtonOn_(html);
+}, function($ctx3) {$ctx3.fillBlock({},$ctx2,4)})}));
+$ctx2.sendIdx["with:"]=2;
+return $7;
+}, function($ctx2) {$ctx2.fillBlock({},$ctx1,3)})}));
+$ctx1.sendIdx["with:"]=1;
+return self}, function($ctx1) {$ctx1.fill(self,"renderOn:",{html:html,label:label},globals.Todo)})},
 args: ["html"],
-source: "renderOn: html\x0a\x09| input label delete |\x0a\x09html li: [\x0a\x09\x09html div\x0a\x09\x09\x09class: 'view';\x0a\x09\x09\x09with: [\x0a                  \x09input := html input\x0a                  \x09\x09type: 'checkbox';\x0a\x09\x09\x09\x09\x09\x09class: 'toggle';\x0a\x09\x09\x09\x09\x09\x09onClick: [ console log: 'mark me as done'. ].\x0a\x09\x09\x09\x09\x09label := html label with: self text.\x0a\x09\x09\x09\x09\x09delete := html button\x0a\x09\x09\x09\x09\x09\x09class: 'destroy';\x0a\x09\x09\x09\x09\x09\x09onClick: [ console log: 'delete me'. ]]].",
-messageSends: ["li:", "class:", "div", "with:", "type:", "input", "onClick:", "log:", "label", "text", "button"],
+source: "renderOn: html\x0a\x09| label |\x0a\x09html li \x0a\x09\x09class: (self isDone ifTrue: [ \x22completed\x22 ] ifFalse: [''] );\x0a\x09\x09id: self id;\x0a\x09\x09with: [\x0a\x09\x09\x09html div\x0a\x09\x09\x09\x09class: 'view';\x0a\x09\x09\x09\x09with: [\x0a                  \x09self renderCompletedCheckboxOn: html.\x0a\x09\x09\x09\x09\x09label := html label with: self text.\x0a\x09\x09\x09\x09\x09self renderDeleteButtonOn: html. ]].",
+messageSends: ["class:", "li", "ifTrue:ifFalse:", "isDone", "id:", "id", "with:", "div", "renderCompletedCheckboxOn:", "label", "text", "renderDeleteButtonOn:"],
 referencedClasses: []
 }),
 globals.Todo);
@@ -449,6 +486,23 @@ return self},
 args: ["anObject"],
 source: "text: anObject\x0a\x09text := anObject",
 messageSends: [],
+referencedClasses: []
+}),
+globals.Todo);
+
+smalltalk.addMethod(
+smalltalk.method({
+selector: "toggleCompleted",
+protocol: 'accessing',
+fn: function (){
+var self=this;
+return smalltalk.withContext(function($ctx1) { 
+self._toggleIsDone();
+_st(_st("#".__comma(self._id()))._asJQuery())._toggleClass_("completed");
+return self}, function($ctx1) {$ctx1.fill(self,"toggleCompleted",{},globals.Todo)})},
+args: [],
+source: "toggleCompleted\x0a\x09self toggleIsDone.\x0a\x09('#', self id) asJQuery toggleClass: 'completed'.\x0a\x09",
+messageSends: ["toggleIsDone", "toggleClass:", "asJQuery", ",", "id"],
 referencedClasses: []
 }),
 globals.Todo);
@@ -569,19 +623,11 @@ protocol: 'adding/removing',
 fn: function (aTodo){
 var self=this;
 return smalltalk.withContext(function($ctx1) { 
-_st(aTodo)._onTodoChangedDo_((function(todo){
-return smalltalk.withContext(function($ctx2) {
-return _st(self["@storage"])._at_put_(_st(self["@storage"])._indexOf_(todo),todo);
-}, function($ctx2) {$ctx2.fillBlock({todo:todo},$ctx1,1)})}));
-_st(aTodo)._onDeleteClickedDo_((function(todo){
-return smalltalk.withContext(function($ctx2) {
-return self._removeTodo_(todo);
-}, function($ctx2) {$ctx2.fillBlock({todo:todo},$ctx1,2)})}));
 _st(self["@storage"])._add_(aTodo);
 return self}, function($ctx1) {$ctx1.fill(self,"addTodo:",{aTodo:aTodo},globals.TodoList)})},
 args: ["aTodo"],
-source: "addTodo: aTodo\x0a\x09aTodo onTodoChangedDo: [ :todo | storage at: (storage indexOf: todo) put: todo ].\x0a\x09aTodo onDeleteClickedDo: [ :todo | self removeTodo: todo ].\x0a    storage add: aTodo.",
-messageSends: ["onTodoChangedDo:", "at:put:", "indexOf:", "onDeleteClickedDo:", "removeTodo:", "add:"],
+source: "addTodo: aTodo\x0a    storage add: aTodo.",
+messageSends: ["add:"],
 referencedClasses: []
 }),
 globals.TodoList);
@@ -633,11 +679,10 @@ fn: function (aTodo){
 var self=this;
 return smalltalk.withContext(function($ctx1) { 
 _st(self["@storage"])._remove_(aTodo);
-_st(_st("li#".__comma(_st(aTodo)._id()))._asJQuery())._remove();
 return self}, function($ctx1) {$ctx1.fill(self,"removeTodo:",{aTodo:aTodo},globals.TodoList)})},
 args: ["aTodo"],
-source: "removeTodo: aTodo\x0a\x09storage remove: aTodo.\x0a\x09('li#', aTodo id) asJQuery remove",
-messageSends: ["remove:", "remove", "asJQuery", ",", "id"],
+source: "removeTodo: aTodo\x0a\x09storage remove: aTodo.",
+messageSends: ["remove:"],
 referencedClasses: []
 }),
 globals.TodoList);

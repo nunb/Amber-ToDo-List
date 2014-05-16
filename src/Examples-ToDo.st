@@ -38,7 +38,7 @@ renderTodoFiltersOn: html
 		with: [
 			html li: [ html a href: '#/'; with: 'All'. ].
 			html li: [ html a href: '#/active'; with: 'Active'. ].
-			html li: [ html a href: '#/selected'; with: 'Selected'. ]].
+			html li: [ html a href: '#/completed'; with: 'Completed'. ]].
 ! !
 
 Widget subclass: #MainSection
@@ -119,6 +119,11 @@ text: anObject
 	text := anObject
 !
 
+toggleCompleted
+	self toggleIsDone.
+	('#', self id) asJQuery toggleClass: 'completed'.
+!
+
 toggleIsDone
 	self isDone: isDone not
 ! !
@@ -133,20 +138,31 @@ initialize
 
 !Todo methodsFor: 'rendering'!
 
+renderCompletedCheckboxOn: html
+	html input
+    	type: 'checkbox';
+		class: 'toggle';
+		onClick: [ self toggleCompleted ].
+!
+
+renderDeleteButtonOn: html
+	html button
+		class: 'destroy';
+		onClick: [ console log: 'delete me'. ].
+!
+
 renderOn: html
-	| input label delete |
-	html li: [
-		html div
-			class: 'view';
-			with: [
-                  	input := html input
-                  		type: 'checkbox';
-						class: 'toggle';
-						onClick: [ console log: 'mark me as done'. ].
+	| label |
+	html li 
+		class: (self isDone ifTrue: [ "completed" ] ifFalse: [''] );
+		id: self id;
+		with: [
+			html div
+				class: 'view';
+				with: [
+                  	self renderCompletedCheckboxOn: html.
 					label := html label with: self text.
-					delete := html button
-						class: 'destroy';
-						onClick: [ console log: 'delete me'. ]]].
+					self renderDeleteButtonOn: html. ]].
 ! !
 
 !Todo methodsFor: 'testing'!
@@ -192,14 +208,11 @@ Widget subclass: #TodoList
 !TodoList methodsFor: 'adding/removing'!
 
 addTodo: aTodo
-	aTodo onTodoChangedDo: [ :todo | storage at: (storage indexOf: todo) put: todo ].
-	aTodo onDeleteClickedDo: [ :todo | self removeTodo: todo ].
     storage add: aTodo.
 !
 
 removeTodo: aTodo
 	storage remove: aTodo.
-	('li#', aTodo id) asJQuery remove
 ! !
 
 !TodoList methodsFor: 'events'!
