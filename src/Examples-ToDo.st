@@ -1,6 +1,88 @@
 Smalltalk createPackage: 'Examples-ToDo'!
+Widget subclass: #FooterSection
+	instanceVariableNames: ''
+	package: 'Examples-ToDo'!
+
+!FooterSection methodsFor: 'initialization'!
+
+initialize
+	super initialize.
+! !
+
+!FooterSection methodsFor: 'rendering'!
+
+decorate: num
+	num = 1
+		ifTrue: [ '1 item left' ]
+		ifFalse: [ num, ' items left' ].
+!
+
+renderOn: html
+	html footer
+		id: 'footer';
+		with: [
+			self renderTodoCountOn: html.
+			self renderTodoFiltersOn: html.]
+!
+
+renderTodoCountOn: html
+	"Renders the count of Todos that are not done in the footer"
+	html span
+		id: 'todo-count';
+		with: '1 item left'.
+!
+
+renderTodoFiltersOn: html
+	html ul
+		id: 'filters';
+		with: [
+			html li: [ html a href: '#/'; with: 'All'. ].
+			html li: [ html a href: '#/active'; with: 'Active'. ].
+			html li: [ html a href: '#/selected'; with: 'Selected'. ]].
+! !
+
+Widget subclass: #MainSection
+	instanceVariableNames: ''
+	package: 'Examples-ToDo'!
+
+!MainSection methodsFor: 'initialization'!
+
+initialize
+	super initialize.
+! !
+
+!MainSection methodsFor: 'rendering'!
+
+renderOn: html
+	html section
+		id: 'main';
+		with: [
+			self renderToggleTodosOn: html.
+            self renderTodoListItemsOn: html. ].
+!
+
+renderTodoListItemsOn: html
+	| todos |
+	todos := TodoStorage singleton items.
+	html ul
+		id: 'todo-list';
+		with: [ todos do: [ :aTodo | aTodo renderOn: html ]].
+!
+
+renderToggleTodosOn: html
+	| input label |
+	input := html input
+				    id: 'toggle-all';
+                  	type: 'checkbox'.
+	label := html label
+					for: 'toggle-all';
+					with: 'Mark all as complete'.
+	input element.
+	label element.
+! !
+
 Widget subclass: #Todo
-	instanceVariableNames: 'isDone text id onTodoChanged onDeleteClicked'
+	instanceVariableNames: 'isDone text id'
 	package: 'Examples-ToDo'!
 
 !Todo methodsFor: 'accessing'!
@@ -45,29 +127,26 @@ toggleIsDone
 
 initialize
 	super initialize.
+	id := Date now asNumber.
 	isDone := false.
 ! !
 
 !Todo methodsFor: 'rendering'!
 
 renderOn: html
-	| input delete |
-	html li
-		id: self id;
-		with: [
-                  input := html input
-                  	type: 'checkbox';
-                  	onClick: [
-                          self toggleIsDone.
-                          onTodoChanged value: self. 
-                          (input asJQuery next) toggleClass: 'done' ].
-		html span with: text .
-                delete := html span
-                  with: '  [x]';
-                  onClick: [ onDeleteClicked value: self ]].
-	isDone ifTrue: [ 
-          input at: 'checked' put: 'checked'.
-          (input asJQuery next) addClass: 'done'].
+	| input label delete |
+	html li: [
+		html div
+			class: 'view';
+			with: [
+                  	input := html input
+                  		type: 'checkbox';
+						class: 'toggle';
+						onClick: [ console log: 'mark me as done'. ].
+					label := html label with: self text.
+					delete := html button
+						class: 'destroy';
+						onClick: [ console log: 'delete me'. ]]].
 ! !
 
 !Todo methodsFor: 'testing'!
@@ -107,22 +186,19 @@ newWithText: aString
 ! !
 
 Widget subclass: #TodoList
-	instanceVariableNames: 'todos container count'
+	instanceVariableNames: 'storage'
 	package: 'Examples-ToDo'!
 
 !TodoList methodsFor: 'adding/removing'!
 
 addTodo: aTodo
-	aTodo id: count asString.
-	aTodo onTodoChangedDo: [ :todo | todos at: (todos indexOf: todo) put: todo ].
+	aTodo onTodoChangedDo: [ :todo | storage at: (storage indexOf: todo) put: todo ].
 	aTodo onDeleteClickedDo: [ :todo | self removeTodo: todo ].
-       	todos add: aTodo.
-       	aTodo appendToJQuery: container asJQuery.
-	count := count + 1
+    storage add: aTodo.
 !
 
 removeTodo: aTodo
-	todos remove: aTodo.
+	storage remove: aTodo.
 	('li#', aTodo id) asJQuery remove
 ! !
 
@@ -130,18 +206,16 @@ removeTodo: aTodo
 
 handleInput: anEvent
 	| text todo |
-        text := anEvent target value.
-        todo := Todo newWithText: text.
- 	self addTodo: todo
+    text := anEvent target value.
+    todo := Todo newWithText: text.
+ 	self addTodo: todo.
 ! !
 
 !TodoList methodsFor: 'initializing'!
 
 initialize
 	super initialize.
-	todos := TodoStorage new.
-	container := '#todos-list'.
-	count := todos size = 0 ifTrue: [ 1 ] ifFalse: [( todos collect: [ :each | each id asNumber ]) sort last + 1 ]
+	storage := TodoStorage singleton.
 ! !
 
 !TodoList methodsFor: 'rendering'!
@@ -178,16 +252,18 @@ renderFormOn: html
 					autofocus;
                   	onKeyUp: [ :event |
                                   (event keyCode = 13) ifTrue: [
-                                    self handleInput: event.
-                                    input asJQuery val: '' ] ] ].
+									    self renderMainAndFooterSectionsOn: html.
+                                    	self handleInput: event.
+                                    	input asJQuery val: '' ] ] ].
 	input element placeholder: defaultText.
 !
 
-renderHeaderOn: html
-	html div
-		id: 'header';
-		class: 'section';
-		with: [ html h1 with: 'Todo list' ]
+renderMainAndFooterSectionsOn: html
+	| footer main |
+	footer := FooterSection new.
+	main := MainSection new.
+	main renderOn: html.
+	footer renderOn: html.
 !
 
 renderOn: html
@@ -196,32 +272,10 @@ renderOn: html
 !
 
 renderTodosOn: html
+	| todos |
+	todos := storage items.
 	todos size = 0
-		ifFalse: [
-			html section
-				id: 'main';
-				with: [
-				  self renderToggleTodosOn: html.
-                  html ul
-				  	id: 'todos-list';
-                  	with: [ todos do: [ :aTodo | 
-                                           aTodo onTodoChangedDo: [ :todo | todos at: (todos indexOf: todo) put: todo ].
-	                                   aTodo onDeleteClickedDo: [ :todo | self removeTodo: todo ].
-                                           aTodo renderOn: html ]]].
-	 		html footer
-				id: 'footer'. ]
-!
-
-renderToggleTodosOn: html
-	| input label |
-	input := html input
-				    id: 'toggle-all';
-                  	type: 'checkbox'.
-	label := html label
-					for: 'toggle-all';
-					with: 'Mark all as complete'.
-	input element.
-	label element.
+		ifFalse: [ self renderMainAndFooterSectionsOn: html ]
 ! !
 
 !TodoList class methodsFor: 'not yet classified'!
@@ -231,7 +285,7 @@ run
 ! !
 
 Object subclass: #TodoStorage
-	instanceVariableNames: 'storage array'
+	instanceVariableNames: 'items'
 	package: 'Examples-ToDo'!
 
 !TodoStorage methodsFor: 'accessing'!
@@ -245,56 +299,51 @@ at: anIndex put: anObject
 	self save
 !
 
-getArray
-	| anArray aJSONArray |
-	aJSONArray := storage getItem: 'TodoList'.
-	anArray := aJSONArray ifNil: [ self initializeStorage ] 
-	                      ifNotNil: [ Smalltalk readJSObject: (JSON parse: aJSONArray) ].
-	^ anArray collect: [ :each | Todo fromDictionary: each ]
-!
-
 indexOf: anObject
 	^ array indexOf: anObject
+!
+
+items
+	"Returns an Array of all Todos in TodoStorage"
+	| todos |
+	todos := self parseTodoItems: (localStorage getItem: 'todos-amber' ).
+	^ todos collect: [ :todo | Todo fromDictionary: todo ].
 !
 
 length
 	^ self size
 !
 
-setArray
-	^ self save
-!
-
-size
-	^ array size
+parseTodoItems: json
+	"Parses serialized JSON todos in localStorage and returns an Array of Todo objects"
+	^ Smalltalk readJSObject: (JSON parse: json).
 ! !
 
 !TodoStorage methodsFor: 'adding/removing'!
 
 add: anObject
-	array add: anObject.
+	items add: anObject.
 	self save.
 !
 
 remove: anObject
 	| d |
-	d := array detect: [ :each | each asJSON = anObject asJSON ]. 
-	array remove: d.
+	d := items detect: [ :each | each asJSON = anObject asJSON ]. 
+	items remove: d.
 	self save
 ! !
 
 !TodoStorage methodsFor: 'initializing'!
 
 initialize
-	storage := localStorage.
-	array := self getArray.
+	items := self fetch.
+	^ self.
 !
 
 initializeStorage
-	| anArray |
-	anArray := Array new.
-	storage setItem: 'TodoList' value: anArray asJSON.
-	^ anArray
+	" Initialize localStorage with an empty Array"
+	localStorage setItem: 'todos-amber' value: (Array new) asJSONString.
+	^ Array new.
 ! !
 
 !TodoStorage methodsFor: 'iterating'!
@@ -318,7 +367,32 @@ select: aBlock
 
 !TodoStorage methodsFor: 'persistence'!
 
+fetch
+	| storedTodos todos |
+	storedTodos := (localStorage getItem: 'todos-amber')
+		ifNil: [ todos := self initializeStorage ]
+		ifNotNil: [ todos := self load ].
+	^ todos.
+!
+
+load
+	"Loads the serialized items from localStorage"
+	| str |
+	str := (localStorage getItem: 'todos-amber').
+	Smalltalk readJSObject: (JSON parse: str).
+!
+
 save
-	storage setItem: 'TodoList' value: array asJSONString
+	localStorage setItem: 'todos-amber' value: items asJSONString
+! !
+
+TodoStorage class instanceVariableNames: 'singleton'!
+
+!TodoStorage class methodsFor: 'initialization'!
+
+singleton
+	| UniqueInstance |
+	UniqueInstance ifNil: [ UniqueInstance := self basicNew initialize ].
+    ^ UniqueInstance.
 ! !
 
