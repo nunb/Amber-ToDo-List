@@ -2,17 +2,123 @@ define("Examples/Examples-ToDo", ["amber_vm/smalltalk", "amber_vm/nil", "amber_v
 smalltalk.addPackage('Examples-ToDo');
 smalltalk.packages["Examples-ToDo"].transport = {"type":"amd","amdNamespace":"Examples"};
 
+smalltalk.addClass('FooterCount', globals.Widget, ['count'], 'Examples-ToDo');
+smalltalk.addMethod(
+smalltalk.method({
+selector: "count",
+protocol: 'accessing',
+fn: function () {
+var self=this;
+var $1;
+$1=self["@count"];
+return $1;
+},
+args: [],
+source: "count\x0a\x09^ count",
+messageSends: [],
+referencedClasses: []
+}),
+globals.FooterCount);
+
+smalltalk.addMethod(
+smalltalk.method({
+selector: "decorate:",
+protocol: 'rendering',
+fn: function (aNumber) {
+var self=this;
+return smalltalk.withContext(function($ctx1) { 
+var $1;
+$1=_st(aNumber).__eq((1));
+if(smalltalk.assert($1)){
+"1 item left";
+} else {
+_st(_st(aNumber)._asString()).__comma(" items left");
+};
+return self}, function($ctx1) {$ctx1.fill(self,"decorate:",{aNumber:aNumber},globals.FooterCount)});},
+args: ["aNumber"],
+source: "decorate: aNumber\x0a\x09aNumber = 1\x0a\x09\x09ifTrue: [ '1 item left' ]\x0a\x09\x09ifFalse: [ aNumber asString, ' items left' ].",
+messageSends: ["ifTrue:ifFalse:", "=", ",", "asString"],
+referencedClasses: []
+}),
+globals.FooterCount);
+
+smalltalk.addMethod(
+smalltalk.method({
+selector: "initialize",
+protocol: 'initialization',
+fn: function () {
+var self=this;
+function $TodoStorage(){return globals.TodoStorage||(typeof TodoStorage=="undefined"?nil:TodoStorage)}
+return smalltalk.withContext(function($ctx1) { 
+($ctx1.supercall = true, globals.FooterCount.superclass.fn.prototype._initialize.apply(_st(self), []));
+$ctx1.supercall = false;
+self["@count"]=_st(_st(_st($TodoStorage())._singleton())._items())._size();
+return self}, function($ctx1) {$ctx1.fill(self,"initialize",{},globals.FooterCount)});},
+args: [],
+source: "initialize\x0a\x09super initialize.\x0a\x09count := TodoStorage singleton items size.",
+messageSends: ["initialize", "size", "items", "singleton"],
+referencedClasses: ["TodoStorage"]
+}),
+globals.FooterCount);
+
+smalltalk.addMethod(
+smalltalk.method({
+selector: "renderOn:",
+protocol: 'rendering',
+fn: function (html){
+var self=this;
+return smalltalk.withContext(function($ctx1) { 
+var $1,$2;
+$1=_st(html)._span();
+_st($1)._id_("todo-count");
+$2=_st($1)._with_("1 item left");
+return self}, function($ctx1) {$ctx1.fill(self,"renderOn:",{html:html},globals.FooterCount)})},
+args: ["html"],
+source: "renderOn: html\x0a\x09html span\x0a\x09\x09id: 'todo-count';\x0a\x09\x09with: '1 item left'.\x0a\x09",
+messageSends: ["id:", "span", "with:"],
+referencedClasses: []
+}),
+globals.FooterCount);
+
+
+smalltalk.addMethod(
+smalltalk.method({
+selector: "singleton",
+protocol: 'initialization',
+fn: function () {
+var self=this;
+var UniqueInstance;
+return smalltalk.withContext(function($ctx1) { 
+var $1,$2,$receiver;
+$1=UniqueInstance;
+if(($receiver = $1) == null || $receiver.isNil){
+UniqueInstance=_st(self._basicNew())._initialize();
+UniqueInstance;
+} else {
+$1;
+};
+$2=UniqueInstance;
+return $2;
+}, function($ctx1) {$ctx1.fill(self,"singleton",{UniqueInstance:UniqueInstance},globals.FooterCount.klass)});},
+args: [],
+source: "singleton\x0a\x09| UniqueInstance |\x0a\x09UniqueInstance ifNil: [ UniqueInstance := self basicNew initialize ].\x0a    ^ UniqueInstance.",
+messageSends: ["ifNil:", "initialize", "basicNew"],
+referencedClasses: []
+}),
+globals.FooterCount.klass);
+
+
 smalltalk.addClass('FooterSection', globals.Widget, [], 'Examples-ToDo');
 smalltalk.addMethod(
 smalltalk.method({
 selector: "initialize",
 protocol: 'initialization',
-fn: function (){
+fn: function () {
 var self=this;
 return smalltalk.withContext(function($ctx1) { 
 ($ctx1.supercall = true, globals.FooterSection.superclass.fn.prototype._initialize.apply(_st(self), []));
 $ctx1.supercall = false;
-return self}, function($ctx1) {$ctx1.fill(self,"initialize",{},globals.FooterSection)})},
+return self}, function($ctx1) {$ctx1.fill(self,"initialize",{},globals.FooterSection)});},
 args: [],
 source: "initialize\x0a\x09super initialize.",
 messageSends: ["initialize"],
@@ -26,39 +132,22 @@ selector: "renderOn:",
 protocol: 'rendering',
 fn: function (html){
 var self=this;
+function $FooterCount(){return globals.FooterCount||(typeof FooterCount=="undefined"?nil:FooterCount)}
 return smalltalk.withContext(function($ctx1) { 
 var $1,$2;
 $1=_st(html)._footer();
 _st($1)._id_("footer");
+_st($1)._style_("display: none;");
 $2=_st($1)._with_((function(){
 return smalltalk.withContext(function($ctx2) {
-self._renderTodoCountOn_(html);
+_st(_st($FooterCount())._singleton())._renderOn_(html);
 return self._renderTodoFiltersOn_(html);
 }, function($ctx2) {$ctx2.fillBlock({},$ctx1,1)})}));
 return self}, function($ctx1) {$ctx1.fill(self,"renderOn:",{html:html},globals.FooterSection)})},
 args: ["html"],
-source: "renderOn: html\x0a\x09html footer\x0a\x09\x09id: 'footer';\x0a\x09\x09with: [\x0a\x09\x09\x09self renderTodoCountOn: html.\x0a\x09\x09\x09self renderTodoFiltersOn: html.]",
-messageSends: ["id:", "footer", "with:", "renderTodoCountOn:", "renderTodoFiltersOn:"],
-referencedClasses: []
-}),
-globals.FooterSection);
-
-smalltalk.addMethod(
-smalltalk.method({
-selector: "renderTodoCountOn:",
-protocol: 'rendering',
-fn: function (html){
-var self=this;
-return smalltalk.withContext(function($ctx1) { 
-var $1,$2;
-$1=_st(html)._span();
-_st($1)._id_("todo-count");
-$2=_st($1)._with_("1 item left");
-return self}, function($ctx1) {$ctx1.fill(self,"renderTodoCountOn:",{html:html},globals.FooterSection)})},
-args: ["html"],
-source: "renderTodoCountOn: html\x0a\x09\x22Renders the count of Todos that are not done in the footer\x22\x0a\x09html span\x0a\x09\x09id: 'todo-count';\x0a\x09\x09with: '1 item left'.",
-messageSends: ["id:", "span", "with:"],
-referencedClasses: []
+source: "renderOn: html\x0a\x09html footer\x0a\x09\x09id: 'footer';\x0a\x09\x09style: 'display: none;';\x0a\x09\x09with: [\x0a\x09\x09\x09FooterCount singleton renderOn: html.\x0a\x09\x09\x09self renderTodoFiltersOn: html.]",
+messageSends: ["id:", "footer", "style:", "with:", "renderOn:", "singleton", "renderTodoFiltersOn:"],
+referencedClasses: ["FooterCount"]
 }),
 globals.FooterSection);
 
@@ -66,7 +155,7 @@ smalltalk.addMethod(
 smalltalk.method({
 selector: "renderTodoFiltersOn:",
 protocol: 'rendering',
-fn: function (html){
+fn: function (html) {
 var self=this;
 return smalltalk.withContext(function($ctx1) { 
 var $1,$3,$4,$5,$6,$7,$8,$2;
@@ -105,7 +194,7 @@ return $8;
 }, function($ctx3) {$ctx3.fillBlock({},$ctx2,4)})}));
 }, function($ctx2) {$ctx2.fillBlock({},$ctx1,1)})}));
 $ctx1.sendIdx["with:"]=1;
-return self}, function($ctx1) {$ctx1.fill(self,"renderTodoFiltersOn:",{html:html},globals.FooterSection)})},
+return self}, function($ctx1) {$ctx1.fill(self,"renderTodoFiltersOn:",{html:html},globals.FooterSection)});},
 args: ["html"],
 source: "renderTodoFiltersOn: html\x0a\x09html ul\x0a\x09\x09id: 'filters';\x0a\x09\x09with: [\x0a\x09\x09\x09html li: [ html a href: '#/'; with: 'All'. ].\x0a\x09\x09\x09html li: [ html a href: '#/active'; with: 'Active'. ].\x0a\x09\x09\x09html li: [ html a href: '#/completed'; with: 'Completed'. ]].",
 messageSends: ["id:", "ul", "with:", "li:", "href:", "a"],
@@ -113,6 +202,32 @@ referencedClasses: []
 }),
 globals.FooterSection);
 
+
+smalltalk.addMethod(
+smalltalk.method({
+selector: "singleton",
+protocol: 'initialization',
+fn: function (){
+var self=this;
+var UniqueInstance;
+return smalltalk.withContext(function($ctx1) { 
+var $1,$2,$receiver;
+$1=UniqueInstance;
+if(($receiver = $1) == null || $receiver.isNil){
+UniqueInstance=_st(self._basicNew())._initialize();
+UniqueInstance;
+} else {
+$1;
+};
+$2=UniqueInstance;
+return $2;
+}, function($ctx1) {$ctx1.fill(self,"singleton",{UniqueInstance:UniqueInstance},globals.FooterSection.klass)})},
+args: [],
+source: "singleton\x0a\x09| UniqueInstance |\x0a\x09UniqueInstance ifNil: [ UniqueInstance := self basicNew initialize ].\x0a    ^ UniqueInstance.",
+messageSends: ["ifNil:", "initialize", "basicNew"],
+referencedClasses: []
+}),
+globals.FooterSection.klass);
 
 
 smalltalk.addClass('MainSection', globals.Widget, [], 'Examples-ToDo');
@@ -123,11 +238,12 @@ protocol: 'rendering',
 fn: function (todo){
 var self=this;
 return smalltalk.withContext(function($ctx1) { 
+self._show();
 _st(todo)._appendToJQuery_("#todo-list"._asJQuery());
 return self}, function($ctx1) {$ctx1.fill(self,"appendTodoListItem:",{todo:todo},globals.MainSection)})},
 args: ["todo"],
-source: "appendTodoListItem: todo\x0a\x09\x22Adds a list item to the end of list items\x22\x0a\x09todo appendToJQuery: '#todo-list' asJQuery.",
-messageSends: ["appendToJQuery:", "asJQuery"],
+source: "appendTodoListItem: todo\x0a\x09\x22Adds a list item to the end of list items\x22\x0a\x09self show.\x0a\x09todo appendToJQuery: '#todo-list' asJQuery.",
+messageSends: ["show", "appendToJQuery:", "asJQuery"],
 referencedClasses: []
 }),
 globals.MainSection);
@@ -136,12 +252,12 @@ smalltalk.addMethod(
 smalltalk.method({
 selector: "initialize",
 protocol: 'initialization',
-fn: function (){
+fn: function () {
 var self=this;
 return smalltalk.withContext(function($ctx1) { 
 ($ctx1.supercall = true, globals.MainSection.superclass.fn.prototype._initialize.apply(_st(self), []));
 $ctx1.supercall = false;
-return self}, function($ctx1) {$ctx1.fill(self,"initialize",{},globals.MainSection)})},
+return self}, function($ctx1) {$ctx1.fill(self,"initialize",{},globals.MainSection)});},
 args: [],
 source: "initialize\x0a\x09super initialize.",
 messageSends: ["initialize"],
@@ -159,6 +275,7 @@ return smalltalk.withContext(function($ctx1) {
 var $1,$2;
 $1=_st(html)._section();
 _st($1)._id_("main");
+_st($1)._style_("display: none;");
 $2=_st($1)._with_((function(){
 return smalltalk.withContext(function($ctx2) {
 self._renderToggleTodosOn_(html);
@@ -166,8 +283,8 @@ return self._renderTodoListItemsOn_(html);
 }, function($ctx2) {$ctx2.fillBlock({},$ctx1,1)})}));
 return self}, function($ctx1) {$ctx1.fill(self,"renderOn:",{html:html},globals.MainSection)})},
 args: ["html"],
-source: "renderOn: html\x0a\x09html section\x0a\x09\x09id: 'main';\x0a\x09\x09with: [\x0a\x09\x09\x09self renderToggleTodosOn: html.\x0a            self renderTodoListItemsOn: html. ].",
-messageSends: ["id:", "section", "with:", "renderToggleTodosOn:", "renderTodoListItemsOn:"],
+source: "renderOn: html\x0a\x09html section\x0a\x09\x09id: 'main';\x0a\x09\x09style: 'display: none;';\x0a\x09\x09with: [\x0a\x09\x09\x09self renderToggleTodosOn: html.\x0a            self renderTodoListItemsOn: html. ].",
+messageSends: ["id:", "section", "style:", "with:", "renderToggleTodosOn:", "renderTodoListItemsOn:"],
 referencedClasses: []
 }),
 globals.MainSection);
@@ -204,7 +321,7 @@ smalltalk.addMethod(
 smalltalk.method({
 selector: "renderToggleTodosOn:",
 protocol: 'rendering',
-fn: function (html){
+fn: function (html) {
 var self=this;
 var input,label;
 return smalltalk.withContext(function($ctx1) { 
@@ -220,10 +337,26 @@ label=$4;
 _st(input)._element();
 $ctx1.sendIdx["element"]=1;
 _st(label)._element();
-return self}, function($ctx1) {$ctx1.fill(self,"renderToggleTodosOn:",{html:html,input:input,label:label},globals.MainSection)})},
+return self}, function($ctx1) {$ctx1.fill(self,"renderToggleTodosOn:",{html:html,input:input,label:label},globals.MainSection)});},
 args: ["html"],
 source: "renderToggleTodosOn: html\x0a\x09| input label |\x0a\x09input := html input\x0a\x09\x09\x09\x09    id: 'toggle-all';\x0a                  \x09type: 'checkbox'.\x0a\x09label := html label\x0a\x09\x09\x09\x09\x09for: 'toggle-all';\x0a\x09\x09\x09\x09\x09with: 'Mark all as complete'.\x0a\x09input element.\x0a\x09label element.",
 messageSends: ["id:", "input", "type:", "for:", "label", "with:", "element"],
+referencedClasses: []
+}),
+globals.MainSection);
+
+smalltalk.addMethod(
+smalltalk.method({
+selector: "show",
+protocol: 'rendering',
+fn: function (){
+var self=this;
+return smalltalk.withContext(function($ctx1) { 
+_st("#main"._asJQuery())._show();
+return self}, function($ctx1) {$ctx1.fill(self,"show",{},globals.MainSection)})},
+args: [],
+source: "show\x0a\x09'#main' asJQuery show. ",
+messageSends: ["show", "asJQuery"],
 referencedClasses: []
 }),
 globals.MainSection);
@@ -233,7 +366,7 @@ smalltalk.addMethod(
 smalltalk.method({
 selector: "singleton",
 protocol: 'initialization',
-fn: function (){
+fn: function () {
 var self=this;
 var UniqueInstance;
 return smalltalk.withContext(function($ctx1) { 
@@ -247,7 +380,7 @@ $1;
 };
 $2=UniqueInstance;
 return $2;
-}, function($ctx1) {$ctx1.fill(self,"singleton",{UniqueInstance:UniqueInstance},globals.MainSection.klass)})},
+}, function($ctx1) {$ctx1.fill(self,"singleton",{UniqueInstance:UniqueInstance},globals.MainSection.klass)});},
 args: [],
 source: "singleton\x0a\x09| UniqueInstance |\x0a\x09UniqueInstance ifNil: [ UniqueInstance := self basicNew initialize ].\x0a    ^ UniqueInstance.",
 messageSends: ["ifNil:", "initialize", "basicNew"],
@@ -261,7 +394,7 @@ smalltalk.addMethod(
 smalltalk.method({
 selector: "=",
 protocol: 'testing',
-fn: function (aTodo){
+fn: function (aTodo) {
 var self=this;
 return smalltalk.withContext(function($ctx1) { 
 var $2,$1;
@@ -269,7 +402,7 @@ $2=self._id();
 $ctx1.sendIdx["id"]=1;
 $1=_st($2).__eq(_st(aTodo)._id());
 return $1;
-}, function($ctx1) {$ctx1.fill(self,"=",{aTodo:aTodo},globals.Todo)})},
+}, function($ctx1) {$ctx1.fill(self,"=",{aTodo:aTodo},globals.Todo)});},
 args: ["aTodo"],
 source: "= aTodo\x0a\x09^ self id = aTodo id",
 messageSends: ["=", "id"],
@@ -281,7 +414,7 @@ smalltalk.addMethod(
 smalltalk.method({
 selector: "id",
 protocol: 'accessing',
-fn: function (){
+fn: function () {
 var self=this;
 var $1;
 $1=self["@id"];
@@ -298,10 +431,10 @@ smalltalk.addMethod(
 smalltalk.method({
 selector: "id:",
 protocol: 'accessing',
-fn: function (aString){
+fn: function (aString) {
 var self=this;
 self["@id"]=aString;
-return self},
+return self;},
 args: ["aString"],
 source: "id: aString\x0a\x09id := aString",
 messageSends: [],
@@ -313,7 +446,7 @@ smalltalk.addMethod(
 smalltalk.method({
 selector: "initialize",
 protocol: 'initializing',
-fn: function (){
+fn: function () {
 var self=this;
 function $Date(){return globals.Date||(typeof Date=="undefined"?nil:Date)}
 return smalltalk.withContext(function($ctx1) { 
@@ -321,7 +454,7 @@ return smalltalk.withContext(function($ctx1) {
 $ctx1.supercall = false;
 self["@id"]=_st(_st($Date())._now())._asNumber();
 self["@isDone"]=false;
-return self}, function($ctx1) {$ctx1.fill(self,"initialize",{},globals.Todo)})},
+return self}, function($ctx1) {$ctx1.fill(self,"initialize",{},globals.Todo)});},
 args: [],
 source: "initialize\x0a\x09super initialize.\x0a\x09id := Date now asNumber.\x0a\x09isDone := false.",
 messageSends: ["initialize", "asNumber", "now"],
@@ -333,7 +466,7 @@ smalltalk.addMethod(
 smalltalk.method({
 selector: "isDone",
 protocol: 'accessing',
-fn: function (){
+fn: function () {
 var self=this;
 var $1;
 $1=self["@isDone"];
@@ -350,10 +483,10 @@ smalltalk.addMethod(
 smalltalk.method({
 selector: "isDone:",
 protocol: 'accessing',
-fn: function (aBool){
+fn: function (aBool) {
 var self=this;
 self["@isDone"]=aBool;
-return self},
+return self;},
 args: ["aBool"],
 source: "isDone: aBool\x0a\x09isDone := aBool.",
 messageSends: [],
@@ -365,7 +498,7 @@ smalltalk.addMethod(
 smalltalk.method({
 selector: "renderCompletedCheckboxOn:",
 protocol: 'rendering',
-fn: function (html){
+fn: function (html) {
 var self=this;
 return smalltalk.withContext(function($ctx1) { 
 var $1,$2;
@@ -376,7 +509,7 @@ $2=_st($1)._onClick_((function(){
 return smalltalk.withContext(function($ctx2) {
 return self._toggleCompleted();
 }, function($ctx2) {$ctx2.fillBlock({},$ctx1,1)})}));
-return self}, function($ctx1) {$ctx1.fill(self,"renderCompletedCheckboxOn:",{html:html},globals.Todo)})},
+return self}, function($ctx1) {$ctx1.fill(self,"renderCompletedCheckboxOn:",{html:html},globals.Todo)});},
 args: ["html"],
 source: "renderCompletedCheckboxOn: html\x0a\x09html input\x0a    \x09type: 'checkbox';\x0a\x09\x09class: 'toggle';\x0a\x09\x09onClick: [ self toggleCompleted ].",
 messageSends: ["type:", "input", "class:", "onClick:", "toggleCompleted"],
@@ -388,7 +521,7 @@ smalltalk.addMethod(
 smalltalk.method({
 selector: "renderDeleteButtonOn:",
 protocol: 'rendering',
-fn: function (html){
+fn: function (html) {
 var self=this;
 return smalltalk.withContext(function($ctx1) { 
 var $1,$2;
@@ -398,7 +531,7 @@ $2=_st($1)._onClick_((function(){
 return smalltalk.withContext(function($ctx2) {
 return _st(console)._log_("delete me");
 }, function($ctx2) {$ctx2.fillBlock({},$ctx1,1)})}));
-return self}, function($ctx1) {$ctx1.fill(self,"renderDeleteButtonOn:",{html:html},globals.Todo)})},
+return self}, function($ctx1) {$ctx1.fill(self,"renderDeleteButtonOn:",{html:html},globals.Todo)});},
 args: ["html"],
 source: "renderDeleteButtonOn: html\x0a\x09html button\x0a\x09\x09class: 'destroy';\x0a\x09\x09onClick: [ console log: 'delete me'. ].",
 messageSends: ["class:", "button", "onClick:", "log:"],
@@ -410,7 +543,7 @@ smalltalk.addMethod(
 smalltalk.method({
 selector: "renderOn:",
 protocol: 'rendering',
-fn: function (html){
+fn: function (html) {
 var self=this;
 var label;
 return smalltalk.withContext(function($ctx1) { 
@@ -440,7 +573,7 @@ $ctx2.sendIdx["with:"]=2;
 return $7;
 }, function($ctx2) {$ctx2.fillBlock({},$ctx1,3)})}));
 $ctx1.sendIdx["with:"]=1;
-return self}, function($ctx1) {$ctx1.fill(self,"renderOn:",{html:html,label:label},globals.Todo)})},
+return self}, function($ctx1) {$ctx1.fill(self,"renderOn:",{html:html,label:label},globals.Todo)});},
 args: ["html"],
 source: "renderOn: html\x0a\x09| label |\x0a\x09html li \x0a\x09\x09class: (self isDone ifTrue: [ \x22completed\x22 ] ifFalse: [''] );\x0a\x09\x09id: self id;\x0a\x09\x09with: [\x0a\x09\x09\x09html div\x0a\x09\x09\x09\x09class: 'view';\x0a\x09\x09\x09\x09with: [\x0a                  \x09self renderCompletedCheckboxOn: html.\x0a\x09\x09\x09\x09\x09label := html label with: self text.\x0a\x09\x09\x09\x09\x09self renderDeleteButtonOn: html. ]].",
 messageSends: ["class:", "li", "ifTrue:ifFalse:", "isDone", "id:", "id", "with:", "div", "renderCompletedCheckboxOn:", "label", "text", "renderDeleteButtonOn:"],
@@ -452,7 +585,7 @@ smalltalk.addMethod(
 smalltalk.method({
 selector: "text",
 protocol: 'accessing',
-fn: function (){
+fn: function () {
 var self=this;
 var $1;
 $1=self["@text"];
@@ -469,10 +602,10 @@ smalltalk.addMethod(
 smalltalk.method({
 selector: "text:",
 protocol: 'accessing',
-fn: function (anObject){
+fn: function (anObject) {
 var self=this;
 self["@text"]=anObject;
-return self},
+return self;},
 args: ["anObject"],
 source: "text: anObject\x0a\x09text := anObject",
 messageSends: [],
@@ -484,12 +617,12 @@ smalltalk.addMethod(
 smalltalk.method({
 selector: "toggleCompleted",
 protocol: 'accessing',
-fn: function (){
+fn: function () {
 var self=this;
 return smalltalk.withContext(function($ctx1) { 
 self._toggleIsDone();
 _st(_st("#".__comma(self._id()))._asJQuery())._toggleClass_("completed");
-return self}, function($ctx1) {$ctx1.fill(self,"toggleCompleted",{},globals.Todo)})},
+return self}, function($ctx1) {$ctx1.fill(self,"toggleCompleted",{},globals.Todo)});},
 args: [],
 source: "toggleCompleted\x0a\x09\x22Toggles whether this Todo isDone\x22\x0a\x09self toggleIsDone.\x0a\x09('#', self id) asJQuery toggleClass: 'completed'.\x0a\x09",
 messageSends: ["toggleIsDone", "toggleClass:", "asJQuery", ",", "id"],
@@ -501,11 +634,11 @@ smalltalk.addMethod(
 smalltalk.method({
 selector: "toggleIsDone",
 protocol: 'accessing',
-fn: function (){
+fn: function () {
 var self=this;
 return smalltalk.withContext(function($ctx1) { 
 self._isDone_(_st(self["@isDone"])._not());
-return self}, function($ctx1) {$ctx1.fill(self,"toggleIsDone",{},globals.Todo)})},
+return self}, function($ctx1) {$ctx1.fill(self,"toggleIsDone",{},globals.Todo)});},
 args: [],
 source: "toggleIsDone\x0a\x09self isDone: isDone not.",
 messageSends: ["isDone:", "not"],
@@ -518,7 +651,7 @@ smalltalk.addMethod(
 smalltalk.method({
 selector: "fromDictionary:",
 protocol: 'not yet classified',
-fn: function (aDict){
+fn: function (aDict) {
 var self=this;
 var todo;
 return smalltalk.withContext(function($ctx1) { 
@@ -535,7 +668,7 @@ _st($3)._text_($4);
 _st(todo)._isDone_(_st(aDict)._at_("isDone"));
 $5=todo;
 return $5;
-}, function($ctx1) {$ctx1.fill(self,"fromDictionary:",{aDict:aDict,todo:todo},globals.Todo.klass)})},
+}, function($ctx1) {$ctx1.fill(self,"fromDictionary:",{aDict:aDict,todo:todo},globals.Todo.klass)});},
 args: ["aDict"],
 source: "fromDictionary: aDict\x0a\x09| todo |\x0a\x09todo := self new.\x0a\x09todo id: (aDict at: 'id').\x0a\x09todo text: (aDict at: 'text').\x0a\x09todo isDone: (aDict at: 'isDone').\x0a\x09^ todo",
 messageSends: ["new", "id:", "at:", "text:", "isDone:"],
@@ -547,7 +680,7 @@ smalltalk.addMethod(
 smalltalk.method({
 selector: "fromDictionary:withCallback:",
 protocol: 'not yet classified',
-fn: function (aDict,aBlock){
+fn: function (aDict, aBlock) {
 var self=this;
 var todo;
 return smalltalk.withContext(function($ctx1) { 
@@ -556,7 +689,7 @@ todo=self._fromDictionary_(aDict);
 _st(todo)._onTodoChangedDo_(aBlock);
 $1=todo;
 return $1;
-}, function($ctx1) {$ctx1.fill(self,"fromDictionary:withCallback:",{aDict:aDict,aBlock:aBlock,todo:todo},globals.Todo.klass)})},
+}, function($ctx1) {$ctx1.fill(self,"fromDictionary:withCallback:",{aDict:aDict,aBlock:aBlock,todo:todo},globals.Todo.klass)});},
 args: ["aDict", "aBlock"],
 source: "fromDictionary: aDict withCallback: aBlock\x0a\x09| todo |\x0a\x09todo := self fromDictionary: aDict.\x0a\x09todo onTodoChangedDo: aBlock.\x0a\x09^ todo",
 messageSends: ["fromDictionary:", "onTodoChangedDo:"],
@@ -568,7 +701,7 @@ smalltalk.addMethod(
 smalltalk.method({
 selector: "fromDictionary:withTodoChangedCallback:withDeleteClickedCallback:",
 protocol: 'not yet classified',
-fn: function (aDict,aBlock,oBlock){
+fn: function (aDict, aBlock, oBlock) {
 var self=this;
 var todo;
 return smalltalk.withContext(function($ctx1) { 
@@ -578,7 +711,7 @@ _st(todo)._onTodoChangedDo_(aBlock);
 _st(todo)._onDeleteClickedDo_(oBlock);
 $1=todo;
 return $1;
-}, function($ctx1) {$ctx1.fill(self,"fromDictionary:withTodoChangedCallback:withDeleteClickedCallback:",{aDict:aDict,aBlock:aBlock,oBlock:oBlock,todo:todo},globals.Todo.klass)})},
+}, function($ctx1) {$ctx1.fill(self,"fromDictionary:withTodoChangedCallback:withDeleteClickedCallback:",{aDict:aDict,aBlock:aBlock,oBlock:oBlock,todo:todo},globals.Todo.klass)});},
 args: ["aDict", "aBlock", "oBlock"],
 source: "fromDictionary: aDict withTodoChangedCallback: aBlock withDeleteClickedCallback: oBlock\x0a\x09| todo |\x0a\x09todo := self fromDictionary: aDict.\x0a\x09todo onTodoChangedDo: aBlock.\x0a\x09todo onDeleteClickedDo: oBlock.\x0a\x09^ todo",
 messageSends: ["fromDictionary:", "onTodoChangedDo:", "onDeleteClickedDo:"],
@@ -590,13 +723,13 @@ smalltalk.addMethod(
 smalltalk.method({
 selector: "newWithText:",
 protocol: 'initialization',
-fn: function (aString){
+fn: function (aString) {
 var self=this;
 return smalltalk.withContext(function($ctx1) { 
 var $1;
 $1=_st(self._new())._text_(aString);
 return $1;
-}, function($ctx1) {$ctx1.fill(self,"newWithText:",{aString:aString},globals.Todo.klass)})},
+}, function($ctx1) {$ctx1.fill(self,"newWithText:",{aString:aString},globals.Todo.klass)});},
 args: ["aString"],
 source: "newWithText: aString\x0a\x09^ self new text: aString",
 messageSends: ["text:", "new"],
@@ -624,7 +757,7 @@ _st(_st($MainSection())._singleton())._appendTodoListItem_(aTodo);
 };
 return self}, function($ctx1) {$ctx1.fill(self,"addTodo:",{aTodo:aTodo},globals.TodoApp)})},
 args: ["aTodo"],
-source: "addTodo: aTodo\x0a\x09\x22Adds a Todo and tells storage to save it\x22\x0a    storage add: aTodo.\x0a\x09storage save\x0a\x09\x09ifNotNil: [ MainSection singleton appendTodoListItem: aTodo ].",
+source: "addTodo: aTodo\x0a\x09\x22Adds a Todo and tells storage to save it\x22\x0a    storage add: aTodo.\x0a\x09storage save\x0a\x09\x09ifNotNil: [ MainSection singleton appendTodoListItem: aTodo. ].",
 messageSends: ["add:", "ifNotNil:", "save", "appendTodoListItem:", "singleton"],
 referencedClasses: ["MainSection"]
 }),
@@ -634,7 +767,7 @@ smalltalk.addMethod(
 smalltalk.method({
 selector: "handleInput:",
 protocol: 'events',
-fn: function (anEvent){
+fn: function (anEvent) {
 var self=this;
 var text,todo;
 function $Todo(){return globals.Todo||(typeof Todo=="undefined"?nil:Todo)}
@@ -642,7 +775,7 @@ return smalltalk.withContext(function($ctx1) {
 text=_st(_st(anEvent)._target())._value();
 todo=_st($Todo())._newWithText_(text);
 self._addTodo_(todo);
-return self}, function($ctx1) {$ctx1.fill(self,"handleInput:",{anEvent:anEvent,text:text,todo:todo},globals.TodoApp)})},
+return self}, function($ctx1) {$ctx1.fill(self,"handleInput:",{anEvent:anEvent,text:text,todo:todo},globals.TodoApp)});},
 args: ["anEvent"],
 source: "handleInput: anEvent\x0a\x09| text todo |\x0a    text := anEvent target value.\x0a    todo := Todo newWithText: text.\x0a \x09self addTodo: todo.",
 messageSends: ["value", "target", "newWithText:", "addTodo:"],
@@ -654,14 +787,14 @@ smalltalk.addMethod(
 smalltalk.method({
 selector: "initialize",
 protocol: 'initializing',
-fn: function (){
+fn: function () {
 var self=this;
 function $TodoStorage(){return globals.TodoStorage||(typeof TodoStorage=="undefined"?nil:TodoStorage)}
 return smalltalk.withContext(function($ctx1) { 
 ($ctx1.supercall = true, globals.TodoApp.superclass.fn.prototype._initialize.apply(_st(self), []));
 $ctx1.supercall = false;
 self["@storage"]=_st($TodoStorage())._singleton();
-return self}, function($ctx1) {$ctx1.fill(self,"initialize",{},globals.TodoApp)})},
+return self}, function($ctx1) {$ctx1.fill(self,"initialize",{},globals.TodoApp)});},
 args: [],
 source: "initialize\x0a\x09super initialize.\x0a\x09storage := TodoStorage singleton.",
 messageSends: ["initialize", "singleton"],
@@ -673,11 +806,11 @@ smalltalk.addMethod(
 smalltalk.method({
 selector: "removeTodo:",
 protocol: 'adding/removing',
-fn: function (aTodo){
+fn: function (aTodo) {
 var self=this;
 return smalltalk.withContext(function($ctx1) { 
 _st(self["@storage"])._remove_(aTodo);
-return self}, function($ctx1) {$ctx1.fill(self,"removeTodo:",{aTodo:aTodo},globals.TodoApp)})},
+return self}, function($ctx1) {$ctx1.fill(self,"removeTodo:",{aTodo:aTodo},globals.TodoApp)});},
 args: ["aTodo"],
 source: "removeTodo: aTodo\x0a\x09storage remove: aTodo.",
 messageSends: ["remove:"],
@@ -689,7 +822,7 @@ smalltalk.addMethod(
 smalltalk.method({
 selector: "renderBodyOn:",
 protocol: 'rendering',
-fn: function (html){
+fn: function (html) {
 var self=this;
 return smalltalk.withContext(function($ctx1) { 
 var $1,$2;
@@ -700,7 +833,7 @@ return smalltalk.withContext(function($ctx2) {
 self._renderFormOn_(html);
 return self._renderTodosOn_(html);
 }, function($ctx2) {$ctx2.fillBlock({},$ctx1,1)})}));
-return self}, function($ctx1) {$ctx1.fill(self,"renderBodyOn:",{html:html},globals.TodoApp)})},
+return self}, function($ctx1) {$ctx1.fill(self,"renderBodyOn:",{html:html},globals.TodoApp)});},
 args: ["html"],
 source: "renderBodyOn: html\x0a\x09html section\x0a\x09\x09id: 'todoapp';\x0a\x09\x09with: [\x0a                  self renderFormOn: html.\x0a                  self renderTodosOn: html ]",
 messageSends: ["id:", "section", "with:", "renderFormOn:", "renderTodosOn:"],
@@ -712,7 +845,7 @@ smalltalk.addMethod(
 smalltalk.method({
 selector: "renderFooterOn:",
 protocol: 'rendering',
-fn: function (html){
+fn: function (html) {
 var self=this;
 return smalltalk.withContext(function($ctx1) { 
 var $1,$3,$4,$5,$2;
@@ -737,7 +870,7 @@ return $5;
 }, function($ctx3) {$ctx3.fillBlock({},$ctx2,2)})}));
 }, function($ctx2) {$ctx2.fillBlock({},$ctx1,1)})}));
 $ctx1.sendIdx["with:"]=1;
-return self}, function($ctx1) {$ctx1.fill(self,"renderFooterOn:",{html:html},globals.TodoApp)})},
+return self}, function($ctx1) {$ctx1.fill(self,"renderFooterOn:",{html:html},globals.TodoApp)});},
 args: ["html"],
 source: "renderFooterOn: html\x0a\x09html footer\x0a\x09\x09id: 'info';\x0a\x09\x09with: [ \x0a\x09\x09\x09html p with: 'Double-click to edit a todo'.\x0a\x09\x09\x09html p with: 'Written by rbistolfi'.\x0a\x09\x09\x09html p: [\x0a\x09\x09\x09\x09html with: 'Part of '.\x0a\x09\x09\x09\x09html a href: 'http://todomvc.com'; with: 'TodoMVC']].",
 messageSends: ["id:", "footer", "with:", "p", "p:", "href:", "a"],
@@ -749,7 +882,7 @@ smalltalk.addMethod(
 smalltalk.method({
 selector: "renderFormOn:",
 protocol: 'rendering',
-fn: function (html){
+fn: function (html) {
 var self=this;
 var input,defaultText;
 return smalltalk.withContext(function($ctx1) { 
@@ -777,7 +910,7 @@ input=$4;
 return input;
 }, function($ctx2) {$ctx2.fillBlock({},$ctx1,1)})}));
 _st(_st(input)._element())._placeholder_(defaultText);
-return self}, function($ctx1) {$ctx1.fill(self,"renderFormOn:",{html:html,input:input,defaultText:defaultText},globals.TodoApp)})},
+return self}, function($ctx1) {$ctx1.fill(self,"renderFormOn:",{html:html,input:input,defaultText:defaultText},globals.TodoApp)});},
 args: ["html"],
 source: "renderFormOn: html\x0a\x09| input defaultText |\x0a\x09defaultText := 'What needs to be done?'.\x0a\x09html header\x0a\x09\x09id: 'header';\x0a\x09\x09with: [\x0a\x09\x09\x09\x09   html h1: 'todos'.\x0a                   input := html input\x0a\x09\x09\x09\x09    id: 'new-todo';\x0a                  \x09type: 'text';\x0a\x09\x09\x09\x09\x09autofocus;\x0a                  \x09onKeyUp: [ :event |\x0a                                  (event keyCode = 13) ifTrue: [\x0a                                    \x09self handleInput: event.\x0a                                    \x09input asJQuery val: '' ] ] ].\x0a\x09input element placeholder: defaultText.",
 messageSends: ["id:", "header", "with:", "h1:", "input", "type:", "autofocus", "onKeyUp:", "ifTrue:", "=", "keyCode", "handleInput:", "val:", "asJQuery", "placeholder:", "element"],
@@ -791,21 +924,20 @@ selector: "renderMainAndFooterSectionsOn:",
 protocol: 'rendering',
 fn: function (html){
 var self=this;
-var footer,main;
-function $FooterSection(){return globals.FooterSection||(typeof FooterSection=="undefined"?nil:FooterSection)}
 function $MainSection(){return globals.MainSection||(typeof MainSection=="undefined"?nil:MainSection)}
+function $FooterSection(){return globals.FooterSection||(typeof FooterSection=="undefined"?nil:FooterSection)}
 return smalltalk.withContext(function($ctx1) { 
-footer=_st($FooterSection())._new();
-$ctx1.sendIdx["new"]=1;
-main=_st($MainSection())._new();
-_st(main)._renderOn_(html);
+var $1;
+$1=_st($MainSection())._singleton();
+$ctx1.sendIdx["singleton"]=1;
+_st($1)._renderOn_(html);
 $ctx1.sendIdx["renderOn:"]=1;
-_st(footer)._renderOn_(html);
-return self}, function($ctx1) {$ctx1.fill(self,"renderMainAndFooterSectionsOn:",{html:html,footer:footer,main:main},globals.TodoApp)})},
+_st(_st($FooterSection())._singleton())._renderOn_(html);
+return self}, function($ctx1) {$ctx1.fill(self,"renderMainAndFooterSectionsOn:",{html:html},globals.TodoApp)})},
 args: ["html"],
-source: "renderMainAndFooterSectionsOn: html\x0a\x09| footer main |\x0a\x09footer := FooterSection new.\x0a\x09main := MainSection new.\x0a\x09main renderOn: html.\x0a\x09footer renderOn: html.",
-messageSends: ["new", "renderOn:"],
-referencedClasses: ["FooterSection", "MainSection"]
+source: "renderMainAndFooterSectionsOn: html\x0a\x09MainSection singleton renderOn: html.\x0a\x09FooterSection singleton renderOn: html.",
+messageSends: ["renderOn:", "singleton"],
+referencedClasses: ["MainSection", "FooterSection"]
 }),
 globals.TodoApp);
 
@@ -813,12 +945,12 @@ smalltalk.addMethod(
 smalltalk.method({
 selector: "renderOn:",
 protocol: 'rendering',
-fn: function (html){
+fn: function (html) {
 var self=this;
 return smalltalk.withContext(function($ctx1) { 
 self._renderBodyOn_(html);
 self._renderFooterOn_(html);
-return self}, function($ctx1) {$ctx1.fill(self,"renderOn:",{html:html},globals.TodoApp)})},
+return self}, function($ctx1) {$ctx1.fill(self,"renderOn:",{html:html},globals.TodoApp)});},
 args: ["html"],
 source: "renderOn: html\x0a\x09self renderBodyOn: html.\x0a    self renderFooterOn: html.",
 messageSends: ["renderBodyOn:", "renderFooterOn:"],
@@ -832,18 +964,12 @@ selector: "renderTodosOn:",
 protocol: 'rendering',
 fn: function (html){
 var self=this;
-var todos;
 return smalltalk.withContext(function($ctx1) { 
-var $1;
-todos=_st(self["@storage"])._items();
-$1=_st(_st(todos)._size()).__eq((0));
-if(! smalltalk.assert($1)){
 self._renderMainAndFooterSectionsOn_(html);
-};
-return self}, function($ctx1) {$ctx1.fill(self,"renderTodosOn:",{html:html,todos:todos},globals.TodoApp)})},
+return self}, function($ctx1) {$ctx1.fill(self,"renderTodosOn:",{html:html},globals.TodoApp)})},
 args: ["html"],
-source: "renderTodosOn: html\x0a\x09| todos |\x0a\x09todos := storage items.\x0a\x09todos size = 0\x0a\x09\x09ifFalse: [ self renderMainAndFooterSectionsOn: html ]",
-messageSends: ["items", "ifFalse:", "=", "size", "renderMainAndFooterSectionsOn:"],
+source: "renderTodosOn: html\x0a\x09self renderMainAndFooterSectionsOn: html.",
+messageSends: ["renderMainAndFooterSectionsOn:"],
 referencedClasses: []
 }),
 globals.TodoApp);
@@ -853,11 +979,11 @@ smalltalk.addMethod(
 smalltalk.method({
 selector: "run",
 protocol: 'not yet classified',
-fn: function (){
+fn: function () {
 var self=this;
 return smalltalk.withContext(function($ctx1) { 
 _st(self._new())._appendToJQuery_("body"._asJQuery());
-return self}, function($ctx1) {$ctx1.fill(self,"run",{},globals.TodoApp.klass)})},
+return self}, function($ctx1) {$ctx1.fill(self,"run",{},globals.TodoApp.klass)});},
 args: [],
 source: "run\x0a\x09self new appendToJQuery: 'body' asJQuery",
 messageSends: ["appendToJQuery:", "new", "asJQuery"],
@@ -871,11 +997,11 @@ smalltalk.addMethod(
 smalltalk.method({
 selector: "add:",
 protocol: 'adding/removing',
-fn: function (anObject){
+fn: function (anObject) {
 var self=this;
 return smalltalk.withContext(function($ctx1) { 
 _st(self["@items"])._add_(anObject);
-return self}, function($ctx1) {$ctx1.fill(self,"add:",{anObject:anObject},globals.TodoStorage)})},
+return self}, function($ctx1) {$ctx1.fill(self,"add:",{anObject:anObject},globals.TodoStorage)});},
 args: ["anObject"],
 source: "add: anObject\x0a\x09items add: anObject.",
 messageSends: ["add:"],
@@ -887,13 +1013,13 @@ smalltalk.addMethod(
 smalltalk.method({
 selector: "at:",
 protocol: 'accessing',
-fn: function (anIndex){
+fn: function (anIndex) {
 var self=this;
 return smalltalk.withContext(function($ctx1) { 
 var $1;
 $1=_st(self["@array"])._at_(anIndex);
 return $1;
-}, function($ctx1) {$ctx1.fill(self,"at:",{anIndex:anIndex},globals.TodoStorage)})},
+}, function($ctx1) {$ctx1.fill(self,"at:",{anIndex:anIndex},globals.TodoStorage)});},
 args: ["anIndex"],
 source: "at: anIndex\x0a\x09^ array at: anIndex",
 messageSends: ["at:"],
@@ -905,12 +1031,12 @@ smalltalk.addMethod(
 smalltalk.method({
 selector: "at:put:",
 protocol: 'accessing',
-fn: function (anIndex,anObject){
+fn: function (anIndex, anObject) {
 var self=this;
 return smalltalk.withContext(function($ctx1) { 
 _st(self["@array"])._at_put_(anIndex,anObject);
 self._save();
-return self}, function($ctx1) {$ctx1.fill(self,"at:put:",{anIndex:anIndex,anObject:anObject},globals.TodoStorage)})},
+return self}, function($ctx1) {$ctx1.fill(self,"at:put:",{anIndex:anIndex,anObject:anObject},globals.TodoStorage)});},
 args: ["anIndex", "anObject"],
 source: "at: anIndex put: anObject\x0a\x09array at: anIndex put: anObject.\x0a\x09self save",
 messageSends: ["at:put:", "save"],
@@ -922,13 +1048,13 @@ smalltalk.addMethod(
 smalltalk.method({
 selector: "collect:",
 protocol: 'iterating',
-fn: function (aBlock){
+fn: function (aBlock) {
 var self=this;
 return smalltalk.withContext(function($ctx1) { 
 var $1;
 $1=_st(self["@array"])._collect_(aBlock);
 return $1;
-}, function($ctx1) {$ctx1.fill(self,"collect:",{aBlock:aBlock},globals.TodoStorage)})},
+}, function($ctx1) {$ctx1.fill(self,"collect:",{aBlock:aBlock},globals.TodoStorage)});},
 args: ["aBlock"],
 source: "collect: aBlock\x0a\x09^ array collect: aBlock",
 messageSends: ["collect:"],
@@ -940,13 +1066,13 @@ smalltalk.addMethod(
 smalltalk.method({
 selector: "detect:",
 protocol: 'iterating',
-fn: function (aBlock){
+fn: function (aBlock) {
 var self=this;
 return smalltalk.withContext(function($ctx1) { 
 var $1;
 $1=_st(self["@array"])._detect_(aBlock);
 return $1;
-}, function($ctx1) {$ctx1.fill(self,"detect:",{aBlock:aBlock},globals.TodoStorage)})},
+}, function($ctx1) {$ctx1.fill(self,"detect:",{aBlock:aBlock},globals.TodoStorage)});},
 args: ["aBlock"],
 source: "detect: aBlock\x0a\x09^ array detect: aBlock",
 messageSends: ["detect:"],
@@ -958,12 +1084,12 @@ smalltalk.addMethod(
 smalltalk.method({
 selector: "do:",
 protocol: 'iterating',
-fn: function (aBlock){
+fn: function (aBlock) {
 var self=this;
 return smalltalk.withContext(function($ctx1) { 
 _st(self["@array"])._do_(aBlock);
 self._save();
-return self}, function($ctx1) {$ctx1.fill(self,"do:",{aBlock:aBlock},globals.TodoStorage)})},
+return self}, function($ctx1) {$ctx1.fill(self,"do:",{aBlock:aBlock},globals.TodoStorage)});},
 args: ["aBlock"],
 source: "do: aBlock\x0a\x09array do: aBlock.\x0a\x09self save.",
 messageSends: ["do:", "save"],
@@ -975,7 +1101,7 @@ smalltalk.addMethod(
 smalltalk.method({
 selector: "fetch",
 protocol: 'persistence',
-fn: function (){
+fn: function () {
 var self=this;
 var storedTodos,todos;
 return smalltalk.withContext(function($ctx1) { 
@@ -990,7 +1116,7 @@ storedTodos=todos;
 };
 $2=todos;
 return $2;
-}, function($ctx1) {$ctx1.fill(self,"fetch",{storedTodos:storedTodos,todos:todos},globals.TodoStorage)})},
+}, function($ctx1) {$ctx1.fill(self,"fetch",{storedTodos:storedTodos,todos:todos},globals.TodoStorage)});},
 args: [],
 source: "fetch\x0a\x09| storedTodos todos |\x0a\x09storedTodos := (localStorage getItem: 'todos-amber')\x0a\x09\x09ifNil: [ todos := self initializeStorage ]\x0a\x09\x09ifNotNil: [ todos := self load ].\x0a\x09^ todos.",
 messageSends: ["ifNil:ifNotNil:", "getItem:", "initializeStorage", "load"],
@@ -1002,13 +1128,13 @@ smalltalk.addMethod(
 smalltalk.method({
 selector: "indexOf:",
 protocol: 'accessing',
-fn: function (anObject){
+fn: function (anObject) {
 var self=this;
 return smalltalk.withContext(function($ctx1) { 
 var $1;
 $1=_st(self["@array"])._indexOf_(anObject);
 return $1;
-}, function($ctx1) {$ctx1.fill(self,"indexOf:",{anObject:anObject},globals.TodoStorage)})},
+}, function($ctx1) {$ctx1.fill(self,"indexOf:",{anObject:anObject},globals.TodoStorage)});},
 args: ["anObject"],
 source: "indexOf: anObject\x0a\x09^ array indexOf: anObject",
 messageSends: ["indexOf:"],
@@ -1020,12 +1146,12 @@ smalltalk.addMethod(
 smalltalk.method({
 selector: "initialize",
 protocol: 'initializing',
-fn: function (){
+fn: function () {
 var self=this;
 return smalltalk.withContext(function($ctx1) { 
 self["@items"]=self._fetch();
 return self;
-}, function($ctx1) {$ctx1.fill(self,"initialize",{},globals.TodoStorage)})},
+}, function($ctx1) {$ctx1.fill(self,"initialize",{},globals.TodoStorage)});},
 args: [],
 source: "initialize\x0a\x09items := self fetch.\x0a\x09^ self.",
 messageSends: ["fetch"],
@@ -1037,7 +1163,7 @@ smalltalk.addMethod(
 smalltalk.method({
 selector: "initializeStorage",
 protocol: 'initializing',
-fn: function (){
+fn: function () {
 var self=this;
 function $Array(){return globals.Array||(typeof Array=="undefined"?nil:Array)}
 return smalltalk.withContext(function($ctx1) { 
@@ -1049,7 +1175,7 @@ $2=_st($3)._asJSONString();
 _st($1)._setItem_value_("todos-amber",$2);
 $4=_st($Array())._new();
 return $4;
-}, function($ctx1) {$ctx1.fill(self,"initializeStorage",{},globals.TodoStorage)})},
+}, function($ctx1) {$ctx1.fill(self,"initializeStorage",{},globals.TodoStorage)});},
 args: [],
 source: "initializeStorage\x0a\x09\x22 Initialize localStorage with an empty Array\x22\x0a\x09localStorage setItem: 'todos-amber' value: (Array new) asJSONString.\x0a\x09^ Array new.",
 messageSends: ["setItem:value:", "asJSONString", "new"],
@@ -1061,7 +1187,7 @@ smalltalk.addMethod(
 smalltalk.method({
 selector: "items",
 protocol: 'accessing',
-fn: function (){
+fn: function () {
 var self=this;
 var $1;
 $1=self["@items"];
@@ -1078,7 +1204,7 @@ smalltalk.addMethod(
 smalltalk.method({
 selector: "load",
 protocol: 'persistence',
-fn: function (){
+fn: function () {
 var self=this;
 var str,todos;
 function $Smalltalk(){return globals.Smalltalk||(typeof Smalltalk=="undefined"?nil:Smalltalk)}
@@ -1093,7 +1219,7 @@ return smalltalk.withContext(function($ctx2) {
 return _st($Todo())._fromDictionary_(todo);
 }, function($ctx2) {$ctx2.fillBlock({todo:todo},$ctx1,1)})}));
 return $1;
-}, function($ctx1) {$ctx1.fill(self,"load",{str:str,todos:todos},globals.TodoStorage)})},
+}, function($ctx1) {$ctx1.fill(self,"load",{str:str,todos:todos},globals.TodoStorage)});},
 args: [],
 source: "load\x0a\x09\x22Loads the serialized items from localStorage\x22\x0a\x09| str todos |\x0a\x09str := (localStorage getItem: 'todos-amber').\x0a\x09todos := Smalltalk readJSObject: (JSON parse: str).\x0a\x09^ todos collect: [ :todo | Todo fromDictionary: todo ].\x0a\x09",
 messageSends: ["getItem:", "readJSObject:", "parse:", "collect:", "fromDictionary:"],
@@ -1105,7 +1231,7 @@ smalltalk.addMethod(
 smalltalk.method({
 selector: "remove:",
 protocol: 'adding/removing',
-fn: function (anObject){
+fn: function (anObject) {
 var self=this;
 var d;
 return smalltalk.withContext(function($ctx1) { 
@@ -1117,7 +1243,7 @@ $ctx2.sendIdx["asJSON"]=1;
 return _st($1).__eq(_st(anObject)._asJSON());
 }, function($ctx2) {$ctx2.fillBlock({each:each},$ctx1,1)})}));
 _st(self["@items"])._remove_(d);
-return self}, function($ctx1) {$ctx1.fill(self,"remove:",{anObject:anObject,d:d},globals.TodoStorage)})},
+return self}, function($ctx1) {$ctx1.fill(self,"remove:",{anObject:anObject,d:d},globals.TodoStorage)});},
 args: ["anObject"],
 source: "remove: anObject\x0a\x09| d |\x0a\x09d := items detect: [ :each | each asJSON = anObject asJSON ]. \x0a\x09items remove: d.",
 messageSends: ["detect:", "=", "asJSON", "remove:"],
@@ -1129,11 +1255,11 @@ smalltalk.addMethod(
 smalltalk.method({
 selector: "save",
 protocol: 'persistence',
-fn: function (){
+fn: function () {
 var self=this;
 return smalltalk.withContext(function($ctx1) { 
 _st(localStorage)._setItem_value_("todos-amber",_st(self["@items"])._asJSONString());
-return self}, function($ctx1) {$ctx1.fill(self,"save",{},globals.TodoStorage)})},
+return self}, function($ctx1) {$ctx1.fill(self,"save",{},globals.TodoStorage)});},
 args: [],
 source: "save\x0a\x09localStorage setItem: 'todos-amber' value: items asJSONString.",
 messageSends: ["setItem:value:", "asJSONString"],
@@ -1145,13 +1271,13 @@ smalltalk.addMethod(
 smalltalk.method({
 selector: "select:",
 protocol: 'iterating',
-fn: function (aBlock){
+fn: function (aBlock) {
 var self=this;
 return smalltalk.withContext(function($ctx1) { 
 var $1;
 $1=_st(self["@array"])._select_(aBlock);
 return $1;
-}, function($ctx1) {$ctx1.fill(self,"select:",{aBlock:aBlock},globals.TodoStorage)})},
+}, function($ctx1) {$ctx1.fill(self,"select:",{aBlock:aBlock},globals.TodoStorage)});},
 args: ["aBlock"],
 source: "select: aBlock\x0a\x09^ array select: aBlock",
 messageSends: ["select:"],
@@ -1165,7 +1291,7 @@ smalltalk.addMethod(
 smalltalk.method({
 selector: "singleton",
 protocol: 'initialization',
-fn: function (){
+fn: function () {
 var self=this;
 var UniqueInstance;
 return smalltalk.withContext(function($ctx1) { 
@@ -1179,7 +1305,7 @@ $1;
 };
 $2=UniqueInstance;
 return $2;
-}, function($ctx1) {$ctx1.fill(self,"singleton",{UniqueInstance:UniqueInstance},globals.TodoStorage.klass)})},
+}, function($ctx1) {$ctx1.fill(self,"singleton",{UniqueInstance:UniqueInstance},globals.TodoStorage.klass)});},
 args: [],
 source: "singleton\x0a\x09| UniqueInstance |\x0a\x09UniqueInstance ifNil: [ UniqueInstance := self basicNew initialize ].\x0a    ^ UniqueInstance.",
 messageSends: ["ifNil:", "initialize", "basicNew"],

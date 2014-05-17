@@ -1,4 +1,43 @@
 Smalltalk createPackage: 'Examples-ToDo'!
+Widget subclass: #FooterCount
+	instanceVariableNames: 'count'
+	package: 'Examples-ToDo'!
+
+!FooterCount methodsFor: 'accessing'!
+
+count
+	^ count
+! !
+
+!FooterCount methodsFor: 'initialization'!
+
+initialize
+	super initialize.
+	count := TodoStorage singleton items size.
+! !
+
+!FooterCount methodsFor: 'rendering'!
+
+decorate: aNumber
+	aNumber = 1
+		ifTrue: [ '1 item left' ]
+		ifFalse: [ aNumber asString, ' items left' ].
+!
+
+renderOn: html
+	html span
+		id: 'todo-count';
+		with: '1 item left'.
+! !
+
+!FooterCount class methodsFor: 'initialization'!
+
+singleton
+	| UniqueInstance |
+	UniqueInstance ifNil: [ UniqueInstance := self basicNew initialize ].
+    ^ UniqueInstance.
+! !
+
 Widget subclass: #FooterSection
 	instanceVariableNames: ''
 	package: 'Examples-ToDo'!
@@ -14,16 +53,10 @@ initialize
 renderOn: html
 	html footer
 		id: 'footer';
+		style: 'display: none;';
 		with: [
-			self renderTodoCountOn: html.
+			FooterCount singleton renderOn: html.
 			self renderTodoFiltersOn: html.]
-!
-
-renderTodoCountOn: html
-	"Renders the count of Todos that are not done in the footer"
-	html span
-		id: 'todo-count';
-		with: '1 item left'.
 !
 
 renderTodoFiltersOn: html
@@ -33,6 +66,14 @@ renderTodoFiltersOn: html
 			html li: [ html a href: '#/'; with: 'All'. ].
 			html li: [ html a href: '#/active'; with: 'Active'. ].
 			html li: [ html a href: '#/completed'; with: 'Completed'. ]].
+! !
+
+!FooterSection class methodsFor: 'initialization'!
+
+singleton
+	| UniqueInstance |
+	UniqueInstance ifNil: [ UniqueInstance := self basicNew initialize ].
+    ^ UniqueInstance.
 ! !
 
 Widget subclass: #MainSection
@@ -49,12 +90,14 @@ initialize
 
 appendTodoListItem: todo
 	"Adds a list item to the end of list items"
+	self show.
 	todo appendToJQuery: '#todo-list' asJQuery.
 !
 
 renderOn: html
 	html section
 		id: 'main';
+		style: 'display: none;';
 		with: [
 			self renderToggleTodosOn: html.
             self renderTodoListItemsOn: html. ].
@@ -78,6 +121,10 @@ renderToggleTodosOn: html
 					with: 'Mark all as complete'.
 	input element.
 	label element.
+!
+
+show
+	'#main' asJQuery show.
 ! !
 
 !MainSection class methodsFor: 'initialization'!
@@ -213,7 +260,7 @@ addTodo: aTodo
 	"Adds a Todo and tells storage to save it"
     storage add: aTodo.
 	storage save
-		ifNotNil: [ MainSection singleton appendTodoListItem: aTodo ].
+		ifNotNil: [ MainSection singleton appendTodoListItem: aTodo. ].
 !
 
 removeTodo: aTodo
@@ -276,11 +323,8 @@ renderFormOn: html
 !
 
 renderMainAndFooterSectionsOn: html
-	| footer main |
-	footer := FooterSection new.
-	main := MainSection new.
-	main renderOn: html.
-	footer renderOn: html.
+	MainSection singleton renderOn: html.
+	FooterSection singleton renderOn: html.
 !
 
 renderOn: html
@@ -289,10 +333,7 @@ renderOn: html
 !
 
 renderTodosOn: html
-	| todos |
-	todos := storage items.
-	todos size = 0
-		ifFalse: [ self renderMainAndFooterSectionsOn: html ]
+	self renderMainAndFooterSectionsOn: html.
 ! !
 
 !TodoApp class methodsFor: 'not yet classified'!
