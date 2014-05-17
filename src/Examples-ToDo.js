@@ -7,16 +7,18 @@ smalltalk.addMethod(
 smalltalk.method({
 selector: "count",
 protocol: 'accessing',
-fn: function () {
+fn: function (){
 var self=this;
+function $TodoStorage(){return globals.TodoStorage||(typeof TodoStorage=="undefined"?nil:TodoStorage)}
+return smalltalk.withContext(function($ctx1) { 
 var $1;
-$1=self["@count"];
+$1=_st(_st(_st($TodoStorage())._singleton())._items())._size();
 return $1;
-},
+}, function($ctx1) {$ctx1.fill(self,"count",{},globals.FooterCount)})},
 args: [],
-source: "count\x0a\x09^ count",
-messageSends: [],
-referencedClasses: []
+source: "count\x0a\x09^ TodoStorage singleton items size.",
+messageSends: ["size", "items", "singleton"],
+referencedClasses: ["TodoStorage"]
 }),
 globals.FooterCount);
 

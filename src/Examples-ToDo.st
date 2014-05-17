@@ -6,7 +6,7 @@ Widget subclass: #FooterCount
 !FooterCount methodsFor: 'accessing'!
 
 count
-	^ count
+	^ TodoStorage singleton items size.
 ! !
 
 !FooterCount methodsFor: 'initialization'!
