@@ -1,117 +1,6 @@
-define("Examples/Examples-ToDo", ["amber_vm/smalltalk", "amber_vm/nil", "amber_vm/_st", "amber_vm/globals", "amber_core/Web", "amber_core/Kernel-Objects"], function(smalltalk,nil,_st, globals){
+define("Examples/Examples-ToDo", ["amber_vm/smalltalk", "amber_vm/nil", "amber_vm/_st", "amber_vm/globals", "amber_core/Web", "amber_core/Kernel-Objects", "amber_core/Kernel-Announcements"], function(smalltalk,nil,_st, globals){
 smalltalk.addPackage('Examples-ToDo');
 smalltalk.packages["Examples-ToDo"].transport = {"type":"amd","amdNamespace":"Examples"};
-
-smalltalk.addClass('FooterCount', globals.Widget, ['count'], 'Examples-ToDo');
-smalltalk.addMethod(
-smalltalk.method({
-selector: "count",
-protocol: 'accessing',
-fn: function (){
-var self=this;
-function $TodoStorage(){return globals.TodoStorage||(typeof TodoStorage=="undefined"?nil:TodoStorage)}
-return smalltalk.withContext(function($ctx1) { 
-var $1;
-$1=_st(_st(_st($TodoStorage())._singleton())._items())._size();
-return $1;
-}, function($ctx1) {$ctx1.fill(self,"count",{},globals.FooterCount)})},
-args: [],
-source: "count\x0a\x09^ TodoStorage singleton items size.",
-messageSends: ["size", "items", "singleton"],
-referencedClasses: ["TodoStorage"]
-}),
-globals.FooterCount);
-
-smalltalk.addMethod(
-smalltalk.method({
-selector: "decorate:",
-protocol: 'rendering',
-fn: function (aNumber){
-var self=this;
-var str;
-return smalltalk.withContext(function($ctx1) { 
-var $1,$2;
-$1=_st(aNumber).__eq((1));
-if(smalltalk.assert($1)){
-str="1 item left";
-} else {
-str=_st(_st(aNumber)._asString()).__comma(" items left");
-};
-$2=str;
-return $2;
-}, function($ctx1) {$ctx1.fill(self,"decorate:",{aNumber:aNumber,str:str},globals.FooterCount)})},
-args: ["aNumber"],
-source: "decorate: aNumber\x0a\x09| str |\x0a\x09str := aNumber = 1\x0a\x09\x09ifTrue: [ '1 item left' ]\x0a\x09\x09ifFalse: [ aNumber asString, ' items left' ].\x0a\x09^ str.",
-messageSends: ["ifTrue:ifFalse:", "=", ",", "asString"],
-referencedClasses: []
-}),
-globals.FooterCount);
-
-smalltalk.addMethod(
-smalltalk.method({
-selector: "initialize",
-protocol: 'initialization',
-fn: function () {
-var self=this;
-function $TodoStorage(){return globals.TodoStorage||(typeof TodoStorage=="undefined"?nil:TodoStorage)}
-return smalltalk.withContext(function($ctx1) { 
-($ctx1.supercall = true, globals.FooterCount.superclass.fn.prototype._initialize.apply(_st(self), []));
-$ctx1.supercall = false;
-self["@count"]=_st(_st(_st($TodoStorage())._singleton())._items())._size();
-return self}, function($ctx1) {$ctx1.fill(self,"initialize",{},globals.FooterCount)});},
-args: [],
-source: "initialize\x0a\x09super initialize.\x0a\x09count := TodoStorage singleton items size.",
-messageSends: ["initialize", "size", "items", "singleton"],
-referencedClasses: ["TodoStorage"]
-}),
-globals.FooterCount);
-
-smalltalk.addMethod(
-smalltalk.method({
-selector: "renderOn:",
-protocol: 'rendering',
-fn: function (html){
-var self=this;
-return smalltalk.withContext(function($ctx1) { 
-var $1,$2;
-$1=_st(html)._span();
-_st($1)._id_("todo-count");
-$2=_st($1)._with_(self._decorate_(self._count()));
-return self}, function($ctx1) {$ctx1.fill(self,"renderOn:",{html:html},globals.FooterCount)})},
-args: ["html"],
-source: "renderOn: html\x0a\x09html span\x0a\x09\x09id: 'todo-count';\x0a\x09\x09with: (self decorate: self count).\x0a\x09",
-messageSends: ["id:", "span", "with:", "decorate:", "count"],
-referencedClasses: []
-}),
-globals.FooterCount);
-
-
-smalltalk.addMethod(
-smalltalk.method({
-selector: "singleton",
-protocol: 'initialization',
-fn: function () {
-var self=this;
-var UniqueInstance;
-return smalltalk.withContext(function($ctx1) { 
-var $1,$2,$receiver;
-$1=UniqueInstance;
-if(($receiver = $1) == null || $receiver.isNil){
-UniqueInstance=_st(self._basicNew())._initialize();
-UniqueInstance;
-} else {
-$1;
-};
-$2=UniqueInstance;
-return $2;
-}, function($ctx1) {$ctx1.fill(self,"singleton",{UniqueInstance:UniqueInstance},globals.FooterCount.klass)});},
-args: [],
-source: "singleton\x0a\x09| UniqueInstance |\x0a\x09UniqueInstance ifNil: [ UniqueInstance := self basicNew initialize ].\x0a    ^ UniqueInstance.",
-messageSends: ["ifNil:", "initialize", "basicNew"],
-referencedClasses: []
-}),
-globals.FooterCount.klass);
-
 
 smalltalk.addClass('FooterSection', globals.Widget, [], 'Examples-ToDo');
 smalltalk.addMethod(
@@ -138,9 +27,10 @@ protocol: 'rendering',
 fn: function (html){
 var self=this;
 function $TodoStorage(){return globals.TodoStorage||(typeof TodoStorage=="undefined"?nil:TodoStorage)}
-function $FooterCount(){return globals.FooterCount||(typeof FooterCount=="undefined"?nil:FooterCount)}
+function $TodoCount(){return globals.TodoCount||(typeof TodoCount=="undefined"?nil:TodoCount)}
+function $TodoFilters(){return globals.TodoFilters||(typeof TodoFilters=="undefined"?nil:TodoFilters)}
 return smalltalk.withContext(function($ctx1) { 
-var $1,$2,$7,$6,$5,$4,$3,$8;
+var $1,$2,$7,$6,$5,$4,$3,$9,$8;
 $1=_st(html)._footer();
 _st($1)._id_("footer");
 $2=$1;
@@ -155,14 +45,17 @@ $3="display: none;";
 _st($2)._style_($3);
 $8=_st($1)._with_((function(){
 return smalltalk.withContext(function($ctx2) {
-_st(_st($FooterCount())._singleton())._renderOn_(html);
-return self._renderTodoFiltersOn_(html);
+$9=_st($TodoCount())._singleton();
+$ctx2.sendIdx["singleton"]=2;
+_st($9)._renderOn_(html);
+$ctx2.sendIdx["renderOn:"]=1;
+return _st(_st($TodoFilters())._singleton())._renderOn_(html);
 }, function($ctx2) {$ctx2.fillBlock({},$ctx1,2)})}));
 return self}, function($ctx1) {$ctx1.fill(self,"renderOn:",{html:html},globals.FooterSection)})},
 args: ["html"],
-source: "renderOn: html\x0a\x09html footer\x0a\x09\x09id: 'footer';\x0a\x09\x09style: ((TodoStorage singleton items size = 0) ifTrue: [ 'display: none;' ]);\x0a\x09\x09with: [\x0a\x09\x09\x09FooterCount singleton renderOn: html.\x0a\x09\x09\x09self renderTodoFiltersOn: html.]",
-messageSends: ["id:", "footer", "style:", "ifTrue:", "=", "size", "items", "singleton", "with:", "renderOn:", "renderTodoFiltersOn:"],
-referencedClasses: ["TodoStorage", "FooterCount"]
+source: "renderOn: html\x0a\x09html footer\x0a\x09\x09id: 'footer';\x0a\x09\x09style: ((TodoStorage singleton items size = 0) ifTrue: [ 'display: none;' ]);\x0a\x09\x09with: [\x0a\x09\x09\x09TodoCount singleton renderOn: html.\x0a\x09\x09\x09TodoFilters singleton renderOn: html.]",
+messageSends: ["id:", "footer", "style:", "ifTrue:", "=", "size", "items", "singleton", "with:", "renderOn:"],
+referencedClasses: ["TodoStorage", "TodoCount", "TodoFilters"]
 }),
 globals.FooterSection);
 
@@ -823,18 +716,20 @@ smalltalk.addMethod(
 smalltalk.method({
 selector: "initialize",
 protocol: 'initializing',
-fn: function () {
+fn: function (){
 var self=this;
 function $TodoStorage(){return globals.TodoStorage||(typeof TodoStorage=="undefined"?nil:TodoStorage)}
+function $Announcer(){return globals.Announcer||(typeof Announcer=="undefined"?nil:Announcer)}
 return smalltalk.withContext(function($ctx1) { 
 ($ctx1.supercall = true, globals.TodoApp.superclass.fn.prototype._initialize.apply(_st(self), []));
 $ctx1.supercall = false;
 self["@storage"]=_st($TodoStorage())._singleton();
-return self}, function($ctx1) {$ctx1.fill(self,"initialize",{},globals.TodoApp)});},
+self["@announcer"]=_st($Announcer())._new();
+return self}, function($ctx1) {$ctx1.fill(self,"initialize",{},globals.TodoApp)})},
 args: [],
-source: "initialize\x0a\x09super initialize.\x0a\x09storage := TodoStorage singleton.",
-messageSends: ["initialize", "singleton"],
-referencedClasses: ["TodoStorage"]
+source: "initialize\x0a\x09super initialize.\x0a\x09storage := TodoStorage singleton.\x0a\x09announcer := Announcer new.",
+messageSends: ["initialize", "singleton", "new"],
+referencedClasses: ["TodoStorage", "Announcer"]
 }),
 globals.TodoApp);
 
@@ -1032,6 +927,276 @@ messageSends: ["appendToJQuery:", "new", "asJQuery"],
 referencedClasses: []
 }),
 globals.TodoApp.klass);
+
+
+smalltalk.addClass('TodoCount', globals.Widget, ['root', 'count'], 'Examples-ToDo');
+smalltalk.addMethod(
+smalltalk.method({
+selector: "count",
+protocol: 'accessing',
+fn: function (){
+var self=this;
+function $TodoStorage(){return globals.TodoStorage||(typeof TodoStorage=="undefined"?nil:TodoStorage)}
+return smalltalk.withContext(function($ctx1) { 
+var $1;
+$1=_st(_st(_st($TodoStorage())._singleton())._items())._size();
+return $1;
+}, function($ctx1) {$ctx1.fill(self,"count",{},globals.TodoCount)})},
+args: [],
+source: "count\x0a\x09^ TodoStorage singleton items size.",
+messageSends: ["size", "items", "singleton"],
+referencedClasses: ["TodoStorage"]
+}),
+globals.TodoCount);
+
+smalltalk.addMethod(
+smalltalk.method({
+selector: "decorate:",
+protocol: 'rendering',
+fn: function (aNumber){
+var self=this;
+var str;
+return smalltalk.withContext(function($ctx1) { 
+var $1,$2;
+$1=_st(aNumber).__eq((1));
+if(smalltalk.assert($1)){
+str="1 item left";
+} else {
+str=_st(_st(aNumber)._asString()).__comma(" items left");
+};
+$2=str;
+return $2;
+}, function($ctx1) {$ctx1.fill(self,"decorate:",{aNumber:aNumber,str:str},globals.TodoCount)})},
+args: ["aNumber"],
+source: "decorate: aNumber\x0a\x09| str |\x0a\x09str := aNumber = 1\x0a\x09\x09ifTrue: [ '1 item left' ]\x0a\x09\x09ifFalse: [ aNumber asString, ' items left' ].\x0a\x09^ str.",
+messageSends: ["ifTrue:ifFalse:", "=", ",", "asString"],
+referencedClasses: []
+}),
+globals.TodoCount);
+
+smalltalk.addMethod(
+smalltalk.method({
+selector: "initialize",
+protocol: 'initialization',
+fn: function (){
+var self=this;
+var announcer;
+function $TodoStorage(){return globals.TodoStorage||(typeof TodoStorage=="undefined"?nil:TodoStorage)}
+function $SystemAnnouncer(){return globals.SystemAnnouncer||(typeof SystemAnnouncer=="undefined"?nil:SystemAnnouncer)}
+function $TodoSaved(){return globals.TodoSaved||(typeof TodoSaved=="undefined"?nil:TodoSaved)}
+return smalltalk.withContext(function($ctx1) { 
+($ctx1.supercall = true, globals.TodoCount.superclass.fn.prototype._initialize.apply(_st(self), []));
+$ctx1.supercall = false;
+self["@count"]=_st(_st(_st($TodoStorage())._singleton())._items())._size();
+announcer=_st($SystemAnnouncer())._current();
+_st(announcer)._on_do_($TodoSaved(),(function(){
+return smalltalk.withContext(function($ctx2) {
+return self._refresh();
+}, function($ctx2) {$ctx2.fillBlock({},$ctx1,1)})}));
+return self}, function($ctx1) {$ctx1.fill(self,"initialize",{announcer:announcer},globals.TodoCount)})},
+args: [],
+source: "initialize\x0a\x09| announcer |\x0a\x09super initialize.\x0a\x09count := TodoStorage singleton items size.\x0a\x09announcer := SystemAnnouncer current.\x0a\x09announcer on: TodoSaved do: [ self refresh ].",
+messageSends: ["initialize", "size", "items", "singleton", "current", "on:do:", "refresh"],
+referencedClasses: ["TodoStorage", "SystemAnnouncer", "TodoSaved"]
+}),
+globals.TodoCount);
+
+smalltalk.addMethod(
+smalltalk.method({
+selector: "refresh",
+protocol: 'rendering',
+fn: function (){
+var self=this;
+return smalltalk.withContext(function($ctx1) { 
+_st((function(html){
+return smalltalk.withContext(function($ctx2) {
+return self._renderContentOn_(html);
+}, function($ctx2) {$ctx2.fillBlock({html:html},$ctx1,1)})}))._appendToJQuery_(_st(_st(self["@root"])._asJQuery())._empty());
+return self}, function($ctx1) {$ctx1.fill(self,"refresh",{},globals.TodoCount)})},
+args: [],
+source: "refresh\x0a\x09[:html | self renderContentOn: html ] appendToJQuery: (root asJQuery empty).\x0a\x09",
+messageSends: ["appendToJQuery:", "renderContentOn:", "empty", "asJQuery"],
+referencedClasses: []
+}),
+globals.TodoCount);
+
+smalltalk.addMethod(
+smalltalk.method({
+selector: "renderContentOn:",
+protocol: 'rendering',
+fn: function (html){
+var self=this;
+return smalltalk.withContext(function($ctx1) { 
+_st(html)._with_(self._decorate_(self._count()));
+return self}, function($ctx1) {$ctx1.fill(self,"renderContentOn:",{html:html},globals.TodoCount)})},
+args: ["html"],
+source: "renderContentOn: html\x0a\x09html with: (self decorate: self count).\x0a\x09",
+messageSends: ["with:", "decorate:", "count"],
+referencedClasses: []
+}),
+globals.TodoCount);
+
+smalltalk.addMethod(
+smalltalk.method({
+selector: "renderOn:",
+protocol: 'rendering',
+fn: function (html){
+var self=this;
+return smalltalk.withContext(function($ctx1) { 
+var $1,$2;
+$1=_st(html)._span();
+_st($1)._id_("todo-count");
+$2=_st($1)._with_((function(){
+return smalltalk.withContext(function($ctx2) {
+return self._renderContentOn_(html);
+}, function($ctx2) {$ctx2.fillBlock({},$ctx1,1)})}));
+self["@root"]=$2;
+return self}, function($ctx1) {$ctx1.fill(self,"renderOn:",{html:html},globals.TodoCount)})},
+args: ["html"],
+source: "renderOn: html\x0a\x09root := html span\x0a\x09\x09id: 'todo-count';\x0a\x09\x09with: [ self renderContentOn: html ].\x0a\x09",
+messageSends: ["id:", "span", "with:", "renderContentOn:"],
+referencedClasses: []
+}),
+globals.TodoCount);
+
+smalltalk.addMethod(
+smalltalk.method({
+selector: "root",
+protocol: 'accessing',
+fn: function (){
+var self=this;
+var $1;
+$1=self["@root"];
+return $1;
+},
+args: [],
+source: "root\x0a\x09^ root",
+messageSends: [],
+referencedClasses: []
+}),
+globals.TodoCount);
+
+smalltalk.addMethod(
+smalltalk.method({
+selector: "root:",
+protocol: 'accessing',
+fn: function (aTagBrush){
+var self=this;
+self["@root"]=aTagBrush;
+return self},
+args: ["aTagBrush"],
+source: "root: aTagBrush\x0a\x09root := aTagBrush",
+messageSends: [],
+referencedClasses: []
+}),
+globals.TodoCount);
+
+
+smalltalk.addMethod(
+smalltalk.method({
+selector: "singleton",
+protocol: 'initialization',
+fn: function (){
+var self=this;
+var UniqueInstance;
+return smalltalk.withContext(function($ctx1) { 
+var $1,$2,$receiver;
+$1=UniqueInstance;
+if(($receiver = $1) == null || $receiver.isNil){
+UniqueInstance=_st(self._basicNew())._initialize();
+UniqueInstance;
+} else {
+$1;
+};
+$2=UniqueInstance;
+return $2;
+}, function($ctx1) {$ctx1.fill(self,"singleton",{UniqueInstance:UniqueInstance},globals.TodoCount.klass)})},
+args: [],
+source: "singleton\x0a\x09| UniqueInstance |\x0a\x09UniqueInstance ifNil: [ UniqueInstance := self basicNew initialize ].\x0a    ^ UniqueInstance.",
+messageSends: ["ifNil:", "initialize", "basicNew"],
+referencedClasses: []
+}),
+globals.TodoCount.klass);
+
+
+smalltalk.addClass('TodoFilters', globals.Widget, ['root'], 'Examples-ToDo');
+smalltalk.addMethod(
+smalltalk.method({
+selector: "renderOn:",
+protocol: 'rendering',
+fn: function (html){
+var self=this;
+return smalltalk.withContext(function($ctx1) { 
+var $1,$3,$4,$5,$6,$7,$8,$2;
+$1=_st(html)._ul();
+_st($1)._id_("filters");
+$2=_st($1)._with_((function(){
+return smalltalk.withContext(function($ctx2) {
+_st(html)._li_((function(){
+return smalltalk.withContext(function($ctx3) {
+$3=_st(html)._a();
+$ctx3.sendIdx["a"]=1;
+_st($3)._href_("#/");
+$ctx3.sendIdx["href:"]=1;
+$4=_st($3)._with_("All");
+$ctx3.sendIdx["with:"]=2;
+return $4;
+}, function($ctx3) {$ctx3.fillBlock({},$ctx2,2)})}));
+$ctx2.sendIdx["li:"]=1;
+_st(html)._li_((function(){
+return smalltalk.withContext(function($ctx3) {
+$5=_st(html)._a();
+$ctx3.sendIdx["a"]=2;
+_st($5)._href_("#/active");
+$ctx3.sendIdx["href:"]=2;
+$6=_st($5)._with_("Active");
+$ctx3.sendIdx["with:"]=3;
+return $6;
+}, function($ctx3) {$ctx3.fillBlock({},$ctx2,3)})}));
+$ctx2.sendIdx["li:"]=2;
+return _st(html)._li_((function(){
+return smalltalk.withContext(function($ctx3) {
+$7=_st(html)._a();
+_st($7)._href_("#/completed");
+$8=_st($7)._with_("Completed");
+return $8;
+}, function($ctx3) {$ctx3.fillBlock({},$ctx2,4)})}));
+}, function($ctx2) {$ctx2.fillBlock({},$ctx1,1)})}));
+$ctx1.sendIdx["with:"]=1;
+return self}, function($ctx1) {$ctx1.fill(self,"renderOn:",{html:html},globals.TodoFilters)})},
+args: ["html"],
+source: "renderOn: html\x0a\x09html ul\x0a\x09\x09id: 'filters';\x0a\x09\x09with: [\x0a\x09\x09\x09html li: [ html a href: '#/'; with: 'All'. ].\x0a\x09\x09\x09html li: [ html a href: '#/active'; with: 'Active'. ].\x0a\x09\x09\x09html li: [ html a href: '#/completed'; with: 'Completed'. ]].",
+messageSends: ["id:", "ul", "with:", "li:", "href:", "a"],
+referencedClasses: []
+}),
+globals.TodoFilters);
+
+
+smalltalk.addMethod(
+smalltalk.method({
+selector: "singleton",
+protocol: 'initialization',
+fn: function (){
+var self=this;
+var UniqueInstance;
+return smalltalk.withContext(function($ctx1) { 
+var $1,$2,$receiver;
+$1=UniqueInstance;
+if(($receiver = $1) == null || $receiver.isNil){
+UniqueInstance=_st(self._basicNew())._initialize();
+UniqueInstance;
+} else {
+$1;
+};
+$2=UniqueInstance;
+return $2;
+}, function($ctx1) {$ctx1.fill(self,"singleton",{UniqueInstance:UniqueInstance},globals.TodoFilters.klass)})},
+args: [],
+source: "singleton\x0a\x09| UniqueInstance |\x0a\x09UniqueInstance ifNil: [ UniqueInstance := self basicNew initialize ].\x0a    ^ UniqueInstance.",
+messageSends: ["ifNil:", "initialize", "basicNew"],
+referencedClasses: []
+}),
+globals.TodoFilters.klass);
 
 
 smalltalk.addClass('TodoStorage', globals.Object, ['items'], 'Examples-ToDo');
@@ -1297,15 +1462,20 @@ smalltalk.addMethod(
 smalltalk.method({
 selector: "save",
 protocol: 'persistence',
-fn: function () {
+fn: function (){
 var self=this;
+var announcer;
+function $SystemAnnouncer(){return globals.SystemAnnouncer||(typeof SystemAnnouncer=="undefined"?nil:SystemAnnouncer)}
+function $TodoSaved(){return globals.TodoSaved||(typeof TodoSaved=="undefined"?nil:TodoSaved)}
 return smalltalk.withContext(function($ctx1) { 
 _st(localStorage)._setItem_value_("todos-amber",_st(self["@items"])._asJSONString());
-return self}, function($ctx1) {$ctx1.fill(self,"save",{},globals.TodoStorage)});},
+announcer=_st($SystemAnnouncer())._current();
+_st(announcer)._announce_(_st($TodoSaved())._new());
+return self}, function($ctx1) {$ctx1.fill(self,"save",{announcer:announcer},globals.TodoStorage)})},
 args: [],
-source: "save\x0a\x09localStorage setItem: 'todos-amber' value: items asJSONString.",
-messageSends: ["setItem:value:", "asJSONString"],
-referencedClasses: []
+source: "save\x0a\x09| announcer |\x0a\x09localStorage setItem: 'todos-amber' value: items asJSONString.\x0a\x09announcer := SystemAnnouncer current.\x0a\x09announcer announce: TodoSaved new.",
+messageSends: ["setItem:value:", "asJSONString", "current", "announce:", "new"],
+referencedClasses: ["SystemAnnouncer", "TodoSaved"]
 }),
 globals.TodoStorage);
 
@@ -1354,5 +1524,11 @@ messageSends: ["ifNil:", "initialize", "basicNew"],
 referencedClasses: []
 }),
 globals.TodoStorage.klass);
+
+
+smalltalk.addClass('TodoStorageAnnouncement', globals.SystemAnnouncement, [], 'Examples-ToDo');
+
+
+smalltalk.addClass('TodoSaved', globals.TodoStorageAnnouncement, [], 'Examples-ToDo');
 
 });

@@ -1,45 +1,4 @@
 Smalltalk createPackage: 'Examples-ToDo'!
-Widget subclass: #FooterCount
-	instanceVariableNames: 'count'
-	package: 'Examples-ToDo'!
-
-!FooterCount methodsFor: 'accessing'!
-
-count
-	^ TodoStorage singleton items size.
-! !
-
-!FooterCount methodsFor: 'initialization'!
-
-initialize
-	super initialize.
-	count := TodoStorage singleton items size.
-! !
-
-!FooterCount methodsFor: 'rendering'!
-
-decorate: aNumber
-	| str |
-	str := aNumber = 1
-		ifTrue: [ '1 item left' ]
-		ifFalse: [ aNumber asString, ' items left' ].
-	^ str.
-!
-
-renderOn: html
-	html span
-		id: 'todo-count';
-		with: (self decorate: self count).
-! !
-
-!FooterCount class methodsFor: 'initialization'!
-
-singleton
-	| UniqueInstance |
-	UniqueInstance ifNil: [ UniqueInstance := self basicNew initialize ].
-    ^ UniqueInstance.
-! !
-
 Widget subclass: #FooterSection
 	instanceVariableNames: ''
 	package: 'Examples-ToDo'!
@@ -57,8 +16,8 @@ renderOn: html
 		id: 'footer';
 		style: ((TodoStorage singleton items size = 0) ifTrue: [ 'display: none;' ]);
 		with: [
-			FooterCount singleton renderOn: html.
-			self renderTodoFiltersOn: html.]
+			TodoCount singleton renderOn: html.
+			TodoFilters singleton renderOn: html.]
 !
 
 renderTodoFiltersOn: html
@@ -287,6 +246,7 @@ handleInput: anEvent
 initialize
 	super initialize.
 	storage := TodoStorage singleton.
+	announcer := Announcer new.
 ! !
 
 !TodoApp methodsFor: 'rendering'!
@@ -347,6 +307,89 @@ renderTodosOn: html
 
 run
 	self new appendToJQuery: 'body' asJQuery
+! !
+
+Widget subclass: #TodoCount
+	instanceVariableNames: 'root count'
+	package: 'Examples-ToDo'!
+
+!TodoCount methodsFor: 'accessing'!
+
+count
+	^ TodoStorage singleton items size.
+!
+
+root
+	^ root
+!
+
+root: aTagBrush
+	root := aTagBrush
+! !
+
+!TodoCount methodsFor: 'initialization'!
+
+initialize
+	| announcer |
+	super initialize.
+	count := TodoStorage singleton items size.
+	announcer := SystemAnnouncer current.
+	announcer on: TodoSaved do: [ self refresh ].
+! !
+
+!TodoCount methodsFor: 'rendering'!
+
+decorate: aNumber
+	| str |
+	str := aNumber = 1
+		ifTrue: [ '1 item left' ]
+		ifFalse: [ aNumber asString, ' items left' ].
+	^ str.
+!
+
+refresh
+	[:html | self renderContentOn: html ] appendToJQuery: (root asJQuery empty).
+!
+
+renderContentOn: html
+	html with: (self decorate: self count).
+!
+
+renderOn: html
+	root := html span
+		id: 'todo-count';
+		with: [ self renderContentOn: html ].
+! !
+
+!TodoCount class methodsFor: 'initialization'!
+
+singleton
+	| UniqueInstance |
+	UniqueInstance ifNil: [ UniqueInstance := self basicNew initialize ].
+    ^ UniqueInstance.
+! !
+
+Widget subclass: #TodoFilters
+	instanceVariableNames: 'root'
+	package: 'Examples-ToDo'!
+
+!TodoFilters methodsFor: 'rendering'!
+
+renderOn: html
+	html ul
+		id: 'filters';
+		with: [
+			html li: [ html a href: '#/'; with: 'All'. ].
+			html li: [ html a href: '#/active'; with: 'Active'. ].
+			html li: [ html a href: '#/completed'; with: 'Completed'. ]].
+! !
+
+!TodoFilters class methodsFor: 'initialization'!
+
+singleton
+	| UniqueInstance |
+	UniqueInstance ifNil: [ UniqueInstance := self basicNew initialize ].
+    ^ UniqueInstance.
 ! !
 
 Object subclass: #TodoStorage
@@ -435,7 +478,10 @@ load
 !
 
 save
+	| announcer |
 	localStorage setItem: 'todos-amber' value: items asJSONString.
+	announcer := SystemAnnouncer current.
+	announcer announce: TodoSaved new.
 ! !
 
 TodoStorage class instanceVariableNames: 'singleton'!
@@ -447,4 +493,12 @@ singleton
 	UniqueInstance ifNil: [ UniqueInstance := self basicNew initialize ].
     ^ UniqueInstance.
 ! !
+
+SystemAnnouncement subclass: #TodoStorageAnnouncement
+	instanceVariableNames: ''
+	package: 'Examples-ToDo'!
+
+TodoStorageAnnouncement subclass: #TodoSaved
+	instanceVariableNames: ''
+	package: 'Examples-ToDo'!
 
