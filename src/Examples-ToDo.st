@@ -19,15 +19,17 @@ initialize
 !FooterCount methodsFor: 'rendering'!
 
 decorate: aNumber
-	aNumber = 1
+	| str |
+	str := aNumber = 1
 		ifTrue: [ '1 item left' ]
 		ifFalse: [ aNumber asString, ' items left' ].
+	^ str.
 !
 
 renderOn: html
 	html span
 		id: 'todo-count';
-		with: '1 item left'.
+		with: (self decorate: self count).
 ! !
 
 !FooterCount class methodsFor: 'initialization'!

@@ -24,19 +24,22 @@ smalltalk.addMethod(
 smalltalk.method({
 selector: "decorate:",
 protocol: 'rendering',
-fn: function (aNumber) {
+fn: function (aNumber){
 var self=this;
+var str;
 return smalltalk.withContext(function($ctx1) { 
-var $1;
+var $1,$2;
 $1=_st(aNumber).__eq((1));
 if(smalltalk.assert($1)){
-"1 item left";
+str="1 item left";
 } else {
-_st(_st(aNumber)._asString()).__comma(" items left");
+str=_st(_st(aNumber)._asString()).__comma(" items left");
 };
-return self}, function($ctx1) {$ctx1.fill(self,"decorate:",{aNumber:aNumber},globals.FooterCount)});},
+$2=str;
+return $2;
+}, function($ctx1) {$ctx1.fill(self,"decorate:",{aNumber:aNumber,str:str},globals.FooterCount)})},
 args: ["aNumber"],
-source: "decorate: aNumber\x0a\x09aNumber = 1\x0a\x09\x09ifTrue: [ '1 item left' ]\x0a\x09\x09ifFalse: [ aNumber asString, ' items left' ].",
+source: "decorate: aNumber\x0a\x09| str |\x0a\x09str := aNumber = 1\x0a\x09\x09ifTrue: [ '1 item left' ]\x0a\x09\x09ifFalse: [ aNumber asString, ' items left' ].\x0a\x09^ str.",
 messageSends: ["ifTrue:ifFalse:", "=", ",", "asString"],
 referencedClasses: []
 }),
@@ -71,11 +74,11 @@ return smalltalk.withContext(function($ctx1) {
 var $1,$2;
 $1=_st(html)._span();
 _st($1)._id_("todo-count");
-$2=_st($1)._with_("1 item left");
+$2=_st($1)._with_(self._decorate_(self._count()));
 return self}, function($ctx1) {$ctx1.fill(self,"renderOn:",{html:html},globals.FooterCount)})},
 args: ["html"],
-source: "renderOn: html\x0a\x09html span\x0a\x09\x09id: 'todo-count';\x0a\x09\x09with: '1 item left'.\x0a\x09",
-messageSends: ["id:", "span", "with:"],
+source: "renderOn: html\x0a\x09html span\x0a\x09\x09id: 'todo-count';\x0a\x09\x09with: (self decorate: self count).\x0a\x09",
+messageSends: ["id:", "span", "with:", "decorate:", "count"],
 referencedClasses: []
 }),
 globals.FooterCount);
