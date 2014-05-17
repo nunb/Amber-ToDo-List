@@ -11,12 +11,6 @@ initialize
 
 !FooterSection methodsFor: 'rendering'!
 
-decorate: num
-	num = 1
-		ifTrue: [ '1 item left' ]
-		ifFalse: [ num, ' items left' ].
-!
-
 renderOn: html
 	html footer
 		id: 'footer';
@@ -53,6 +47,11 @@ initialize
 
 !MainSection methodsFor: 'rendering'!
 
+appendTodoListItem: todo
+	"Adds a list item to the end of list items"
+	todo appendToJQuery: '#todo-list' asJQuery.
+!
+
 renderOn: html
 	html section
 		id: 'main';
@@ -81,6 +80,14 @@ renderToggleTodosOn: html
 	label element.
 ! !
 
+!MainSection class methodsFor: 'initialization'!
+
+singleton
+	| UniqueInstance |
+	UniqueInstance ifNil: [ UniqueInstance := self basicNew initialize ].
+    ^ UniqueInstance.
+! !
+
 Widget subclass: #Todo
 	instanceVariableNames: 'isDone text id'
 	package: 'Examples-ToDo'!
@@ -103,14 +110,6 @@ isDone: aBool
 	isDone := aBool.
 !
 
-onDeleteClickedDo: aBlock
-	onDeleteClicked := aBlock
-!
-
-onTodoChangedDo: aBlock
-	onTodoChanged := aBlock
-!
-
 text
 	^ text
 !
@@ -120,12 +119,13 @@ text: anObject
 !
 
 toggleCompleted
+	"Toggles whether this Todo isDone"
 	self toggleIsDone.
 	('#', self id) asJQuery toggleClass: 'completed'.
 !
 
 toggleIsDone
-	self isDone: isDone not
+	self isDone: isDone not.
 ! !
 
 !Todo methodsFor: 'initializing'!
@@ -171,6 +171,12 @@ renderOn: html
 	^ self id = aTodo id
 ! !
 
+!Todo class methodsFor: 'initialization'!
+
+newWithText: aString
+	^ self new text: aString
+! !
+
 !Todo class methodsFor: 'not yet classified'!
 
 fromDictionary: aDict
@@ -195,27 +201,26 @@ fromDictionary: aDict withTodoChangedCallback: aBlock withDeleteClickedCallback:
 	todo onTodoChangedDo: aBlock.
 	todo onDeleteClickedDo: oBlock.
 	^ todo
-!
-
-newWithText: aString
-	^ self new text: aString
 ! !
 
-Widget subclass: #TodoList
+Widget subclass: #TodoApp
 	instanceVariableNames: 'storage'
 	package: 'Examples-ToDo'!
 
-!TodoList methodsFor: 'adding/removing'!
+!TodoApp methodsFor: 'adding/removing'!
 
 addTodo: aTodo
+	"Adds a Todo and tells storage to save it"
     storage add: aTodo.
+	storage save
+		ifNotNil: [ MainSection singleton appendTodoListItem: aTodo ].
 !
 
 removeTodo: aTodo
 	storage remove: aTodo.
 ! !
 
-!TodoList methodsFor: 'events'!
+!TodoApp methodsFor: 'events'!
 
 handleInput: anEvent
 	| text todo |
@@ -224,14 +229,14 @@ handleInput: anEvent
  	self addTodo: todo.
 ! !
 
-!TodoList methodsFor: 'initializing'!
+!TodoApp methodsFor: 'initializing'!
 
 initialize
 	super initialize.
 	storage := TodoStorage singleton.
 ! !
 
-!TodoList methodsFor: 'rendering'!
+!TodoApp methodsFor: 'rendering'!
 
 renderBodyOn: html
 	html section
@@ -265,7 +270,6 @@ renderFormOn: html
 					autofocus;
                   	onKeyUp: [ :event |
                                   (event keyCode = 13) ifTrue: [
-									    self renderMainAndFooterSectionsOn: html.
                                     	self handleInput: event.
                                     	input asJQuery val: '' ] ] ].
 	input element placeholder: defaultText.
@@ -291,7 +295,7 @@ renderTodosOn: html
 		ifFalse: [ self renderMainAndFooterSectionsOn: html ]
 ! !
 
-!TodoList class methodsFor: 'not yet classified'!
+!TodoApp class methodsFor: 'not yet classified'!
 
 run
 	self new appendToJQuery: 'body' asJQuery
@@ -317,33 +321,19 @@ indexOf: anObject
 !
 
 items
-	"Returns an Array of all Todos in TodoStorage"
-	| todos |
-	todos := self parseTodoItems: (localStorage getItem: 'todos-amber' ).
-	^ todos collect: [ :todo | Todo fromDictionary: todo ].
-!
-
-length
-	^ self size
-!
-
-parseTodoItems: json
-	"Parses serialized JSON todos in localStorage and returns an Array of Todo objects"
-	^ Smalltalk readJSObject: (JSON parse: json).
+	^ items
 ! !
 
 !TodoStorage methodsFor: 'adding/removing'!
 
 add: anObject
 	items add: anObject.
-	self save.
 !
 
 remove: anObject
 	| d |
 	d := items detect: [ :each | each asJSON = anObject asJSON ]. 
 	items remove: d.
-	self save
 ! !
 
 !TodoStorage methodsFor: 'initializing'!
@@ -390,13 +380,14 @@ fetch
 
 load
 	"Loads the serialized items from localStorage"
-	| str |
+	| str todos |
 	str := (localStorage getItem: 'todos-amber').
-	Smalltalk readJSObject: (JSON parse: str).
+	todos := Smalltalk readJSObject: (JSON parse: str).
+	^ todos collect: [ :todo | Todo fromDictionary: todo ].
 !
 
 save
-	localStorage setItem: 'todos-amber' value: items asJSONString
+	localStorage setItem: 'todos-amber' value: items asJSONString.
 ! !
 
 TodoStorage class instanceVariableNames: 'singleton'!
