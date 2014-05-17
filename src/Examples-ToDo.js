@@ -132,22 +132,32 @@ selector: "renderOn:",
 protocol: 'rendering',
 fn: function (html){
 var self=this;
+function $TodoStorage(){return globals.TodoStorage||(typeof TodoStorage=="undefined"?nil:TodoStorage)}
 function $FooterCount(){return globals.FooterCount||(typeof FooterCount=="undefined"?nil:FooterCount)}
 return smalltalk.withContext(function($ctx1) { 
-var $1,$2;
+var $1,$2,$7,$6,$5,$4,$3,$8;
 $1=_st(html)._footer();
 _st($1)._id_("footer");
-_st($1)._style_("display: none;");
-$2=_st($1)._with_((function(){
+$2=$1;
+$7=_st($TodoStorage())._singleton();
+$ctx1.sendIdx["singleton"]=1;
+$6=_st($7)._items();
+$5=_st($6)._size();
+$4=_st($5).__eq((0));
+if(smalltalk.assert($4)){
+$3="display: none;";
+};
+_st($2)._style_($3);
+$8=_st($1)._with_((function(){
 return smalltalk.withContext(function($ctx2) {
 _st(_st($FooterCount())._singleton())._renderOn_(html);
 return self._renderTodoFiltersOn_(html);
-}, function($ctx2) {$ctx2.fillBlock({},$ctx1,1)})}));
+}, function($ctx2) {$ctx2.fillBlock({},$ctx1,2)})}));
 return self}, function($ctx1) {$ctx1.fill(self,"renderOn:",{html:html},globals.FooterSection)})},
 args: ["html"],
-source: "renderOn: html\x0a\x09html footer\x0a\x09\x09id: 'footer';\x0a\x09\x09style: 'display: none;';\x0a\x09\x09with: [\x0a\x09\x09\x09FooterCount singleton renderOn: html.\x0a\x09\x09\x09self renderTodoFiltersOn: html.]",
-messageSends: ["id:", "footer", "style:", "with:", "renderOn:", "singleton", "renderTodoFiltersOn:"],
-referencedClasses: ["FooterCount"]
+source: "renderOn: html\x0a\x09html footer\x0a\x09\x09id: 'footer';\x0a\x09\x09style: ((TodoStorage singleton items size = 0) ifTrue: [ 'display: none;' ]);\x0a\x09\x09with: [\x0a\x09\x09\x09FooterCount singleton renderOn: html.\x0a\x09\x09\x09self renderTodoFiltersOn: html.]",
+messageSends: ["id:", "footer", "style:", "ifTrue:", "=", "size", "items", "singleton", "with:", "renderOn:", "renderTodoFiltersOn:"],
+referencedClasses: ["TodoStorage", "FooterCount"]
 }),
 globals.FooterSection);
 
@@ -198,6 +208,22 @@ return self}, function($ctx1) {$ctx1.fill(self,"renderTodoFiltersOn:",{html:html
 args: ["html"],
 source: "renderTodoFiltersOn: html\x0a\x09html ul\x0a\x09\x09id: 'filters';\x0a\x09\x09with: [\x0a\x09\x09\x09html li: [ html a href: '#/'; with: 'All'. ].\x0a\x09\x09\x09html li: [ html a href: '#/active'; with: 'Active'. ].\x0a\x09\x09\x09html li: [ html a href: '#/completed'; with: 'Completed'. ]].",
 messageSends: ["id:", "ul", "with:", "li:", "href:", "a"],
+referencedClasses: []
+}),
+globals.FooterSection);
+
+smalltalk.addMethod(
+smalltalk.method({
+selector: "show",
+protocol: 'rendering',
+fn: function (){
+var self=this;
+return smalltalk.withContext(function($ctx1) { 
+_st("#footer"._asJQuery())._show();
+return self}, function($ctx1) {$ctx1.fill(self,"show",{},globals.FooterSection)})},
+args: [],
+source: "show\x0a\x09'#footer' asJQuery show.",
+messageSends: ["show", "asJQuery"],
 referencedClasses: []
 }),
 globals.FooterSection);
@@ -271,21 +297,27 @@ selector: "renderOn:",
 protocol: 'rendering',
 fn: function (html){
 var self=this;
+function $TodoStorage(){return globals.TodoStorage||(typeof TodoStorage=="undefined"?nil:TodoStorage)}
 return smalltalk.withContext(function($ctx1) { 
-var $1,$2;
+var $1,$2,$4,$3,$5;
 $1=_st(html)._section();
 _st($1)._id_("main");
-_st($1)._style_("display: none;");
-$2=_st($1)._with_((function(){
+$2=$1;
+$4=_st(_st(_st(_st($TodoStorage())._singleton())._items())._size()).__eq((0));
+if(smalltalk.assert($4)){
+$3="display: none;";
+};
+_st($2)._style_($3);
+$5=_st($1)._with_((function(){
 return smalltalk.withContext(function($ctx2) {
 self._renderToggleTodosOn_(html);
 return self._renderTodoListItemsOn_(html);
-}, function($ctx2) {$ctx2.fillBlock({},$ctx1,1)})}));
+}, function($ctx2) {$ctx2.fillBlock({},$ctx1,2)})}));
 return self}, function($ctx1) {$ctx1.fill(self,"renderOn:",{html:html},globals.MainSection)})},
 args: ["html"],
-source: "renderOn: html\x0a\x09html section\x0a\x09\x09id: 'main';\x0a\x09\x09style: 'display: none;';\x0a\x09\x09with: [\x0a\x09\x09\x09self renderToggleTodosOn: html.\x0a            self renderTodoListItemsOn: html. ].",
-messageSends: ["id:", "section", "style:", "with:", "renderToggleTodosOn:", "renderTodoListItemsOn:"],
-referencedClasses: []
+source: "renderOn: html\x0a\x09html section\x0a\x09\x09id: 'main';\x0a\x09\x09style: ((TodoStorage singleton items size = 0) ifTrue: [ 'display: none;' ]);\x0a\x09\x09with: [\x0a\x09\x09\x09self renderToggleTodosOn: html.\x0a            self renderTodoListItemsOn: html. ].",
+messageSends: ["id:", "section", "style:", "ifTrue:", "=", "size", "items", "singleton", "with:", "renderToggleTodosOn:", "renderTodoListItemsOn:"],
+referencedClasses: ["TodoStorage"]
 }),
 globals.MainSection);
 
@@ -745,7 +777,6 @@ selector: "addTodo:",
 protocol: 'adding/removing',
 fn: function (aTodo){
 var self=this;
-function $MainSection(){return globals.MainSection||(typeof MainSection=="undefined"?nil:MainSection)}
 return smalltalk.withContext(function($ctx1) { 
 var $1,$receiver;
 _st(self["@storage"])._add_(aTodo);
@@ -753,13 +784,13 @@ $1=_st(self["@storage"])._save();
 if(($receiver = $1) == null || $receiver.isNil){
 $1;
 } else {
-_st(_st($MainSection())._singleton())._appendTodoListItem_(aTodo);
+self._renderTodo_(aTodo);
 };
 return self}, function($ctx1) {$ctx1.fill(self,"addTodo:",{aTodo:aTodo},globals.TodoApp)})},
 args: ["aTodo"],
-source: "addTodo: aTodo\x0a\x09\x22Adds a Todo and tells storage to save it\x22\x0a    storage add: aTodo.\x0a\x09storage save\x0a\x09\x09ifNotNil: [ MainSection singleton appendTodoListItem: aTodo. ].",
-messageSends: ["add:", "ifNotNil:", "save", "appendTodoListItem:", "singleton"],
-referencedClasses: ["MainSection"]
+source: "addTodo: aTodo\x0a\x09\x22Adds a Todo and tells storage to save it\x22\x0a    storage add: aTodo.\x0a\x09storage save\x0a\x09\x09ifNotNil: [ self renderTodo: aTodo. ].",
+messageSends: ["add:", "ifNotNil:", "save", "renderTodo:"],
+referencedClasses: []
 }),
 globals.TodoApp);
 
@@ -920,29 +951,6 @@ globals.TodoApp);
 
 smalltalk.addMethod(
 smalltalk.method({
-selector: "renderMainAndFooterSectionsOn:",
-protocol: 'rendering',
-fn: function (html){
-var self=this;
-function $MainSection(){return globals.MainSection||(typeof MainSection=="undefined"?nil:MainSection)}
-function $FooterSection(){return globals.FooterSection||(typeof FooterSection=="undefined"?nil:FooterSection)}
-return smalltalk.withContext(function($ctx1) { 
-var $1;
-$1=_st($MainSection())._singleton();
-$ctx1.sendIdx["singleton"]=1;
-_st($1)._renderOn_(html);
-$ctx1.sendIdx["renderOn:"]=1;
-_st(_st($FooterSection())._singleton())._renderOn_(html);
-return self}, function($ctx1) {$ctx1.fill(self,"renderMainAndFooterSectionsOn:",{html:html},globals.TodoApp)})},
-args: ["html"],
-source: "renderMainAndFooterSectionsOn: html\x0a\x09MainSection singleton renderOn: html.\x0a\x09FooterSection singleton renderOn: html.",
-messageSends: ["renderOn:", "singleton"],
-referencedClasses: ["MainSection", "FooterSection"]
-}),
-globals.TodoApp);
-
-smalltalk.addMethod(
-smalltalk.method({
 selector: "renderOn:",
 protocol: 'rendering',
 fn: function (html) {
@@ -960,17 +968,46 @@ globals.TodoApp);
 
 smalltalk.addMethod(
 smalltalk.method({
+selector: "renderTodo:",
+protocol: 'rendering',
+fn: function (aTodo){
+var self=this;
+function $MainSection(){return globals.MainSection||(typeof MainSection=="undefined"?nil:MainSection)}
+function $FooterSection(){return globals.FooterSection||(typeof FooterSection=="undefined"?nil:FooterSection)}
+return smalltalk.withContext(function($ctx1) { 
+var $1;
+$1=_st($MainSection())._singleton();
+$ctx1.sendIdx["singleton"]=1;
+_st($1)._appendTodoListItem_(aTodo);
+_st(_st($FooterSection())._singleton())._show();
+return self}, function($ctx1) {$ctx1.fill(self,"renderTodo:",{aTodo:aTodo},globals.TodoApp)})},
+args: ["aTodo"],
+source: "renderTodo: aTodo\x0a\x09MainSection singleton appendTodoListItem: aTodo.\x0a\x09FooterSection singleton show.",
+messageSends: ["appendTodoListItem:", "singleton", "show"],
+referencedClasses: ["MainSection", "FooterSection"]
+}),
+globals.TodoApp);
+
+smalltalk.addMethod(
+smalltalk.method({
 selector: "renderTodosOn:",
 protocol: 'rendering',
 fn: function (html){
 var self=this;
+function $MainSection(){return globals.MainSection||(typeof MainSection=="undefined"?nil:MainSection)}
+function $FooterSection(){return globals.FooterSection||(typeof FooterSection=="undefined"?nil:FooterSection)}
 return smalltalk.withContext(function($ctx1) { 
-self._renderMainAndFooterSectionsOn_(html);
+var $1;
+$1=_st($MainSection())._singleton();
+$ctx1.sendIdx["singleton"]=1;
+_st($1)._renderOn_(html);
+$ctx1.sendIdx["renderOn:"]=1;
+_st(_st($FooterSection())._singleton())._renderOn_(html);
 return self}, function($ctx1) {$ctx1.fill(self,"renderTodosOn:",{html:html},globals.TodoApp)})},
 args: ["html"],
-source: "renderTodosOn: html\x0a\x09self renderMainAndFooterSectionsOn: html.",
-messageSends: ["renderMainAndFooterSectionsOn:"],
-referencedClasses: []
+source: "renderTodosOn: html\x0a\x09MainSection singleton renderOn: html.\x0a\x09FooterSection singleton renderOn: html.",
+messageSends: ["renderOn:", "singleton"],
+referencedClasses: ["MainSection", "FooterSection"]
 }),
 globals.TodoApp);
 

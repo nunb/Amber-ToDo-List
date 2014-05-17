@@ -53,7 +53,7 @@ initialize
 renderOn: html
 	html footer
 		id: 'footer';
-		style: 'display: none;';
+		style: ((TodoStorage singleton items size = 0) ifTrue: [ 'display: none;' ]);
 		with: [
 			FooterCount singleton renderOn: html.
 			self renderTodoFiltersOn: html.]
@@ -66,6 +66,10 @@ renderTodoFiltersOn: html
 			html li: [ html a href: '#/'; with: 'All'. ].
 			html li: [ html a href: '#/active'; with: 'Active'. ].
 			html li: [ html a href: '#/completed'; with: 'Completed'. ]].
+!
+
+show
+	'#footer' asJQuery show.
 ! !
 
 !FooterSection class methodsFor: 'initialization'!
@@ -97,7 +101,7 @@ appendTodoListItem: todo
 renderOn: html
 	html section
 		id: 'main';
-		style: 'display: none;';
+		style: ((TodoStorage singleton items size = 0) ifTrue: [ 'display: none;' ]);
 		with: [
 			self renderToggleTodosOn: html.
             self renderTodoListItemsOn: html. ].
@@ -260,7 +264,7 @@ addTodo: aTodo
 	"Adds a Todo and tells storage to save it"
     storage add: aTodo.
 	storage save
-		ifNotNil: [ MainSection singleton appendTodoListItem: aTodo. ].
+		ifNotNil: [ self renderTodo: aTodo. ].
 !
 
 removeTodo: aTodo
@@ -322,18 +326,19 @@ renderFormOn: html
 	input element placeholder: defaultText.
 !
 
-renderMainAndFooterSectionsOn: html
-	MainSection singleton renderOn: html.
-	FooterSection singleton renderOn: html.
-!
-
 renderOn: html
 	self renderBodyOn: html.
     self renderFooterOn: html.
 !
 
+renderTodo: aTodo
+	MainSection singleton appendTodoListItem: aTodo.
+	FooterSection singleton show.
+!
+
 renderTodosOn: html
-	self renderMainAndFooterSectionsOn: html.
+	MainSection singleton renderOn: html.
+	FooterSection singleton renderOn: html.
 ! !
 
 !TodoApp class methodsFor: 'not yet classified'!
