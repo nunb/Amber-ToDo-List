@@ -94,6 +94,34 @@ globals.TodoTest);
 
 smalltalk.addMethod(
 smalltalk.method({
+selector: "testNewWithDictionary",
+protocol: 'tests',
+fn: function (){
+var self=this;
+var t1,d;
+function $Dictionary(){return globals.Dictionary||(typeof Dictionary=="undefined"?nil:Dictionary)}
+function $Todo(){return globals.Todo||(typeof Todo=="undefined"?nil:Todo)}
+return smalltalk.withContext(function($ctx1) { 
+var $1,$2;
+d=_st($Dictionary())._new();
+$1=d;
+_st($1)._at_put_("text","Hello");
+$ctx1.sendIdx["at:put:"]=1;
+_st($1)._at_put_("isDone",true);
+$ctx1.sendIdx["at:put:"]=2;
+$2=_st($1)._at_put_("id",(12345));
+t1=_st($Todo())._newWithDictionary_(d);
+self._assert_(_st(_st(t1)._text()).__eq("Hello"));
+return self}, function($ctx1) {$ctx1.fill(self,"testNewWithDictionary",{t1:t1,d:d},globals.TodoTest)})},
+args: [],
+source: "testNewWithDictionary\x0a\x09| t1 d |\x0a\x09d := Dictionary new.\x0a\x09d at: 'text' put: 'Hello'; at: 'isDone' put: true; at: 'id' put: 12345.\x0a\x09t1 := Todo newWithDictionary: d.\x0a\x09self assert: (t1 text = 'Hello').",
+messageSends: ["new", "at:put:", "newWithDictionary:", "assert:", "=", "text"],
+referencedClasses: ["Dictionary", "Todo"]
+}),
+globals.TodoTest);
+
+smalltalk.addMethod(
+smalltalk.method({
 selector: "testNewWithTextDoneId",
 protocol: 'tests',
 fn: function (){

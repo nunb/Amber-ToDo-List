@@ -45,6 +45,14 @@ testNewIsDone
 	self assert: (t1 isDone = false).
 !
 
+testNewWithDictionary
+	| t1 d |
+	d := Dictionary new.
+	d at: 'text' put: 'Hello'; at: 'isDone' put: true; at: 'id' put: 12345.
+	t1 := Todo newWithDictionary: d.
+	self assert: (t1 text = 'Hello').
+!
+
 testNewWithTextDoneId
 	| t1 |
 	t1 := Todo newWithText: 'Hello' done: false id: 12345.
