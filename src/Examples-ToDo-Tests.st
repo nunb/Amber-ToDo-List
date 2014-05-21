@@ -3,6 +3,17 @@ TestCase subclass: #TodoAppTest
 	instanceVariableNames: ''
 	package: 'Examples-ToDo-Tests'!
 
+!TodoAppTest methodsFor: 'tests'!
+
+tearDown
+	localStorage clear.
+!
+
+testSeed
+	TodoApp new.
+	self assert: (TodoApp todos size) = 1.
+! !
+
 TestCase subclass: #TodoBuilderTest
 	instanceVariableNames: ''
 	package: 'Examples-ToDo-Tests'!
@@ -50,6 +61,10 @@ TestCase subclass: #TodoStorageTest
 
 !TodoStorageTest methodsFor: 'tests'!
 
+tearDown
+	localStorage clear.
+!
+
 testAdd
 	| s t1 |
 	s := TodoStorage newWithName: 'todos-amber-test'.
@@ -76,6 +91,16 @@ testNewWithName
 	| s |
 	s := TodoStorage newWithName: 'todos-amber-storage'.
 	self assert: (s name = 'todos-amber-storage').
+!
+
+testSave
+	| s t1 |
+	s := TodoStorage newWithName: 'todos-amber-test'.
+	s load.
+	t1 := Todo new.
+	s add: t1.
+	s save.
+	self assert: (JSON parse: (localStorage getItem: 'todos-amber-test')) size = 1.
 ! !
 
 TestCase subclass: #TodoTest

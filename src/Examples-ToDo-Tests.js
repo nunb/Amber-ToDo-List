@@ -3,6 +3,40 @@ smalltalk.addPackage('Examples-ToDo-Tests');
 smalltalk.packages["Examples-ToDo-Tests"].transport = {"type":"amd","amdNamespace":"Examples"};
 
 smalltalk.addClass('TodoAppTest', globals.TestCase, [], 'Examples-ToDo-Tests');
+smalltalk.addMethod(
+smalltalk.method({
+selector: "tearDown",
+protocol: 'tests',
+fn: function (){
+var self=this;
+return smalltalk.withContext(function($ctx1) { 
+_st(localStorage)._clear();
+return self}, function($ctx1) {$ctx1.fill(self,"tearDown",{},globals.TodoAppTest)})},
+args: [],
+source: "tearDown\x0a\x09localStorage clear.",
+messageSends: ["clear"],
+referencedClasses: []
+}),
+globals.TodoAppTest);
+
+smalltalk.addMethod(
+smalltalk.method({
+selector: "testSeed",
+protocol: 'tests',
+fn: function (){
+var self=this;
+function $TodoApp(){return globals.TodoApp||(typeof TodoApp=="undefined"?nil:TodoApp)}
+return smalltalk.withContext(function($ctx1) { 
+_st($TodoApp())._new();
+self._assert_(_st(_st(_st($TodoApp())._todos())._size()).__eq((1)));
+return self}, function($ctx1) {$ctx1.fill(self,"testSeed",{},globals.TodoAppTest)})},
+args: [],
+source: "testSeed\x0a\x09TodoApp new.\x0a\x09self assert: (TodoApp todos size) = 1.",
+messageSends: ["new", "assert:", "=", "size", "todos"],
+referencedClasses: ["TodoApp"]
+}),
+globals.TodoAppTest);
+
 
 
 smalltalk.addClass('TodoBuilderTest', globals.TestCase, [], 'Examples-ToDo-Tests');
@@ -121,6 +155,22 @@ globals.TodoBuilderTest);
 smalltalk.addClass('TodoStorageTest', globals.TestCase, [], 'Examples-ToDo-Tests');
 smalltalk.addMethod(
 smalltalk.method({
+selector: "tearDown",
+protocol: 'tests',
+fn: function (){
+var self=this;
+return smalltalk.withContext(function($ctx1) { 
+_st(localStorage)._clear();
+return self}, function($ctx1) {$ctx1.fill(self,"tearDown",{},globals.TodoStorageTest)})},
+args: [],
+source: "tearDown\x0a\x09localStorage clear.",
+messageSends: ["clear"],
+referencedClasses: []
+}),
+globals.TodoStorageTest);
+
+smalltalk.addMethod(
+smalltalk.method({
 selector: "testAdd",
 protocol: 'tests',
 fn: function (){
@@ -199,6 +249,31 @@ args: [],
 source: "testNewWithName\x0a\x09| s |\x0a\x09s := TodoStorage newWithName: 'todos-amber-storage'.\x0a\x09self assert: (s name = 'todos-amber-storage').",
 messageSends: ["newWithName:", "assert:", "=", "name"],
 referencedClasses: ["TodoStorage"]
+}),
+globals.TodoStorageTest);
+
+smalltalk.addMethod(
+smalltalk.method({
+selector: "testSave",
+protocol: 'tests',
+fn: function (){
+var self=this;
+var s,t1;
+function $TodoStorage(){return globals.TodoStorage||(typeof TodoStorage=="undefined"?nil:TodoStorage)}
+function $Todo(){return globals.Todo||(typeof Todo=="undefined"?nil:Todo)}
+function $JSON(){return globals.JSON||(typeof JSON=="undefined"?nil:JSON)}
+return smalltalk.withContext(function($ctx1) { 
+s=_st($TodoStorage())._newWithName_("todos-amber-test");
+_st(s)._load();
+t1=_st($Todo())._new();
+_st(s)._add_(t1);
+_st(s)._save();
+self._assert_(_st(_st(_st($JSON())._parse_(_st(localStorage)._getItem_("todos-amber-test")))._size()).__eq((1)));
+return self}, function($ctx1) {$ctx1.fill(self,"testSave",{s:s,t1:t1},globals.TodoStorageTest)})},
+args: [],
+source: "testSave\x0a\x09| s t1 |\x0a\x09s := TodoStorage newWithName: 'todos-amber-test'.\x0a\x09s load.\x0a\x09t1 := Todo new.\x0a\x09s add: t1.\x0a\x09s save.\x0a\x09self assert: (JSON parse: (localStorage getItem: 'todos-amber-test')) size = 1.",
+messageSends: ["newWithName:", "load", "new", "add:", "save", "assert:", "=", "size", "parse:", "getItem:"],
+referencedClasses: ["TodoStorage", "Todo", "JSON"]
 }),
 globals.TodoStorageTest);
 
