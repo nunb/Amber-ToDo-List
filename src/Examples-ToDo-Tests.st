@@ -28,5 +28,11 @@ testNew
 	| t1 |
 	t1 := Todo new.
 	self assert: (t1 text = 'Untitled').
+!
+
+testNewIsDone
+	| t1 |
+	t1 := Todo new.
+	self assert: (t1 isDone = false).
 ! !
 

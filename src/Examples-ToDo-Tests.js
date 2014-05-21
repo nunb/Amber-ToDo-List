@@ -52,5 +52,24 @@ referencedClasses: ["Todo"]
 }),
 globals.TodoTest);
 
+smalltalk.addMethod(
+smalltalk.method({
+selector: "testNewIsDone",
+protocol: 'tests',
+fn: function (){
+var self=this;
+var t1;
+function $Todo(){return globals.Todo||(typeof Todo=="undefined"?nil:Todo)}
+return smalltalk.withContext(function($ctx1) { 
+t1=_st($Todo())._new();
+self._assert_(_st(_st(t1)._isDone()).__eq(false));
+return self}, function($ctx1) {$ctx1.fill(self,"testNewIsDone",{t1:t1},globals.TodoTest)})},
+args: [],
+source: "testNewIsDone\x0a\x09| t1 |\x0a\x09t1 := Todo new.\x0a\x09self assert: (t1 isDone = false).",
+messageSends: ["new", "assert:", "=", "isDone"],
+referencedClasses: ["Todo"]
+}),
+globals.TodoTest);
+
 
 });
