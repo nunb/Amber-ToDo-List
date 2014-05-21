@@ -6,6 +6,27 @@ smalltalk.addClass('TodoAppTest', globals.TestCase, [], 'Examples-ToDo-Tests');
 
 
 smalltalk.addClass('TodoBuilderTest', globals.TestCase, [], 'Examples-ToDo-Tests');
+smalltalk.addMethod(
+smalltalk.method({
+selector: "testNewWithTodo",
+protocol: 'tests',
+fn: function (){
+var self=this;
+var b,t1;
+function $Todo(){return globals.Todo||(typeof Todo=="undefined"?nil:Todo)}
+function $TodoBuilder(){return globals.TodoBuilder||(typeof TodoBuilder=="undefined"?nil:TodoBuilder)}
+return smalltalk.withContext(function($ctx1) { 
+t1=_st($Todo())._new();
+b=_st($TodoBuilder())._newWithTodo_(t1);
+self._assert_(_st(_st(_st(b)._build())._class()).__eq($Todo()));
+return self}, function($ctx1) {$ctx1.fill(self,"testNewWithTodo",{b:b,t1:t1},globals.TodoBuilderTest)})},
+args: [],
+source: "testNewWithTodo\x0a\x09| b t1 |\x0a\x09t1 := Todo new.\x0a\x09b := TodoBuilder newWithTodo: t1.\x0a\x09self assert: ((b build) class) = Todo.",
+messageSends: ["new", "newWithTodo:", "assert:", "=", "class", "build"],
+referencedClasses: ["Todo", "TodoBuilder"]
+}),
+globals.TodoBuilderTest);
+
 
 
 smalltalk.addClass('TodoStorageTest', globals.TestCase, [], 'Examples-ToDo-Tests');

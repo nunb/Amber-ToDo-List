@@ -7,6 +7,15 @@ TestCase subclass: #TodoBuilderTest
 	instanceVariableNames: ''
 	package: 'Examples-ToDo-Tests'!
 
+!TodoBuilderTest methodsFor: 'tests'!
+
+testNewWithTodo
+	| b t1 |
+	t1 := Todo new.
+	b := TodoBuilder newWithTodo: t1.
+	self assert: ((b build) class) = Todo.
+! !
+
 TestCase subclass: #TodoStorageTest
 	instanceVariableNames: ''
 	package: 'Examples-ToDo-Tests'!
