@@ -36,6 +36,12 @@ testNewIsDone
 	self assert: (t1 isDone = false).
 !
 
+testNewWithTextDoneId
+	| t1 |
+	t1 := Todo newWithText: 'Hello' done: false id: 12345.
+	self assert: (t1 class = Todo).
+!
+
 testToggleIsDone
 	| t1 t2 |
 	t1 := Todo new.

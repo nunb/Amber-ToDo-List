@@ -73,6 +73,25 @@ globals.TodoTest);
 
 smalltalk.addMethod(
 smalltalk.method({
+selector: "testNewWithTextDoneId",
+protocol: 'tests',
+fn: function (){
+var self=this;
+var t1;
+function $Todo(){return globals.Todo||(typeof Todo=="undefined"?nil:Todo)}
+return smalltalk.withContext(function($ctx1) { 
+t1=_st($Todo())._newWithText_done_id_("Hello",false,(12345));
+self._assert_(_st(_st(t1)._class()).__eq($Todo()));
+return self}, function($ctx1) {$ctx1.fill(self,"testNewWithTextDoneId",{t1:t1},globals.TodoTest)})},
+args: [],
+source: "testNewWithTextDoneId\x0a\x09| t1 |\x0a\x09t1 := Todo newWithText: 'Hello' done: false id: 12345.\x0a\x09self assert: (t1 class = Todo).",
+messageSends: ["newWithText:done:id:", "assert:", "=", "class"],
+referencedClasses: ["Todo"]
+}),
+globals.TodoTest);
+
+smalltalk.addMethod(
+smalltalk.method({
 selector: "testToggleIsDone",
 protocol: 'tests',
 fn: function (){
