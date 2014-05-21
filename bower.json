@@ -6,9 +6,13 @@
         {
             "name": "hhzl",
             "email": "hannes.hirzel@gmail.com"
+        },
+        {
+            "name": "statonjr",
+            "email": "larry@larrystaton.com"
         }
     ],
-    "homepage": "https://github.com/hhzl/Amber-ToDo-List",
+    "homepage": "https://github.com/statonjr/Amber-ToDo-List",
     "keywords": [
         "Amber",
         "Smalltalk"
