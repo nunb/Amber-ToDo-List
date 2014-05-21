@@ -33,5 +33,24 @@ referencedClasses: ["Todo"]
 }),
 globals.TodoTest);
 
+smalltalk.addMethod(
+smalltalk.method({
+selector: "testNew",
+protocol: 'tests',
+fn: function (){
+var self=this;
+var t1;
+function $Todo(){return globals.Todo||(typeof Todo=="undefined"?nil:Todo)}
+return smalltalk.withContext(function($ctx1) { 
+t1=_st($Todo())._new();
+self._assert_(_st(_st(t1)._text()).__eq("Untitled"));
+return self}, function($ctx1) {$ctx1.fill(self,"testNew",{t1:t1},globals.TodoTest)})},
+args: [],
+source: "testNew\x0a\x09| t1 |\x0a\x09t1 := Todo new.\x0a\x09self assert: (t1 text = 'Untitled').",
+messageSends: ["new", "assert:", "=", "text"],
+referencedClasses: ["Todo"]
+}),
+globals.TodoTest);
+
 
 });
