@@ -52,9 +52,7 @@ newWithDictionary: aDict
 	| builder |
 	builder := TodoBuilder newWithDictionary: aDict.
 	^ builder build.
-! !
-
-!Todo class methodsFor: 'initialization'!
+!
 
 newWithText: aString done: aBoolean id: anId
 	^ self basicNew initializeWithText: aString done: aBoolean id: anId.

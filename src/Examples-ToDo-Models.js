@@ -169,7 +169,7 @@ globals.Todo.klass);
 smalltalk.addMethod(
 smalltalk.method({
 selector: "newWithText:done:id:",
-protocol: 'initialization',
+protocol: 'creation',
 fn: function (aString,aBoolean,anId){
 var self=this;
 return smalltalk.withContext(function($ctx1) { 
