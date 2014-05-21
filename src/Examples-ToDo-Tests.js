@@ -8,6 +8,95 @@ smalltalk.addClass('TodoAppTest', globals.TestCase, [], 'Examples-ToDo-Tests');
 smalltalk.addClass('TodoBuilderTest', globals.TestCase, [], 'Examples-ToDo-Tests');
 smalltalk.addMethod(
 smalltalk.method({
+selector: "testAddIsDone",
+protocol: 'tests',
+fn: function (){
+var self=this;
+var builder,d;
+function $TodoBuilder(){return globals.TodoBuilder||(typeof TodoBuilder=="undefined"?nil:TodoBuilder)}
+return smalltalk.withContext(function($ctx1) { 
+builder=_st($TodoBuilder())._new();
+_st(builder)._addIsDone_(true);
+self._assert_(_st(_st(_st(builder)._build())._isDone()).__eq(true));
+return self}, function($ctx1) {$ctx1.fill(self,"testAddIsDone",{builder:builder,d:d},globals.TodoBuilderTest)})},
+args: [],
+source: "testAddIsDone\x0a\x09| builder d |\x0a\x09builder := TodoBuilder new.\x0a\x09builder addIsDone: true.\x0a\x09self assert: ((builder build) isDone = true).",
+messageSends: ["new", "addIsDone:", "assert:", "=", "isDone", "build"],
+referencedClasses: ["TodoBuilder"]
+}),
+globals.TodoBuilderTest);
+
+smalltalk.addMethod(
+smalltalk.method({
+selector: "testAddText",
+protocol: 'tests',
+fn: function (){
+var self=this;
+var builder,d;
+function $TodoBuilder(){return globals.TodoBuilder||(typeof TodoBuilder=="undefined"?nil:TodoBuilder)}
+return smalltalk.withContext(function($ctx1) { 
+builder=_st($TodoBuilder())._new();
+_st(builder)._addText_("Hello");
+self._assert_(_st(_st(_st(builder)._build())._text()).__eq("Hello"));
+return self}, function($ctx1) {$ctx1.fill(self,"testAddText",{builder:builder,d:d},globals.TodoBuilderTest)})},
+args: [],
+source: "testAddText\x0a\x09| builder d |\x0a\x09builder := TodoBuilder new.\x0a\x09builder addText: 'Hello'.\x0a\x09self assert: ((builder build) text = 'Hello').",
+messageSends: ["new", "addText:", "assert:", "=", "text", "build"],
+referencedClasses: ["TodoBuilder"]
+}),
+globals.TodoBuilderTest);
+
+smalltalk.addMethod(
+smalltalk.method({
+selector: "testBuild",
+protocol: 'tests',
+fn: function (){
+var self=this;
+var builder,d;
+function $TodoBuilder(){return globals.TodoBuilder||(typeof TodoBuilder=="undefined"?nil:TodoBuilder)}
+function $Todo(){return globals.Todo||(typeof Todo=="undefined"?nil:Todo)}
+return smalltalk.withContext(function($ctx1) { 
+builder=_st($TodoBuilder())._new();
+self._assert_(_st(_st(_st(builder)._build())._class()).__eq($Todo()));
+return self}, function($ctx1) {$ctx1.fill(self,"testBuild",{builder:builder,d:d},globals.TodoBuilderTest)})},
+args: [],
+source: "testBuild\x0a\x09| builder d |\x0a\x09builder := TodoBuilder new.\x0a\x09self assert: ((builder build) class = Todo).",
+messageSends: ["new", "assert:", "=", "class", "build"],
+referencedClasses: ["TodoBuilder", "Todo"]
+}),
+globals.TodoBuilderTest);
+
+smalltalk.addMethod(
+smalltalk.method({
+selector: "testNewWithDictionary",
+protocol: 'tests',
+fn: function (){
+var self=this;
+var builder,d;
+function $Dictionary(){return globals.Dictionary||(typeof Dictionary=="undefined"?nil:Dictionary)}
+function $TodoBuilder(){return globals.TodoBuilder||(typeof TodoBuilder=="undefined"?nil:TodoBuilder)}
+function $Todo(){return globals.Todo||(typeof Todo=="undefined"?nil:Todo)}
+return smalltalk.withContext(function($ctx1) { 
+var $1,$2;
+d=_st($Dictionary())._new();
+$1=d;
+_st($1)._at_put_("text","Hello");
+$ctx1.sendIdx["at:put:"]=1;
+_st($1)._at_put_("isDone",true);
+$ctx1.sendIdx["at:put:"]=2;
+$2=_st($1)._at_put_("id",(12345));
+builder=_st($TodoBuilder())._newWithDictionary_(d);
+self._assert_(_st(_st(_st(builder)._build())._class()).__eq($Todo()));
+return self}, function($ctx1) {$ctx1.fill(self,"testNewWithDictionary",{builder:builder,d:d},globals.TodoBuilderTest)})},
+args: [],
+source: "testNewWithDictionary\x0a\x09| builder d |\x0a\x09d := Dictionary new.\x0a\x09d at: 'text' put: 'Hello'; at: 'isDone' put: true; at: 'id' put: 12345.\x0a\x09builder := TodoBuilder newWithDictionary: d.\x0a\x09self assert: ((builder build) class = Todo).",
+messageSends: ["new", "at:put:", "newWithDictionary:", "assert:", "=", "class", "build"],
+referencedClasses: ["Dictionary", "TodoBuilder", "Todo"]
+}),
+globals.TodoBuilderTest);
+
+smalltalk.addMethod(
+smalltalk.method({
 selector: "testNewWithTodo",
 protocol: 'tests',
 fn: function (){

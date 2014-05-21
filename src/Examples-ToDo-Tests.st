@@ -9,6 +9,34 @@ TestCase subclass: #TodoBuilderTest
 
 !TodoBuilderTest methodsFor: 'tests'!
 
+testAddIsDone
+	| builder d |
+	builder := TodoBuilder new.
+	builder addIsDone: true.
+	self assert: ((builder build) isDone = true).
+!
+
+testAddText
+	| builder d |
+	builder := TodoBuilder new.
+	builder addText: 'Hello'.
+	self assert: ((builder build) text = 'Hello').
+!
+
+testBuild
+	| builder d |
+	builder := TodoBuilder new.
+	self assert: ((builder build) class = Todo).
+!
+
+testNewWithDictionary
+	| builder d |
+	d := Dictionary new.
+	d at: 'text' put: 'Hello'; at: 'isDone' put: true; at: 'id' put: 12345.
+	builder := TodoBuilder newWithDictionary: d.
+	self assert: ((builder build) class = Todo).
+!
+
 testNewWithTodo
 	| b t1 |
 	t1 := Todo new.
