@@ -71,5 +71,32 @@ referencedClasses: ["Todo"]
 }),
 globals.TodoTest);
 
+smalltalk.addMethod(
+smalltalk.method({
+selector: "testToggleIsDone",
+protocol: 'tests',
+fn: function (){
+var self=this;
+var t1,t2;
+function $Todo(){return globals.Todo||(typeof Todo=="undefined"?nil:Todo)}
+return smalltalk.withContext(function($ctx1) { 
+var $2,$1;
+t1=_st($Todo())._new();
+t2=_st(t1)._toggleIsDone();
+$2=_st(t1)._isDone();
+$ctx1.sendIdx["isDone"]=1;
+$1=_st($2).__eq(false);
+$ctx1.sendIdx["="]=1;
+self._assert_($1);
+$ctx1.sendIdx["assert:"]=1;
+self._assert_(_st(_st(t2)._isDone()).__eq(true));
+return self}, function($ctx1) {$ctx1.fill(self,"testToggleIsDone",{t1:t1,t2:t2},globals.TodoTest)})},
+args: [],
+source: "testToggleIsDone\x0a\x09| t1 t2 |\x0a\x09t1 := Todo new.\x0a\x09t2 := t1 toggleIsDone.\x0a\x09self assert: (t1 isDone = false).\x0a\x09self assert: (t2 isDone = true).",
+messageSends: ["new", "toggleIsDone", "assert:", "=", "isDone"],
+referencedClasses: ["Todo"]
+}),
+globals.TodoTest);
+
 
 });
