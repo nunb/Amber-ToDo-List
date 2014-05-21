@@ -119,6 +119,89 @@ globals.TodoBuilderTest);
 
 
 smalltalk.addClass('TodoStorageTest', globals.TestCase, [], 'Examples-ToDo-Tests');
+smalltalk.addMethod(
+smalltalk.method({
+selector: "testAdd",
+protocol: 'tests',
+fn: function (){
+var self=this;
+var s,t1;
+function $TodoStorage(){return globals.TodoStorage||(typeof TodoStorage=="undefined"?nil:TodoStorage)}
+function $Todo(){return globals.Todo||(typeof Todo=="undefined"?nil:Todo)}
+return smalltalk.withContext(function($ctx1) { 
+s=_st($TodoStorage())._newWithName_("todos-amber-test");
+_st(s)._load();
+t1=_st($Todo())._new();
+_st(s)._add_(t1);
+self._assert_(_st(_st(_st(s)._items())._size()).__eq((1)));
+return self}, function($ctx1) {$ctx1.fill(self,"testAdd",{s:s,t1:t1},globals.TodoStorageTest)})},
+args: [],
+source: "testAdd\x0a\x09| s t1 |\x0a\x09s := TodoStorage newWithName: 'todos-amber-test'.\x0a\x09s load.\x0a\x09t1 := Todo new.\x0a\x09s add: t1.\x0a\x09self assert: (s items size = 1).",
+messageSends: ["newWithName:", "load", "new", "add:", "assert:", "=", "size", "items"],
+referencedClasses: ["TodoStorage", "Todo"]
+}),
+globals.TodoStorageTest);
+
+smalltalk.addMethod(
+smalltalk.method({
+selector: "testInitializeStorage",
+protocol: 'tests',
+fn: function (){
+var self=this;
+var s;
+function $TodoStorage(){return globals.TodoStorage||(typeof TodoStorage=="undefined"?nil:TodoStorage)}
+function $Array(){return globals.Array||(typeof Array=="undefined"?nil:Array)}
+return smalltalk.withContext(function($ctx1) { 
+s=_st($TodoStorage())._new();
+self._assert_(_st(_st(_st(s)._initializeStorage())._class()).__eq($Array()));
+return self}, function($ctx1) {$ctx1.fill(self,"testInitializeStorage",{s:s},globals.TodoStorageTest)})},
+args: [],
+source: "testInitializeStorage\x0a\x09| s |\x0a\x09s := TodoStorage new.\x0a\x09self assert: (s initializeStorage class = Array).",
+messageSends: ["new", "assert:", "=", "class", "initializeStorage"],
+referencedClasses: ["TodoStorage", "Array"]
+}),
+globals.TodoStorageTest);
+
+smalltalk.addMethod(
+smalltalk.method({
+selector: "testLoad",
+protocol: 'tests',
+fn: function (){
+var self=this;
+var s;
+function $TodoStorage(){return globals.TodoStorage||(typeof TodoStorage=="undefined"?nil:TodoStorage)}
+function $Array(){return globals.Array||(typeof Array=="undefined"?nil:Array)}
+return smalltalk.withContext(function($ctx1) { 
+s=_st($TodoStorage())._newWithName_("todos-amber-test");
+_st(s)._load();
+self._assert_(_st(_st(_st(s)._items())._class()).__eq($Array()));
+return self}, function($ctx1) {$ctx1.fill(self,"testLoad",{s:s},globals.TodoStorageTest)})},
+args: [],
+source: "testLoad\x0a\x09| s |\x0a\x09s := TodoStorage newWithName: 'todos-amber-test'.\x0a\x09s load.\x0a\x09self assert: (s items class = Array).",
+messageSends: ["newWithName:", "load", "assert:", "=", "class", "items"],
+referencedClasses: ["TodoStorage", "Array"]
+}),
+globals.TodoStorageTest);
+
+smalltalk.addMethod(
+smalltalk.method({
+selector: "testNewWithName",
+protocol: 'tests',
+fn: function (){
+var self=this;
+var s;
+function $TodoStorage(){return globals.TodoStorage||(typeof TodoStorage=="undefined"?nil:TodoStorage)}
+return smalltalk.withContext(function($ctx1) { 
+s=_st($TodoStorage())._newWithName_("todos-amber-storage");
+self._assert_(_st(_st(s)._name()).__eq("todos-amber-storage"));
+return self}, function($ctx1) {$ctx1.fill(self,"testNewWithName",{s:s},globals.TodoStorageTest)})},
+args: [],
+source: "testNewWithName\x0a\x09| s |\x0a\x09s := TodoStorage newWithName: 'todos-amber-storage'.\x0a\x09self assert: (s name = 'todos-amber-storage').",
+messageSends: ["newWithName:", "assert:", "=", "name"],
+referencedClasses: ["TodoStorage"]
+}),
+globals.TodoStorageTest);
+
 
 
 smalltalk.addClass('TodoTest', globals.TestCase, [], 'Examples-ToDo-Tests');

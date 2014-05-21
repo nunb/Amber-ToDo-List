@@ -48,6 +48,36 @@ TestCase subclass: #TodoStorageTest
 	instanceVariableNames: ''
 	package: 'Examples-ToDo-Tests'!
 
+!TodoStorageTest methodsFor: 'tests'!
+
+testAdd
+	| s t1 |
+	s := TodoStorage newWithName: 'todos-amber-test'.
+	s load.
+	t1 := Todo new.
+	s add: t1.
+	self assert: (s items size = 1).
+!
+
+testInitializeStorage
+	| s |
+	s := TodoStorage new.
+	self assert: (s initializeStorage class = Array).
+!
+
+testLoad
+	| s |
+	s := TodoStorage newWithName: 'todos-amber-test'.
+	s load.
+	self assert: (s items class = Array).
+!
+
+testNewWithName
+	| s |
+	s := TodoStorage newWithName: 'todos-amber-storage'.
+	self assert: (s name = 'todos-amber-storage').
+! !
+
 TestCase subclass: #TodoTest
 	instanceVariableNames: ''
 	package: 'Examples-ToDo-Tests'!
