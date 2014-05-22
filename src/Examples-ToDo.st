@@ -6,8 +6,11 @@ Widget subclass: #TodoApp
 !TodoApp methodsFor: 'initializing'!
 
 initialize
+	| announcer |
 	super initialize.
 	self seed.
+	announcer := TodoAnnouncer current.
+	announcer on: TodoUpdated do: [ :aTodoUpdated | self update: (aTodoUpdated todo) ].
 !
 
 seed
@@ -24,12 +27,23 @@ renderOn: html
     TodoInfo new renderOn: html.
 ! !
 
+!TodoApp methodsFor: 'state'!
+
+update: aTodo
+	| old |
+	old := (self class todos) detect: [ :each | each = aTodo ].
+	(self class todos) remove: old.
+	(self class todos) add: aTodo.
+	console log: (self class todos).
+	^ aTodo.
+! !
+
 TodoApp class instanceVariableNames: 'todos'!
 
 !TodoApp class methodsFor: 'accessing'!
 
 todos
-	^ todos ifNil: [ (TodoStorage newWithName: 'todos-amber') load. ]
+	^ todos ifNil: [ todos := (TodoStorage newWithName: 'todos-amber') load. ]
 ! !
 
 !TodoApp class methodsFor: 'lifecycle'!

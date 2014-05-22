@@ -37,6 +37,7 @@ updateTodo: aTodo
 	builder := TodoBuilder newWithTodo: aTodo.
 	builder addIsDone: (aTodo isDone) not.
 	newTodo := builder build.
+	todo := newTodo.
 	announcer := TodoAnnouncer current.
 	announcer announce: (TodoUpdated newWithTodo: newTodo).
 ! !
@@ -58,13 +59,17 @@ renderOn: html
 	html input
     	type: 'checkbox';
 		class: 'toggle';
-		onClick: [ console log: 'toggle todo state' ].
+		onClick: [ self updateTodo: (self todo) ].
 ! !
 
 !TodoCheckbox class methodsFor: 'initialization'!
 
 newWithTodo: aTodo
 	^ self basicNew initializeWithTodo: aTodo.
+!
+
+newWithTodo: aTodo callback: aString
+	^ self basicNew initializeWithTodo: aTodo callback: aString.
 ! !
 
 Widget subclass: #TodoClearButton
@@ -127,7 +132,9 @@ Widget subclass: #TodoCount
 !TodoCount methodsFor: 'accessing'!
 
 count
-	^ TodoApp todos size.
+	| active |
+	active := TodoApp todos select: [ :each | each isDone = false ].
+	^ active size.
 !
 
 root
@@ -145,6 +152,7 @@ initialize
 	super initialize.
 	announcer := TodoAnnouncer current.
 	announcer on: TodoAdded do: [ self refresh ].
+	announcer on: TodoUpdated do: [ self refresh ].
 ! !
 
 !TodoCount methodsFor: 'rendering'!
@@ -466,6 +474,7 @@ renderOn: html
 
 updateTodo: aTodo
 	"Toggles whether this Todo isDone"
+	console log: aTodo.
 	aTodo isDone
 		ifTrue: [ ('#', aTodo id) asJQuery addClass: 'completed'. ]
 		ifFalse: [ ('#', aTodo id) asJQuery removeClass: 'completed' ].
