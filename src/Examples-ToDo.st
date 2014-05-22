@@ -1,16 +1,13 @@
 Smalltalk createPackage: 'Examples-ToDo'!
 Widget subclass: #TodoApp
-	instanceVariableNames: ''
+	instanceVariableNames: 'todos'
 	package: 'Examples-ToDo'!
 
 !TodoApp methodsFor: 'initializing'!
 
 initialize
-	| announcer |
 	super initialize.
 	self seed.
-	announcer := TodoAnnouncer current.
-	announcer on: TodoUpdated do: [ :aTodoUpdated | self update: (aTodoUpdated todo) ].
 !
 
 seed
@@ -29,26 +26,48 @@ renderOn: html
 
 !TodoApp methodsFor: 'state'!
 
-update: aTodo
-	| old |
-	old := (self class todos) detect: [ :each | each = aTodo ].
-	(self class todos) remove: old.
-	(self class todos) add: aTodo.
-	console log: (self class todos).
+add: aTodo
+	| announcer |
+	(self todos) add: aTodo.
+	announcer := TodoAnnouncer current.
+	announcer announce: TodoAdded new.
 	^ aTodo.
-! !
+!
 
-TodoApp class instanceVariableNames: 'todos'!
+removeAll
+	| announcer |
+	(self todos) removeAll.
+	announcer := TodoAnnouncer current.
+	announcer announce: TodoDeleted new.
+!
 
-!TodoApp class methodsFor: 'accessing'!
+sortedTodos
+	^ todos sort: [ :a :b | (a id) < (b id) ]
+!
 
 todos
 	^ todos ifNil: [ todos := (TodoStorage newWithName: 'todos-amber') load. ]
+!
+
+update: aTodo
+	| old announcer |
+	old := (self todos) detect: [ :each | each = aTodo ].
+	(self todos) remove: old.
+	(self todos) add: aTodo.
+	announcer := TodoAnnouncer current.
+	announcer announce: TodoUpdated new.
+	^ aTodo.
 ! !
+
+TodoApp class instanceVariableNames: 'current'!
 
 !TodoApp class methodsFor: 'lifecycle'!
 
+current
+	^ current ifNil: [ current := TodoApp new ]
+!
+
 run
-	self new appendToJQuery: 'body' asJQuery
+	self current appendToJQuery: 'body' asJQuery
 ! !
 

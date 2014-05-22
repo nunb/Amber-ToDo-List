@@ -21,10 +21,14 @@ renderOn: html
 ! !
 
 Widget subclass: #TodoCheckbox
-	instanceVariableNames: 'todo'
+	instanceVariableNames: 'root todo'
 	package: 'Examples-ToDo-Views'!
 
 !TodoCheckbox methodsFor: 'accessing'!
+
+root
+	^ root.
+!
 
 todo
 	^ todo.
@@ -37,9 +41,7 @@ updateTodo: aTodo
 	builder := TodoBuilder newWithTodo: aTodo.
 	builder addIsDone: (aTodo isDone) not.
 	newTodo := builder build.
-	todo := newTodo.
-	announcer := TodoAnnouncer current.
-	announcer announce: (TodoUpdated newWithTodo: newTodo).
+	(TodoApp current) update: newTodo.
 ! !
 
 !TodoCheckbox methodsFor: 'initialization'!
@@ -56,7 +58,7 @@ initializeWithTodo: aTodo
 !TodoCheckbox methodsFor: 'rendering'!
 
 renderOn: html
-	html input
+	root := html input
     	type: 'checkbox';
 		class: 'toggle';
 		onClick: [ self updateTodo: (self todo) ].
@@ -86,12 +88,10 @@ root: aTagBrush
 	root := aTagBrush.
 ! !
 
-!TodoClearButton methodsFor: 'announcing'!
+!TodoClearButton methodsFor: 'events'!
 
-announceClearCompleted
-	| announcer |
-	announcer := TodoAnnouncer current.
-	announcer announce: TodoClearCompleted new.
+clearCompleted
+	TodoApp current removeAll.
 ! !
 
 !TodoClearButton methodsFor: 'initialization'!
@@ -107,7 +107,7 @@ initialize
 
 decorate
 	|items|
-	items := TodoApp todos select: [ :each | each isDone = true ].
+	items := (TodoApp current todos) select: [ :each | each isDone = true ].
 	^ 'Clear completed (', (items size), ')'.
 !
 
@@ -128,7 +128,7 @@ renderOn: html
 		id: 'clear-completed';
 		style: 'display: none;';
 		with: [ (self renderContentOn: html) ];
-		onClick: [ console log: 'clear completed' ].
+		onClick: [ self clearCompleted ].
 !
 
 show
@@ -137,7 +137,7 @@ show
 
 toggle
 	| items |
-	items := (TodoApp todos select: [ :each | each isDone = true ]).
+	items := ((TodoApp current todos) select: [ :each | each isDone = true ]).
 	(items size > 0)
 		ifTrue: [ self show. self refresh. ] 
 		ifFalse: [ self remove. ].
@@ -151,7 +151,7 @@ Widget subclass: #TodoCount
 
 count
 	| active |
-	active := TodoApp todos select: [ :each | each isDone = false ].
+	active := (TodoApp current todos) select: [ :each | each isDone = false ].
 	^ active size.
 !
 
@@ -281,7 +281,7 @@ initialize
 renderOn: html
 	html footer
 		id: 'footer';
-		style: ((TodoApp todos size > 0) ifTrue: [ '' ] ifFalse: [ 'display: none;' ]);
+		style: ((TodoApp current todos size > 0) ifTrue: [ '' ] ifFalse: [ 'display: none;' ]);
 		with: [
 			TodoCount new renderOn: html.
 			TodoFilters new renderOn: html.
@@ -323,9 +323,7 @@ Widget subclass: #TodoInput
 
 addTodo: aTodo
 	"Adds a Todo"
-	"FIXME: State!!"
-	console log: 'Adding todo:'.
-	console log: aTodo.
+	(TodoApp current) add: aTodo.
 ! !
 
 !TodoInput methodsFor: 'events'!
@@ -397,7 +395,7 @@ newWithTodo: aTodo
 ! !
 
 Widget subclass: #TodoList
-	instanceVariableNames: ''
+	instanceVariableNames: 'root'
 	package: 'Examples-ToDo-Views'!
 
 !TodoList methodsFor: 'initialization'!
@@ -406,9 +404,9 @@ initialize
 	| announcer |
 	super initialize.
 	announcer := TodoAnnouncer current.
-	announcer on: TodoAdded do: [ :aTodoAdded | self appendTodoListItem: (TodoListItem newWithTodo: (aTodoAdded todo)) ].
-	announcer on: TodoDeleted do: [ :aTodoDeleted | self removeFromList: (aTodoDeleted todo). ].
-	announcer on: TodoClearCompleted do: [ self clearCompleted. ].
+	announcer on: TodoAdded do: [ self refresh ].
+	announcer on: TodoUpdated do: [ self refresh ].
+	announcer on: TodoDeleted do: [ self refresh ].
 ! !
 
 !TodoList methodsFor: 'rendering'!
@@ -422,21 +420,28 @@ clearCompleted
 	console log: 'Remove completed items!!'
 !
 
+refresh
+	console log: 'TodoList refreshing'.
+	[ :html | self renderContentOn: html ] appendToJQuery: (root asJQuery empty).
+!
+
 removeFromList: aTodo
 	"Removes a list item from the list of items"
 	('#', (aTodo id)) asJQuery remove.
 !
 
+renderContentOn: html
+	(TodoApp current sortedTodos) do: [ :aTodo | (TodoListItem newWithTodo: aTodo) renderOn: html ]
+!
+
 renderOn: html
-	| todos |
-	todos := TodoApp todos.
-	html ul
+	root := html ul
 		id: 'todo-list';
-		with: [ todos do: [ :aTodo | (TodoListItem newWithTodo: aTodo) renderOn: html ]].
+		with: [ self renderContentOn: html ].
 ! !
 
 Widget subclass: #TodoListItem
-	instanceVariableNames: 'todo checkbox label button'
+	instanceVariableNames: 'root todo checkbox label button'
 	package: 'Examples-ToDo-Views'!
 
 !TodoListItem methodsFor: 'accessing'!
@@ -453,6 +458,10 @@ label
 	^ label.
 !
 
+root
+	^ root.
+!
+
 todo
 	^ todo.
 ! !
@@ -465,22 +474,20 @@ initialize
 !
 
 initializeWithTodo: aTodo
-	| announcer |
 	super initialize.
 	todo := aTodo.
 	checkbox := TodoCheckbox newWithTodo: aTodo.
 	button := TodoDeleteButton newWithTodo: aTodo.
 	label := TodoLabel newWithTodo: aTodo.
-	announcer := TodoAnnouncer current.
-	announcer on: TodoUpdated do: [ :aTodoUpdated | self updateTodo: (aTodoUpdated todo) ].
 ! !
 
 !TodoListItem methodsFor: 'rendering'!
 
 renderOn: html
-	html li 
-		"FIXME: State!!"
-		class: ((todo isDone) ifTrue: [ "completed" ] ifFalse: [''] );
+	console log: 'TodoListItem renderingOn:'.
+	console log: todo.
+	root := html li
+		class: ((todo isDone) ifTrue: [ 'completed' ] ifFalse: [''] );
 		id: (todo id);
 		with: [
 			html div
@@ -489,14 +496,6 @@ renderOn: html
                   	checkbox renderOn: html.
 					label renderOn: html.
 					button renderOn: html. ]].
-!
-
-updateTodo: aTodo
-	"Toggles whether this Todo isDone"
-	console log: aTodo.
-	aTodo isDone
-		ifTrue: [ ('#', aTodo id) asJQuery addClass: 'completed'. ]
-		ifFalse: [ ('#', aTodo id) asJQuery removeClass: 'completed' ].
 ! !
 
 !TodoListItem class methodsFor: 'initialization'!
@@ -523,7 +522,7 @@ initialize
 renderOn: html
 	html section
 		id: 'main';
-		style: ((TodoApp todos size > 0) ifTrue: [''] ifFalse: [ 'display: none;' ]);
+		style: ((TodoApp current todos size > 0) ifTrue: [''] ifFalse: [ 'display: none;' ]);
 		with: [
 			TodoToggle new renderOn: html.
             TodoList new renderOn: html. ].
@@ -537,6 +536,24 @@ Object subclass: #TodoToggle
 	instanceVariableNames: ''
 	package: 'Examples-ToDo-Views'!
 
+!TodoToggle methodsFor: 'convenience'!
+
+todoStatus
+	^ (TodoApp current todos) inject: #= into: [ :result :each | each isDone ].
+! !
+
+!TodoToggle methodsFor: 'events'!
+
+markAllAsComplete
+	| newItems |
+	newItems := (TodoApp current todos) collect: [ :item | 
+		| builder |
+		builder := TodoBuilder newWithTodo: item.
+		builder addIsDone: (self todoStatus) not.
+		builder build. ].
+	newItems do: [ :each | (TodoApp current) update: each. ].
+! !
+
 !TodoToggle methodsFor: 'initialization'!
 
 initialize
@@ -549,7 +566,8 @@ renderOn: html
 	| input label |
 	input := html input
 				    id: 'toggle-all';
-                  	type: 'checkbox'.
+                  	type: 'checkbox';
+					onClick: [ self markAllAsComplete ].
 	label := html label
 					for: 'toggle-all';
 					with: 'Mark all as complete'.

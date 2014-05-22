@@ -2,30 +2,65 @@ define("Examples/Examples-ToDo", ["amber_vm/smalltalk", "amber_vm/nil", "amber_v
 smalltalk.addPackage('Examples-ToDo');
 smalltalk.packages["Examples-ToDo"].transport = {"type":"amd","amdNamespace":"Examples"};
 
-smalltalk.addClass('TodoApp', globals.Widget, [], 'Examples-ToDo');
+smalltalk.addClass('TodoApp', globals.Widget, ['todos'], 'Examples-ToDo');
+smalltalk.addMethod(
+smalltalk.method({
+selector: "add:",
+protocol: 'state',
+fn: function (aTodo){
+var self=this;
+var announcer;
+function $TodoAnnouncer(){return globals.TodoAnnouncer||(typeof TodoAnnouncer=="undefined"?nil:TodoAnnouncer)}
+function $TodoAdded(){return globals.TodoAdded||(typeof TodoAdded=="undefined"?nil:TodoAdded)}
+return smalltalk.withContext(function($ctx1) { 
+_st(self._todos())._add_(aTodo);
+announcer=_st($TodoAnnouncer())._current();
+_st(announcer)._announce_(_st($TodoAdded())._new());
+return aTodo;
+}, function($ctx1) {$ctx1.fill(self,"add:",{aTodo:aTodo,announcer:announcer},globals.TodoApp)})},
+args: ["aTodo"],
+source: "add: aTodo\x0a\x09| announcer |\x0a\x09(self todos) add: aTodo.\x0a\x09announcer := TodoAnnouncer current.\x0a\x09announcer announce: TodoAdded new.\x0a\x09^ aTodo.",
+messageSends: ["add:", "todos", "current", "announce:", "new"],
+referencedClasses: ["TodoAnnouncer", "TodoAdded"]
+}),
+globals.TodoApp);
+
 smalltalk.addMethod(
 smalltalk.method({
 selector: "initialize",
 protocol: 'initializing',
 fn: function (){
 var self=this;
-var announcer;
-function $TodoAnnouncer(){return globals.TodoAnnouncer||(typeof TodoAnnouncer=="undefined"?nil:TodoAnnouncer)}
-function $TodoUpdated(){return globals.TodoUpdated||(typeof TodoUpdated=="undefined"?nil:TodoUpdated)}
 return smalltalk.withContext(function($ctx1) { 
 ($ctx1.supercall = true, globals.TodoApp.superclass.fn.prototype._initialize.apply(_st(self), []));
 $ctx1.supercall = false;
 self._seed();
-announcer=_st($TodoAnnouncer())._current();
-_st(announcer)._on_do_($TodoUpdated(),(function(aTodoUpdated){
-return smalltalk.withContext(function($ctx2) {
-return self._update_(_st(aTodoUpdated)._todo());
-}, function($ctx2) {$ctx2.fillBlock({aTodoUpdated:aTodoUpdated},$ctx1,1)})}));
-return self}, function($ctx1) {$ctx1.fill(self,"initialize",{announcer:announcer},globals.TodoApp)})},
+return self}, function($ctx1) {$ctx1.fill(self,"initialize",{},globals.TodoApp)})},
 args: [],
-source: "initialize\x0a\x09| announcer |\x0a\x09super initialize.\x0a\x09self seed.\x0a\x09announcer := TodoAnnouncer current.\x0a\x09announcer on: TodoUpdated do: [ :aTodoUpdated | self update: (aTodoUpdated todo) ].",
-messageSends: ["initialize", "seed", "current", "on:do:", "update:", "todo"],
-referencedClasses: ["TodoAnnouncer", "TodoUpdated"]
+source: "initialize\x0a\x09super initialize.\x0a\x09self seed.",
+messageSends: ["initialize", "seed"],
+referencedClasses: []
+}),
+globals.TodoApp);
+
+smalltalk.addMethod(
+smalltalk.method({
+selector: "removeAll",
+protocol: 'state',
+fn: function (){
+var self=this;
+var announcer;
+function $TodoAnnouncer(){return globals.TodoAnnouncer||(typeof TodoAnnouncer=="undefined"?nil:TodoAnnouncer)}
+function $TodoDeleted(){return globals.TodoDeleted||(typeof TodoDeleted=="undefined"?nil:TodoDeleted)}
+return smalltalk.withContext(function($ctx1) { 
+_st(self._todos())._removeAll();
+announcer=_st($TodoAnnouncer())._current();
+_st(announcer)._announce_(_st($TodoDeleted())._new());
+return self}, function($ctx1) {$ctx1.fill(self,"removeAll",{announcer:announcer},globals.TodoApp)})},
+args: [],
+source: "removeAll\x0a\x09| announcer |\x0a\x09(self todos) removeAll.\x0a\x09announcer := TodoAnnouncer current.\x0a\x09announcer announce: TodoDeleted new.",
+messageSends: ["removeAll", "todos", "current", "announce:", "new"],
+referencedClasses: ["TodoAnnouncer", "TodoDeleted"]
 }),
 globals.TodoApp);
 
@@ -75,63 +110,31 @@ globals.TodoApp);
 
 smalltalk.addMethod(
 smalltalk.method({
-selector: "update:",
+selector: "sortedTodos",
 protocol: 'state',
-fn: function (aTodo){
+fn: function (){
 var self=this;
-var old;
 return smalltalk.withContext(function($ctx1) { 
-var $2,$1,$4,$3,$6,$5;
-$2=self._class();
-$ctx1.sendIdx["class"]=1;
-$1=_st($2)._todos();
-$ctx1.sendIdx["todos"]=1;
-old=_st($1)._detect_((function(each){
+var $2,$1;
+$1=_st(self["@todos"])._sort_((function(a,b){
 return smalltalk.withContext(function($ctx2) {
-return _st(each).__eq(aTodo);
-}, function($ctx2) {$ctx2.fillBlock({each:each},$ctx1,1)})}));
-$4=self._class();
-$ctx1.sendIdx["class"]=2;
-$3=_st($4)._todos();
-$ctx1.sendIdx["todos"]=2;
-_st($3)._remove_(old);
-$6=self._class();
-$ctx1.sendIdx["class"]=3;
-$5=_st($6)._todos();
-$ctx1.sendIdx["todos"]=3;
-_st($5)._add_(aTodo);
-_st(console)._log_(_st(self._class())._todos());
-return aTodo;
-}, function($ctx1) {$ctx1.fill(self,"update:",{aTodo:aTodo,old:old},globals.TodoApp)})},
-args: ["aTodo"],
-source: "update: aTodo\x0a\x09| old |\x0a\x09old := (self class todos) detect: [ :each | each = aTodo ].\x0a\x09(self class todos) remove: old.\x0a\x09(self class todos) add: aTodo.\x0a\x09console log: (self class todos).\x0a\x09^ aTodo.",
-messageSends: ["detect:", "todos", "class", "=", "remove:", "add:", "log:"],
+$2=_st(a)._id();
+$ctx2.sendIdx["id"]=1;
+return _st($2).__lt(_st(b)._id());
+}, function($ctx2) {$ctx2.fillBlock({a:a,b:b},$ctx1,1)})}));
+return $1;
+}, function($ctx1) {$ctx1.fill(self,"sortedTodos",{},globals.TodoApp)})},
+args: [],
+source: "sortedTodos\x0a\x09^ todos sort: [ :a :b | (a id) < (b id) ]",
+messageSends: ["sort:", "<", "id"],
 referencedClasses: []
 }),
 globals.TodoApp);
 
-
-globals.TodoApp.klass.iVarNames = ['todos'];
-smalltalk.addMethod(
-smalltalk.method({
-selector: "run",
-protocol: 'lifecycle',
-fn: function (){
-var self=this;
-return smalltalk.withContext(function($ctx1) { 
-_st(self._new())._appendToJQuery_("body"._asJQuery());
-return self}, function($ctx1) {$ctx1.fill(self,"run",{},globals.TodoApp.klass)})},
-args: [],
-source: "run\x0a\x09self new appendToJQuery: 'body' asJQuery",
-messageSends: ["appendToJQuery:", "new", "asJQuery"],
-referencedClasses: []
-}),
-globals.TodoApp.klass);
-
 smalltalk.addMethod(
 smalltalk.method({
 selector: "todos",
-protocol: 'accessing',
+protocol: 'state',
 fn: function (){
 var self=this;
 function $TodoStorage(){return globals.TodoStorage||(typeof TodoStorage=="undefined"?nil:TodoStorage)}
@@ -145,11 +148,86 @@ $1=self["@todos"];
 $1=$2;
 };
 return $1;
-}, function($ctx1) {$ctx1.fill(self,"todos",{},globals.TodoApp.klass)})},
+}, function($ctx1) {$ctx1.fill(self,"todos",{},globals.TodoApp)})},
 args: [],
 source: "todos\x0a\x09^ todos ifNil: [ todos := (TodoStorage newWithName: 'todos-amber') load. ]",
 messageSends: ["ifNil:", "load", "newWithName:"],
 referencedClasses: ["TodoStorage"]
+}),
+globals.TodoApp);
+
+smalltalk.addMethod(
+smalltalk.method({
+selector: "update:",
+protocol: 'state',
+fn: function (aTodo){
+var self=this;
+var old,announcer;
+function $TodoAnnouncer(){return globals.TodoAnnouncer||(typeof TodoAnnouncer=="undefined"?nil:TodoAnnouncer)}
+function $TodoUpdated(){return globals.TodoUpdated||(typeof TodoUpdated=="undefined"?nil:TodoUpdated)}
+return smalltalk.withContext(function($ctx1) { 
+var $1,$2;
+$1=self._todos();
+$ctx1.sendIdx["todos"]=1;
+old=_st($1)._detect_((function(each){
+return smalltalk.withContext(function($ctx2) {
+return _st(each).__eq(aTodo);
+}, function($ctx2) {$ctx2.fillBlock({each:each},$ctx1,1)})}));
+$2=self._todos();
+$ctx1.sendIdx["todos"]=2;
+_st($2)._remove_(old);
+_st(self._todos())._add_(aTodo);
+announcer=_st($TodoAnnouncer())._current();
+_st(announcer)._announce_(_st($TodoUpdated())._new());
+return aTodo;
+}, function($ctx1) {$ctx1.fill(self,"update:",{aTodo:aTodo,old:old,announcer:announcer},globals.TodoApp)})},
+args: ["aTodo"],
+source: "update: aTodo\x0a\x09| old announcer |\x0a\x09old := (self todos) detect: [ :each | each = aTodo ].\x0a\x09(self todos) remove: old.\x0a\x09(self todos) add: aTodo.\x0a\x09announcer := TodoAnnouncer current.\x0a\x09announcer announce: TodoUpdated new.\x0a\x09^ aTodo.",
+messageSends: ["detect:", "todos", "=", "remove:", "add:", "current", "announce:", "new"],
+referencedClasses: ["TodoAnnouncer", "TodoUpdated"]
+}),
+globals.TodoApp);
+
+
+globals.TodoApp.klass.iVarNames = ['current'];
+smalltalk.addMethod(
+smalltalk.method({
+selector: "current",
+protocol: 'lifecycle',
+fn: function (){
+var self=this;
+function $TodoApp(){return globals.TodoApp||(typeof TodoApp=="undefined"?nil:TodoApp)}
+return smalltalk.withContext(function($ctx1) { 
+var $2,$1,$receiver;
+$2=self["@current"];
+if(($receiver = $2) == null || $receiver.isNil){
+self["@current"]=_st($TodoApp())._new();
+$1=self["@current"];
+} else {
+$1=$2;
+};
+return $1;
+}, function($ctx1) {$ctx1.fill(self,"current",{},globals.TodoApp.klass)})},
+args: [],
+source: "current\x0a\x09^ current ifNil: [ current := TodoApp new ]",
+messageSends: ["ifNil:", "new"],
+referencedClasses: ["TodoApp"]
+}),
+globals.TodoApp.klass);
+
+smalltalk.addMethod(
+smalltalk.method({
+selector: "run",
+protocol: 'lifecycle',
+fn: function (){
+var self=this;
+return smalltalk.withContext(function($ctx1) { 
+_st(self._current())._appendToJQuery_("body"._asJQuery());
+return self}, function($ctx1) {$ctx1.fill(self,"run",{},globals.TodoApp.klass)})},
+args: [],
+source: "run\x0a\x09self current appendToJQuery: 'body' asJQuery",
+messageSends: ["appendToJQuery:", "current", "asJQuery"],
+referencedClasses: []
 }),
 globals.TodoApp.klass);
 
