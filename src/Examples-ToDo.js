@@ -27,6 +27,27 @@ globals.TodoApp);
 
 smalltalk.addMethod(
 smalltalk.method({
+selector: "completedTodos",
+protocol: 'state',
+fn: function (){
+var self=this;
+return smalltalk.withContext(function($ctx1) { 
+var $1;
+$1=_st(self["@todos"])._select_((function(each){
+return smalltalk.withContext(function($ctx2) {
+return _st(_st(each)._isDone()).__eq(true);
+}, function($ctx2) {$ctx2.fillBlock({each:each},$ctx1,1)})}));
+return $1;
+}, function($ctx1) {$ctx1.fill(self,"completedTodos",{},globals.TodoApp)})},
+args: [],
+source: "completedTodos\x0a\x09^ todos select: [ :each | each isDone = true ].",
+messageSends: ["select:", "=", "isDone"],
+referencedClasses: []
+}),
+globals.TodoApp);
+
+smalltalk.addMethod(
+smalltalk.method({
 selector: "initialize",
 protocol: 'initializing',
 fn: function (){
@@ -40,6 +61,28 @@ args: [],
 source: "initialize\x0a\x09super initialize.\x0a\x09self seed.",
 messageSends: ["initialize", "seed"],
 referencedClasses: []
+}),
+globals.TodoApp);
+
+smalltalk.addMethod(
+smalltalk.method({
+selector: "remove:",
+protocol: 'state',
+fn: function (aTodo){
+var self=this;
+var announcer;
+function $TodoAnnouncer(){return globals.TodoAnnouncer||(typeof TodoAnnouncer=="undefined"?nil:TodoAnnouncer)}
+function $TodoDeleted(){return globals.TodoDeleted||(typeof TodoDeleted=="undefined"?nil:TodoDeleted)}
+return smalltalk.withContext(function($ctx1) { 
+_st(self._todos())._remove_(aTodo);
+announcer=_st($TodoAnnouncer())._current();
+_st(announcer)._announce_(_st($TodoDeleted())._new());
+return aTodo;
+}, function($ctx1) {$ctx1.fill(self,"remove:",{aTodo:aTodo,announcer:announcer},globals.TodoApp)})},
+args: ["aTodo"],
+source: "remove: aTodo\x0a\x09| announcer |\x0a\x09(self todos) remove: aTodo.\x0a\x09announcer := TodoAnnouncer current.\x0a\x09announcer announce: TodoDeleted new.\x0a\x09^ aTodo.",
+messageSends: ["remove:", "todos", "current", "announce:", "new"],
+referencedClasses: ["TodoAnnouncer", "TodoDeleted"]
 }),
 globals.TodoApp);
 

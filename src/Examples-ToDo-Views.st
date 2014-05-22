@@ -1,23 +1,35 @@
 Smalltalk createPackage: 'Examples-ToDo-Views'!
 Widget subclass: #TodoAppSection
-	instanceVariableNames: ''
+	instanceVariableNames: 'root'
 	package: 'Examples-ToDo-Views'!
 
 !TodoAppSection methodsFor: 'initialization'!
 
 initialize
+	| announcer |
 	super initialize.
+	announcer := TodoAnnouncer current.
+	announcer on: TodoAdded do: [ self refresh ].
+	announcer on: TodoUpdated do: [ self refresh ].
+	announcer on: TodoDeleted do: [ self refresh ].
 ! !
 
 !TodoAppSection methodsFor: 'rendering'!
 
+refresh
+	[:html | self renderContentOn: html ] appendToJQuery: (root asJQuery empty).
+!
+
+renderContentOn: html
+	TodoInput new renderOn: html.
+    TodoMain new renderOn: html.
+	TodoFooter new renderOn: html.
+!
+
 renderOn: html
-	html section
+	root := html section
 		id: 'todoapp';
-		with: [
-                  TodoInput new renderOn: html.
-                  TodoMain new renderOn: html.
-				  TodoFooter new renderOn: html. ].
+		with: [ self renderContentOn: html ].
 ! !
 
 Widget subclass: #TodoCheckbox
@@ -91,16 +103,15 @@ root: aTagBrush
 !TodoClearButton methodsFor: 'events'!
 
 clearCompleted
-	TodoApp current removeAll.
+	| completedItems |
+	completedItems := (TodoApp current todos) select: [ :each | each isDone = true ].
+	completedItems do: [ :each | TodoApp current remove: each ].
 ! !
 
 !TodoClearButton methodsFor: 'initialization'!
 
 initialize
-	| announcer |
 	super initialize.
-	announcer := TodoAnnouncer current.
-	announcer on: TodoUpdated do: [ self toggle ].
 ! !
 
 !TodoClearButton methodsFor: 'rendering'!
@@ -111,14 +122,6 @@ decorate
 	^ 'Clear completed (', (items size), ')'.
 !
 
-refresh
-	[:html | self renderContentOn: html ] appendToJQuery: (root asJQuery empty).
-!
-
-remove
-	'#clear-completed' asJQuery hide.
-!
-
 renderContentOn: html
 	html with: (self decorate).
 !
@@ -126,21 +129,9 @@ renderContentOn: html
 renderOn: html
 	root := html button
 		id: 'clear-completed';
-		style: 'display: none;';
+		style: ((TodoApp current completedTodos size >  0) ifTrue: [ '' ] ifFalse: ['display: none;']);
 		with: [ (self renderContentOn: html) ];
 		onClick: [ self clearCompleted ].
-!
-
-show
-	'#clear-completed' asJQuery show.
-!
-
-toggle
-	| items |
-	items := ((TodoApp current todos) select: [ :each | each isDone = true ]).
-	(items size > 0)
-		ifTrue: [ self show. self refresh. ] 
-		ifFalse: [ self remove. ].
 ! !
 
 Widget subclass: #TodoCount
@@ -168,9 +159,6 @@ root: aTagBrush
 initialize
 	| announcer |
 	super initialize.
-	announcer := TodoAnnouncer current.
-	announcer on: TodoAdded do: [ self refresh ].
-	announcer on: TodoUpdated do: [ self refresh ].
 ! !
 
 !TodoCount methodsFor: 'rendering'!
@@ -181,10 +169,6 @@ decorate: aNumber
 		ifTrue: [ ' item left' ]
 		ifFalse: [ ' items left' ].
 	^ str.
-!
-
-refresh
-	[:html | self renderContentOn: html ] appendToJQuery: (root asJQuery empty).
 !
 
 renderContentOn: html
@@ -286,10 +270,6 @@ renderOn: html
 			TodoCount new renderOn: html.
 			TodoFilters new renderOn: html.
 			TodoClearButton new renderOn: html. ]
-!
-
-show
-	'#footer' asJQuery show.
 ! !
 
 Object subclass: #TodoInfo
@@ -401,34 +381,10 @@ Widget subclass: #TodoList
 !TodoList methodsFor: 'initialization'!
 
 initialize
-	| announcer |
 	super initialize.
-	announcer := TodoAnnouncer current.
-	announcer on: TodoAdded do: [ self refresh ].
-	announcer on: TodoUpdated do: [ self refresh ].
-	announcer on: TodoDeleted do: [ self refresh ].
 ! !
 
 !TodoList methodsFor: 'rendering'!
-
-appendTodoListItem: todoListItem
-	"Adds a list item to the end of list items"
-	todoListItem appendToJQuery: '#todo-list' asJQuery.
-!
-
-clearCompleted
-	console log: 'Remove completed items!!'
-!
-
-refresh
-	console log: 'TodoList refreshing'.
-	[ :html | self renderContentOn: html ] appendToJQuery: (root asJQuery empty).
-!
-
-removeFromList: aTodo
-	"Removes a list item from the list of items"
-	('#', (aTodo id)) asJQuery remove.
-!
 
 renderContentOn: html
 	(TodoApp current sortedTodos) do: [ :aTodo | (TodoListItem newWithTodo: aTodo) renderOn: html ]
@@ -484,8 +440,6 @@ initializeWithTodo: aTodo
 !TodoListItem methodsFor: 'rendering'!
 
 renderOn: html
-	console log: 'TodoListItem renderingOn:'.
-	console log: todo.
 	root := html li
 		class: ((todo isDone) ifTrue: [ 'completed' ] ifFalse: [''] );
 		id: (todo id);
@@ -513,8 +467,6 @@ Widget subclass: #TodoMain
 initialize
 	| announcer |
 	super initialize.
-	announcer := TodoAnnouncer current.
-	announcer on: TodoAdded do: [ self show ].
 ! !
 
 !TodoMain methodsFor: 'rendering'!
@@ -526,10 +478,6 @@ renderOn: html
 		with: [
 			TodoToggle new renderOn: html.
             TodoList new renderOn: html. ].
-!
-
-show
-	'#main' asJQuery show.
 ! !
 
 Object subclass: #TodoToggle

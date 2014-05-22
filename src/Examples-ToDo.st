@@ -34,6 +34,18 @@ add: aTodo
 	^ aTodo.
 !
 
+completedTodos
+	^ todos select: [ :each | each isDone = true ].
+!
+
+remove: aTodo
+	| announcer |
+	(self todos) remove: aTodo.
+	announcer := TodoAnnouncer current.
+	announcer announce: TodoDeleted new.
+	^ aTodo.
+!
+
 removeAll
 	| announcer |
 	(self todos) removeAll.
