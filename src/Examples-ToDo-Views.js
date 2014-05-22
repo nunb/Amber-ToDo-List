@@ -157,7 +157,7 @@ protocol: 'rendering',
 fn: function (html){
 var self=this;
 return smalltalk.withContext(function($ctx1) { 
-var $1,$2;
+var $1,$2,$3;
 $1=_st(html)._input();
 _st($1)._type_("checkbox");
 _st($1)._class_("toggle");
@@ -166,10 +166,14 @@ return smalltalk.withContext(function($ctx2) {
 return self._updateTodo_(self._todo());
 }, function($ctx2) {$ctx2.fillBlock({},$ctx1,1)})}));
 self["@root"]=$2;
+$3=_st(self["@todo"])._isDone();
+if(smalltalk.assert($3)){
+_st(_st(_st(self["@root"])._element())._asJQuery())._prop_put_("checked",true);
+};
 return self}, function($ctx1) {$ctx1.fill(self,"renderOn:",{html:html},globals.TodoCheckbox)})},
 args: ["html"],
-source: "renderOn: html\x0a\x09root := html input\x0a    \x09type: 'checkbox';\x0a\x09\x09class: 'toggle';\x0a\x09\x09onClick: [ self updateTodo: (self todo) ].",
-messageSends: ["type:", "input", "class:", "onClick:", "updateTodo:", "todo"],
+source: "renderOn: html\x0a\x09root := html input\x0a    \x09type: 'checkbox';\x0a\x09\x09class: 'toggle';\x0a\x09\x09onClick: [ self updateTodo: (self todo) ].\x0a\x09(todo isDone)\x0a\x09\x09ifTrue: [ (root element asJQuery) prop: 'checked' put: true ].",
+messageSends: ["type:", "input", "class:", "onClick:", "updateTodo:", "todo", "ifTrue:", "isDone", "prop:put:", "asJQuery", "element"],
 referencedClasses: []
 }),
 globals.TodoCheckbox);
@@ -769,22 +773,14 @@ selector: "initialize",
 protocol: 'initialization',
 fn: function (){
 var self=this;
-var announcer;
-function $TodoAnnouncer(){return globals.TodoAnnouncer||(typeof TodoAnnouncer=="undefined"?nil:TodoAnnouncer)}
-function $TodoAdded(){return globals.TodoAdded||(typeof TodoAdded=="undefined"?nil:TodoAdded)}
 return smalltalk.withContext(function($ctx1) { 
 ($ctx1.supercall = true, globals.TodoFooter.superclass.fn.prototype._initialize.apply(_st(self), []));
 $ctx1.supercall = false;
-announcer=_st($TodoAnnouncer())._current();
-_st(announcer)._on_do_($TodoAdded(),(function(){
-return smalltalk.withContext(function($ctx2) {
-return self._show();
-}, function($ctx2) {$ctx2.fillBlock({},$ctx1,1)})}));
-return self}, function($ctx1) {$ctx1.fill(self,"initialize",{announcer:announcer},globals.TodoFooter)})},
+return self}, function($ctx1) {$ctx1.fill(self,"initialize",{},globals.TodoFooter)})},
 args: [],
-source: "initialize\x0a\x09| announcer |\x0a\x09super initialize.\x0a\x09announcer := TodoAnnouncer current.\x0a\x09announcer on: TodoAdded do: [ self show ].",
-messageSends: ["initialize", "current", "on:do:", "show"],
-referencedClasses: ["TodoAnnouncer", "TodoAdded"]
+source: "initialize\x0a\x09super initialize.",
+messageSends: ["initialize"],
+referencedClasses: []
 }),
 globals.TodoFooter);
 

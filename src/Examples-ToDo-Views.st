@@ -74,6 +74,8 @@ renderOn: html
     	type: 'checkbox';
 		class: 'toggle';
 		onClick: [ self updateTodo: (self todo) ].
+	(todo isDone)
+		ifTrue: [ (root element asJQuery) prop: 'checked' put: true ].
 ! !
 
 !TodoCheckbox class methodsFor: 'initialization'!
@@ -254,10 +256,7 @@ Widget subclass: #TodoFooter
 !TodoFooter methodsFor: 'initialization'!
 
 initialize
-	| announcer |
 	super initialize.
-	announcer := TodoAnnouncer current.
-	announcer on: TodoAdded do: [ self show ].
 ! !
 
 !TodoFooter methodsFor: 'rendering'!
