@@ -97,32 +97,50 @@ announceClearCompleted
 !TodoClearButton methodsFor: 'initialization'!
 
 initialize
+	| announcer |
 	super initialize.
+	announcer := TodoAnnouncer current.
+	announcer on: TodoUpdated do: [ self toggle ].
 ! !
 
 !TodoClearButton methodsFor: 'rendering'!
 
 decorate
 	|items|
-	"FIXME: State!!"
-	items := 1.
-	^ 'Clear completed (', items, ')'.
+	items := TodoApp todos select: [ :each | each isDone = true ].
+	^ 'Clear completed (', (items size), ')'.
+!
+
+refresh
+	[:html | self renderContentOn: html ] appendToJQuery: (root asJQuery empty).
 !
 
 remove
-	'#clear-completed' asJQuery remove.
+	'#clear-completed' asJQuery hide.
+!
+
+renderContentOn: html
+	html with: (self decorate).
 !
 
 renderOn: html
 	root := html button
 		id: 'clear-completed';
-		with: [ self decorate ];
+		style: 'display: none;';
+		with: [ (self renderContentOn: html) ];
 		onClick: [ console log: 'clear completed' ].
 !
 
 show
-	"[ :html | self renderOn: html ] appendToJQuery: ('#footer' asJQuery)."
-	console log: 'show me'.
+	'#clear-completed' asJQuery show.
+!
+
+toggle
+	| items |
+	items := (TodoApp todos select: [ :each | each isDone = true ]).
+	(items size > 0)
+		ifTrue: [ self show. self refresh. ] 
+		ifFalse: [ self remove. ].
 ! !
 
 Widget subclass: #TodoCount
@@ -266,7 +284,8 @@ renderOn: html
 		style: ((TodoApp todos size > 0) ifTrue: [ '' ] ifFalse: [ 'display: none;' ]);
 		with: [
 			TodoCount new renderOn: html.
-			TodoFilters new renderOn: html.]
+			TodoFilters new renderOn: html.
+			TodoClearButton new renderOn: html. ]
 !
 
 show
