@@ -1179,42 +1179,29 @@ protocol: 'rendering',
 fn: function (html){
 var self=this;
 return smalltalk.withContext(function($ctx1) { 
-var $1,$3,$4,$5,$6,$2;
+var $1,$3,$4,$2;
 $1=_st(html)._footer();
 _st($1)._id_("info");
 $2=_st($1)._with_((function(){
 return smalltalk.withContext(function($ctx2) {
 _st(_st(html)._p())._with_("Double-click to edit a todo");
 $ctx2.sendIdx["with:"]=2;
-_st(html)._p_((function(){
+return _st(html)._p_((function(){
 return smalltalk.withContext(function($ctx3) {
 _st(html)._with_("Written by rbistolfi, ");
 $ctx3.sendIdx["with:"]=3;
 $3=_st(html)._a();
-$ctx3.sendIdx["a"]=1;
 _st($3)._href_("https://github.com/statonjr");
-$ctx3.sendIdx["href:"]=1;
 $4=_st($3)._with_("statonjr");
 $ctx3.sendIdx["with:"]=4;
 $4;
 return _st(html)._with_(" & others");
-$ctx3.sendIdx["with:"]=5;
 }, function($ctx3) {$ctx3.fillBlock({},$ctx2,2)})}));
-$ctx2.sendIdx["p:"]=1;
-return _st(html)._p_((function(){
-return smalltalk.withContext(function($ctx3) {
-_st(html)._with_("Part of ");
-$ctx3.sendIdx["with:"]=6;
-$5=_st(html)._a();
-_st($5)._href_("http://todomvc.com");
-$6=_st($5)._with_("TodoMVC");
-return $6;
-}, function($ctx3) {$ctx3.fillBlock({},$ctx2,3)})}));
 }, function($ctx2) {$ctx2.fillBlock({},$ctx1,1)})}));
 $ctx1.sendIdx["with:"]=1;
 return self}, function($ctx1) {$ctx1.fill(self,"renderOn:",{html:html},globals.TodoInfo)})},
 args: ["html"],
-source: "renderOn: html\x0a\x09html footer\x0a\x09\x09id: 'info';\x0a\x09\x09with: [ \x0a\x09\x09\x09html p with: 'Double-click to edit a todo'.\x0a\x09\x09\x09html p: [\x0a\x09\x09\x09\x09html with: 'Written by rbistolfi, '.\x0a\x09\x09\x09\x09html a href: 'https://github.com/statonjr'; with: 'statonjr'.\x0a\x09\x09\x09\x09html with: ' & others'. ].\x0a\x09\x09\x09html p: [\x0a\x09\x09\x09\x09html with: 'Part of '.\x0a\x09\x09\x09\x09html a href: 'http://todomvc.com'; with: 'TodoMVC']].",
+source: "renderOn: html\x0a\x09html footer\x0a\x09\x09id: 'info';\x0a\x09\x09with: [ \x0a\x09\x09\x09html p with: 'Double-click to edit a todo'.\x0a\x09\x09\x09html p: [\x0a\x09\x09\x09\x09html with: 'Written by rbistolfi, '.\x0a\x09\x09\x09\x09html a href: 'https://github.com/statonjr'; with: 'statonjr'.\x0a\x09\x09\x09\x09html with: ' & others'. ]].",
 messageSends: ["id:", "footer", "with:", "p", "p:", "href:", "a"],
 referencedClasses: []
 }),

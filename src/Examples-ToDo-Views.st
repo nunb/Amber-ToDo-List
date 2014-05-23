@@ -407,10 +407,7 @@ renderOn: html
 			html p: [
 				html with: 'Written by rbistolfi, '.
 				html a href: 'https://github.com/statonjr'; with: 'statonjr'.
-				html with: ' & others'. ].
-			html p: [
-				html with: 'Part of '.
-				html a href: 'http://todomvc.com'; with: 'TodoMVC']].
+				html with: ' & others'. ]].
 ! !
 
 Widget subclass: #TodoInput
