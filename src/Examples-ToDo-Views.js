@@ -1542,19 +1542,35 @@ protocol: 'events',
 fn: function (anEvent){
 var self=this;
 var builder,newTodo;
-function $TodoBuilder(){return globals.TodoBuilder||(typeof TodoBuilder=="undefined"?nil:TodoBuilder)}
 function $TodoApp(){return globals.TodoApp||(typeof TodoApp=="undefined"?nil:TodoApp)}
+function $TodoBuilder(){return globals.TodoBuilder||(typeof TodoBuilder=="undefined"?nil:TodoBuilder)}
 return smalltalk.withContext(function($ctx1) { 
+var $3,$2,$1,$4,$5;
+$3=_st(anEvent)._target();
+$ctx1.sendIdx["target"]=1;
+$2=_st($3)._value();
+$ctx1.sendIdx["value"]=1;
+$1=_st($2).__eq("");
+if(smalltalk.assert($1)){
+$4=_st($TodoApp())._current();
+$ctx1.sendIdx["current"]=1;
+$5=self._todo();
+$ctx1.sendIdx["todo"]=1;
+_st($4)._remove_($5);
+} else {
 builder=_st($TodoBuilder())._newWithTodo_(self._todo());
+builder;
 _st(builder)._addText_(_st(_st(anEvent)._target())._value());
 newTodo=_st(builder)._build();
+newTodo;
 _st(_st($TodoApp())._current())._update_(newTodo);
 _st(_st(self["@root"])._asJQuery())._removeClass_("editing");
+};
 return self}, function($ctx1) {$ctx1.fill(self,"endEditingMode:",{anEvent:anEvent,builder:builder,newTodo:newTodo},globals.TodoListItem)})},
 args: ["anEvent"],
-source: "endEditingMode: anEvent\x0a\x09| builder newTodo |\x0a\x09builder := TodoBuilder newWithTodo: (self todo).\x0a\x09builder addText: (anEvent target value).\x0a\x09newTodo := builder build.\x0a\x09(TodoApp current) update: newTodo.\x0a\x09root asJQuery removeClass: 'editing'.",
-messageSends: ["newWithTodo:", "todo", "addText:", "value", "target", "build", "update:", "current", "removeClass:", "asJQuery"],
-referencedClasses: ["TodoBuilder", "TodoApp"]
+source: "endEditingMode: anEvent\x0a\x09| builder newTodo |\x0a\x09(anEvent target value = '')\x0a\x09\x09ifTrue: [ TodoApp current remove: (self todo).]\x0a\x09\x09ifFalse: [\x0a\x09\x09\x09builder := TodoBuilder newWithTodo: (self todo).\x0a\x09\x09\x09builder addText: (anEvent target value).\x0a\x09\x09\x09newTodo := builder build.\x0a\x09\x09\x09(TodoApp current) update: newTodo.\x0a\x09\x09\x09root asJQuery removeClass: 'editing'. ]",
+messageSends: ["ifTrue:ifFalse:", "=", "value", "target", "remove:", "current", "todo", "newWithTodo:", "addText:", "build", "update:", "removeClass:", "asJQuery"],
+referencedClasses: ["TodoApp", "TodoBuilder"]
 }),
 globals.TodoListItem);
 

@@ -549,11 +549,14 @@ todo
 
 endEditingMode: anEvent
 	| builder newTodo |
-	builder := TodoBuilder newWithTodo: (self todo).
-	builder addText: (anEvent target value).
-	newTodo := builder build.
-	(TodoApp current) update: newTodo.
-	root asJQuery removeClass: 'editing'.
+	(anEvent target value = '')
+		ifTrue: [ TodoApp current remove: (self todo).]
+		ifFalse: [
+			builder := TodoBuilder newWithTodo: (self todo).
+			builder addText: (anEvent target value).
+			newTodo := builder build.
+			(TodoApp current) update: newTodo.
+			root asJQuery removeClass: 'editing'. ]
 !
 
 enterEditingMode
