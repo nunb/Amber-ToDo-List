@@ -228,6 +228,62 @@ newWithTodo: aTodo
 	^ self basicNew initializeWithTodo: aTodo.
 ! !
 
+Widget subclass: #TodoFilterActive
+	instanceVariableNames: 'root'
+	package: 'Examples-ToDo-Views'!
+
+!TodoFilterActive methodsFor: 'rendering'!
+
+initialize
+	super initialize.
+!
+
+renderOn: html
+	html li: [
+		html a href: '#';
+			with: 'Active';
+			onClick: [ console log: 'active' ]].
+! !
+
+Widget subclass: #TodoFilterAll
+	instanceVariableNames: 'root'
+	package: 'Examples-ToDo-Views'!
+
+!TodoFilterAll methodsFor: 'initialization'!
+
+initialize
+	super initialize.
+! !
+
+!TodoFilterAll methodsFor: 'rendering'!
+
+renderOn: html
+	html li: [
+		html a href: '#';
+			class: 'selected'; 
+			with: 'All';
+			onClick: [ console log: 'all' ]].
+! !
+
+Widget subclass: #TodoFilterCompleted
+	instanceVariableNames: 'root'
+	package: 'Examples-ToDo-Views'!
+
+!TodoFilterCompleted methodsFor: 'initialization'!
+
+initialize
+	super initialize.
+! !
+
+!TodoFilterCompleted methodsFor: 'rendering'!
+
+renderOn: html
+	html li: [
+		html a href: '#';
+			with: 'Completed';
+			onClick: [ console log: 'completed' ]].
+! !
+
 Widget subclass: #TodoFilters
 	instanceVariableNames: 'root'
 	package: 'Examples-ToDo-Views'!
@@ -240,13 +296,16 @@ initialize
 
 !TodoFilters methodsFor: 'rendering'!
 
+renderContentOn: html
+	TodoFilterAll new renderOn: html.
+	TodoFilterActive new renderOn: html.
+	TodoFilterCompleted new renderOn: html.
+!
+
 renderOn: html
 	html ul
 		id: 'filters';
-		with: [
-			html li: [ html a href: '#'; class: 'selected'; onClick: [ console log: 'All' ]; with: 'All'. ].
-			html li: [ html a href: '#'; with: 'Active'. ].
-			html li: [ html a href: '#'; with: 'Completed'. ]].
+		with: [ self renderContentOn: html ].
 ! !
 
 Widget subclass: #TodoFooter

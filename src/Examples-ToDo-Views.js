@@ -690,6 +690,148 @@ referencedClasses: []
 globals.TodoDeleteButton.klass);
 
 
+smalltalk.addClass('TodoFilterActive', globals.Widget, ['root'], 'Examples-ToDo-Views');
+smalltalk.addMethod(
+smalltalk.method({
+selector: "initialize",
+protocol: 'rendering',
+fn: function (){
+var self=this;
+return smalltalk.withContext(function($ctx1) { 
+($ctx1.supercall = true, globals.TodoFilterActive.superclass.fn.prototype._initialize.apply(_st(self), []));
+$ctx1.supercall = false;
+return self}, function($ctx1) {$ctx1.fill(self,"initialize",{},globals.TodoFilterActive)})},
+args: [],
+source: "initialize\x0a\x09super initialize.",
+messageSends: ["initialize"],
+referencedClasses: []
+}),
+globals.TodoFilterActive);
+
+smalltalk.addMethod(
+smalltalk.method({
+selector: "renderOn:",
+protocol: 'rendering',
+fn: function (html){
+var self=this;
+return smalltalk.withContext(function($ctx1) { 
+var $1,$2;
+_st(html)._li_((function(){
+return smalltalk.withContext(function($ctx2) {
+$1=_st(html)._a();
+_st($1)._href_("#");
+_st($1)._with_("Active");
+$2=_st($1)._onClick_((function(){
+return smalltalk.withContext(function($ctx3) {
+return _st(console)._log_("active");
+}, function($ctx3) {$ctx3.fillBlock({},$ctx2,2)})}));
+return $2;
+}, function($ctx2) {$ctx2.fillBlock({},$ctx1,1)})}));
+return self}, function($ctx1) {$ctx1.fill(self,"renderOn:",{html:html},globals.TodoFilterActive)})},
+args: ["html"],
+source: "renderOn: html\x0a\x09html li: [\x0a\x09\x09html a href: '#';\x0a\x09\x09\x09with: 'Active';\x0a\x09\x09\x09onClick: [ console log: 'active' ]].",
+messageSends: ["li:", "href:", "a", "with:", "onClick:", "log:"],
+referencedClasses: []
+}),
+globals.TodoFilterActive);
+
+
+
+smalltalk.addClass('TodoFilterAll', globals.Widget, ['root'], 'Examples-ToDo-Views');
+smalltalk.addMethod(
+smalltalk.method({
+selector: "initialize",
+protocol: 'initialization',
+fn: function (){
+var self=this;
+return smalltalk.withContext(function($ctx1) { 
+($ctx1.supercall = true, globals.TodoFilterAll.superclass.fn.prototype._initialize.apply(_st(self), []));
+$ctx1.supercall = false;
+return self}, function($ctx1) {$ctx1.fill(self,"initialize",{},globals.TodoFilterAll)})},
+args: [],
+source: "initialize\x0a\x09super initialize.",
+messageSends: ["initialize"],
+referencedClasses: []
+}),
+globals.TodoFilterAll);
+
+smalltalk.addMethod(
+smalltalk.method({
+selector: "renderOn:",
+protocol: 'rendering',
+fn: function (html){
+var self=this;
+return smalltalk.withContext(function($ctx1) { 
+var $1,$2;
+_st(html)._li_((function(){
+return smalltalk.withContext(function($ctx2) {
+$1=_st(html)._a();
+_st($1)._href_("#");
+_st($1)._class_("selected");
+_st($1)._with_("All");
+$2=_st($1)._onClick_((function(){
+return smalltalk.withContext(function($ctx3) {
+return _st(console)._log_("all");
+}, function($ctx3) {$ctx3.fillBlock({},$ctx2,2)})}));
+return $2;
+}, function($ctx2) {$ctx2.fillBlock({},$ctx1,1)})}));
+return self}, function($ctx1) {$ctx1.fill(self,"renderOn:",{html:html},globals.TodoFilterAll)})},
+args: ["html"],
+source: "renderOn: html\x0a\x09html li: [\x0a\x09\x09html a href: '#';\x0a\x09\x09\x09class: 'selected'; \x0a\x09\x09\x09with: 'All';\x0a\x09\x09\x09onClick: [ console log: 'all' ]].",
+messageSends: ["li:", "href:", "a", "class:", "with:", "onClick:", "log:"],
+referencedClasses: []
+}),
+globals.TodoFilterAll);
+
+
+
+smalltalk.addClass('TodoFilterCompleted', globals.Widget, ['root'], 'Examples-ToDo-Views');
+smalltalk.addMethod(
+smalltalk.method({
+selector: "initialize",
+protocol: 'initialization',
+fn: function (){
+var self=this;
+return smalltalk.withContext(function($ctx1) { 
+($ctx1.supercall = true, globals.TodoFilterCompleted.superclass.fn.prototype._initialize.apply(_st(self), []));
+$ctx1.supercall = false;
+return self}, function($ctx1) {$ctx1.fill(self,"initialize",{},globals.TodoFilterCompleted)})},
+args: [],
+source: "initialize\x0a\x09super initialize.",
+messageSends: ["initialize"],
+referencedClasses: []
+}),
+globals.TodoFilterCompleted);
+
+smalltalk.addMethod(
+smalltalk.method({
+selector: "renderOn:",
+protocol: 'rendering',
+fn: function (html){
+var self=this;
+return smalltalk.withContext(function($ctx1) { 
+var $1,$2;
+_st(html)._li_((function(){
+return smalltalk.withContext(function($ctx2) {
+$1=_st(html)._a();
+_st($1)._href_("#");
+_st($1)._with_("Completed");
+$2=_st($1)._onClick_((function(){
+return smalltalk.withContext(function($ctx3) {
+return _st(console)._log_("completed");
+}, function($ctx3) {$ctx3.fillBlock({},$ctx2,2)})}));
+return $2;
+}, function($ctx2) {$ctx2.fillBlock({},$ctx1,1)})}));
+return self}, function($ctx1) {$ctx1.fill(self,"renderOn:",{html:html},globals.TodoFilterCompleted)})},
+args: ["html"],
+source: "renderOn: html\x0a\x09html li: [\x0a\x09\x09html a href: '#';\x0a\x09\x09\x09with: 'Completed';\x0a\x09\x09\x09onClick: [ console log: 'completed' ]].",
+messageSends: ["li:", "href:", "a", "with:", "onClick:", "log:"],
+referencedClasses: []
+}),
+globals.TodoFilterCompleted);
+
+
+
 smalltalk.addClass('TodoFilters', globals.Widget, ['root'], 'Examples-ToDo-Views');
 smalltalk.addMethod(
 smalltalk.method({
@@ -710,56 +852,50 @@ globals.TodoFilters);
 
 smalltalk.addMethod(
 smalltalk.method({
+selector: "renderContentOn:",
+protocol: 'rendering',
+fn: function (html){
+var self=this;
+function $TodoFilterAll(){return globals.TodoFilterAll||(typeof TodoFilterAll=="undefined"?nil:TodoFilterAll)}
+function $TodoFilterActive(){return globals.TodoFilterActive||(typeof TodoFilterActive=="undefined"?nil:TodoFilterActive)}
+function $TodoFilterCompleted(){return globals.TodoFilterCompleted||(typeof TodoFilterCompleted=="undefined"?nil:TodoFilterCompleted)}
+return smalltalk.withContext(function($ctx1) { 
+var $1,$2;
+$1=_st($TodoFilterAll())._new();
+$ctx1.sendIdx["new"]=1;
+_st($1)._renderOn_(html);
+$ctx1.sendIdx["renderOn:"]=1;
+$2=_st($TodoFilterActive())._new();
+$ctx1.sendIdx["new"]=2;
+_st($2)._renderOn_(html);
+$ctx1.sendIdx["renderOn:"]=2;
+_st(_st($TodoFilterCompleted())._new())._renderOn_(html);
+return self}, function($ctx1) {$ctx1.fill(self,"renderContentOn:",{html:html},globals.TodoFilters)})},
+args: ["html"],
+source: "renderContentOn: html\x0a\x09TodoFilterAll new renderOn: html.\x0a\x09TodoFilterActive new renderOn: html.\x0a\x09TodoFilterCompleted new renderOn: html.",
+messageSends: ["renderOn:", "new"],
+referencedClasses: ["TodoFilterAll", "TodoFilterActive", "TodoFilterCompleted"]
+}),
+globals.TodoFilters);
+
+smalltalk.addMethod(
+smalltalk.method({
 selector: "renderOn:",
 protocol: 'rendering',
 fn: function (html){
 var self=this;
 return smalltalk.withContext(function($ctx1) { 
-var $1,$3,$4,$5,$6,$7,$8,$2;
+var $1,$2;
 $1=_st(html)._ul();
 _st($1)._id_("filters");
 $2=_st($1)._with_((function(){
 return smalltalk.withContext(function($ctx2) {
-_st(html)._li_((function(){
-return smalltalk.withContext(function($ctx3) {
-$3=_st(html)._a();
-$ctx3.sendIdx["a"]=1;
-_st($3)._href_("#");
-$ctx3.sendIdx["href:"]=1;
-_st($3)._class_("selected");
-_st($3)._onClick_((function(){
-return smalltalk.withContext(function($ctx4) {
-return _st(console)._log_("All");
-}, function($ctx4) {$ctx4.fillBlock({},$ctx3,3)})}));
-$4=_st($3)._with_("All");
-$ctx3.sendIdx["with:"]=2;
-return $4;
-}, function($ctx3) {$ctx3.fillBlock({},$ctx2,2)})}));
-$ctx2.sendIdx["li:"]=1;
-_st(html)._li_((function(){
-return smalltalk.withContext(function($ctx3) {
-$5=_st(html)._a();
-$ctx3.sendIdx["a"]=2;
-_st($5)._href_("#");
-$ctx3.sendIdx["href:"]=2;
-$6=_st($5)._with_("Active");
-$ctx3.sendIdx["with:"]=3;
-return $6;
-}, function($ctx3) {$ctx3.fillBlock({},$ctx2,4)})}));
-$ctx2.sendIdx["li:"]=2;
-return _st(html)._li_((function(){
-return smalltalk.withContext(function($ctx3) {
-$7=_st(html)._a();
-_st($7)._href_("#");
-$8=_st($7)._with_("Completed");
-return $8;
-}, function($ctx3) {$ctx3.fillBlock({},$ctx2,5)})}));
+return self._renderContentOn_(html);
 }, function($ctx2) {$ctx2.fillBlock({},$ctx1,1)})}));
-$ctx1.sendIdx["with:"]=1;
 return self}, function($ctx1) {$ctx1.fill(self,"renderOn:",{html:html},globals.TodoFilters)})},
 args: ["html"],
-source: "renderOn: html\x0a\x09html ul\x0a\x09\x09id: 'filters';\x0a\x09\x09with: [\x0a\x09\x09\x09html li: [ html a href: '#'; class: 'selected'; onClick: [ console log: 'All' ]; with: 'All'. ].\x0a\x09\x09\x09html li: [ html a href: '#'; with: 'Active'. ].\x0a\x09\x09\x09html li: [ html a href: '#'; with: 'Completed'. ]].",
-messageSends: ["id:", "ul", "with:", "li:", "href:", "a", "class:", "onClick:", "log:"],
+source: "renderOn: html\x0a\x09html ul\x0a\x09\x09id: 'filters';\x0a\x09\x09with: [ self renderContentOn: html ].",
+messageSends: ["id:", "ul", "with:", "renderContentOn:"],
 referencedClasses: []
 }),
 globals.TodoFilters);
