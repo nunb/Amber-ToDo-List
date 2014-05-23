@@ -50,7 +50,7 @@ todo
 !TodoCheckbox methodsFor: 'events'!
 
 updateTodo: aTodo
-	| announcer builder newTodo |
+	| builder newTodo |
 	builder := TodoBuilder newWithTodo: aTodo.
 	builder addIsDone: (aTodo isDone) not.
 	newTodo := builder build.
@@ -221,6 +221,45 @@ renderOn: html
 ! !
 
 !TodoDeleteButton class methodsFor: 'initialization'!
+
+newWithTodo: aTodo
+	^ self basicNew initializeWithTodo: aTodo.
+! !
+
+Widget subclass: #TodoEditInput
+	instanceVariableNames: 'root todo'
+	package: 'Examples-ToDo-Views'!
+
+!TodoEditInput methodsFor: 'accessing'!
+
+root
+	^ root
+!
+
+todo
+	^ todo.
+! !
+
+!TodoEditInput methodsFor: 'initialization'!
+
+initialize
+	super initialize.
+!
+
+initializeWithTodo: aTodo
+	super initialize.
+	todo := aTodo.
+! !
+
+!TodoEditInput methodsFor: 'rendering'!
+
+renderOn: html
+	root := html input
+		class: 'edit';
+		value: (self todo) text.
+! !
+
+!TodoEditInput class methodsFor: 'initialization'!
 
 newWithTodo: aTodo
 	^ self basicNew initializeWithTodo: aTodo.
@@ -418,10 +457,14 @@ renderOn: html
 ! !
 
 Object subclass: #TodoLabel
-	instanceVariableNames: 'todo'
+	instanceVariableNames: 'todo root'
 	package: 'Examples-ToDo-Views'!
 
 !TodoLabel methodsFor: 'accessing'!
+
+root
+	^ root.
+!
 
 todo
 	^ todo.
@@ -441,7 +484,7 @@ initializeWithTodo: aTodo
 !TodoLabel methodsFor: 'rendering'!
 
 renderOn: html
-	html label with: (todo text).
+	root := html label with: (todo text).
 ! !
 
 !TodoLabel class methodsFor: 'initialization'!
@@ -473,7 +516,7 @@ renderOn: html
 ! !
 
 Widget subclass: #TodoListItem
-	instanceVariableNames: 'root todo checkbox label button'
+	instanceVariableNames: 'root todo checkbox label button editInput'
 	package: 'Examples-ToDo-Views'!
 
 !TodoListItem methodsFor: 'accessing'!
@@ -486,6 +529,10 @@ checkbox
 	^ checkbox.
 !
 
+editInput
+	^ editInput
+!
+
 label
 	^ label.
 !
@@ -496,6 +543,33 @@ root
 
 todo
 	^ todo.
+! !
+
+!TodoListItem methodsFor: 'events'!
+
+endEditingMode: anEvent
+	| builder newTodo |
+	builder := TodoBuilder newWithTodo: (self todo).
+	builder addText: (anEvent target value).
+	newTodo := builder build.
+	(TodoApp current) update: newTodo.
+	root asJQuery removeClass: 'editing'.
+!
+
+enterEditingMode
+	console log: 'Editing list item'.
+	root asJQuery addClass: 'editing'.
+!
+
+setupEditingMode
+	label root onDblClick: [ self enterEditingMode ].
+	editInput root 	onKeyPress: [ :evt | self updateOnEnter: evt ].
+!
+
+updateOnEnter: anEvent
+	console log: anEvent.
+	(anEvent which = 13)
+		ifTrue: [ self endEditingMode: anEvent ].
 ! !
 
 !TodoListItem methodsFor: 'initialization'!
@@ -511,21 +585,28 @@ initializeWithTodo: aTodo
 	checkbox := TodoCheckbox newWithTodo: aTodo.
 	button := TodoDeleteButton newWithTodo: aTodo.
 	label := TodoLabel newWithTodo: aTodo.
+	editInput := TodoEditInput newWithTodo: aTodo.
 ! !
 
 !TodoListItem methodsFor: 'rendering'!
+
+renderContentOn: html
+	html div
+		class: 'view';
+		with: [
+			checkbox renderOn: html.
+			label renderOn: html.
+			button renderOn: html. ].
+	editInput renderOn: html.
+	self setupEditingMode.
+!
 
 renderOn: html
 	root := html li
 		class: ((todo isDone) ifTrue: [ 'completed' ] ifFalse: [''] );
 		id: (todo id);
-		with: [
-			html div
-				class: 'view';
-				with: [
-                  	checkbox renderOn: html.
-					label renderOn: html.
-					button renderOn: html. ]].
+		with: [ 
+			self renderContentOn: html. ]
 ! !
 
 !TodoListItem class methodsFor: 'initialization'!

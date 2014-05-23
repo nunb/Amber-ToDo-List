@@ -225,7 +225,7 @@ selector: "updateTodo:",
 protocol: 'events',
 fn: function (aTodo){
 var self=this;
-var announcer,builder,newTodo;
+var builder,newTodo;
 function $TodoBuilder(){return globals.TodoBuilder||(typeof TodoBuilder=="undefined"?nil:TodoBuilder)}
 function $TodoApp(){return globals.TodoApp||(typeof TodoApp=="undefined"?nil:TodoApp)}
 return smalltalk.withContext(function($ctx1) { 
@@ -233,9 +233,9 @@ builder=_st($TodoBuilder())._newWithTodo_(aTodo);
 _st(builder)._addIsDone_(_st(_st(aTodo)._isDone())._not());
 newTodo=_st(builder)._build();
 _st(_st($TodoApp())._current())._update_(newTodo);
-return self}, function($ctx1) {$ctx1.fill(self,"updateTodo:",{aTodo:aTodo,announcer:announcer,builder:builder,newTodo:newTodo},globals.TodoCheckbox)})},
+return self}, function($ctx1) {$ctx1.fill(self,"updateTodo:",{aTodo:aTodo,builder:builder,newTodo:newTodo},globals.TodoCheckbox)})},
 args: ["aTodo"],
-source: "updateTodo: aTodo\x0a\x09| announcer builder newTodo |\x0a\x09builder := TodoBuilder newWithTodo: aTodo.\x0a\x09builder addIsDone: (aTodo isDone) not.\x0a\x09newTodo := builder build.\x0a\x09(TodoApp current) update: newTodo.",
+source: "updateTodo: aTodo\x0a\x09| builder newTodo |\x0a\x09builder := TodoBuilder newWithTodo: aTodo.\x0a\x09builder addIsDone: (aTodo isDone) not.\x0a\x09newTodo := builder build.\x0a\x09(TodoApp current) update: newTodo.",
 messageSends: ["newWithTodo:", "addIsDone:", "not", "isDone", "build", "update:", "current"],
 referencedClasses: ["TodoBuilder", "TodoApp"]
 }),
@@ -691,6 +691,116 @@ messageSends: ["initializeWithTodo:", "basicNew"],
 referencedClasses: []
 }),
 globals.TodoDeleteButton.klass);
+
+
+smalltalk.addClass('TodoEditInput', globals.Widget, ['root', 'todo'], 'Examples-ToDo-Views');
+smalltalk.addMethod(
+smalltalk.method({
+selector: "initialize",
+protocol: 'initialization',
+fn: function (){
+var self=this;
+return smalltalk.withContext(function($ctx1) { 
+($ctx1.supercall = true, globals.TodoEditInput.superclass.fn.prototype._initialize.apply(_st(self), []));
+$ctx1.supercall = false;
+return self}, function($ctx1) {$ctx1.fill(self,"initialize",{},globals.TodoEditInput)})},
+args: [],
+source: "initialize\x0a\x09super initialize.",
+messageSends: ["initialize"],
+referencedClasses: []
+}),
+globals.TodoEditInput);
+
+smalltalk.addMethod(
+smalltalk.method({
+selector: "initializeWithTodo:",
+protocol: 'initialization',
+fn: function (aTodo){
+var self=this;
+return smalltalk.withContext(function($ctx1) { 
+($ctx1.supercall = true, globals.TodoEditInput.superclass.fn.prototype._initialize.apply(_st(self), []));
+$ctx1.supercall = false;
+self["@todo"]=aTodo;
+return self}, function($ctx1) {$ctx1.fill(self,"initializeWithTodo:",{aTodo:aTodo},globals.TodoEditInput)})},
+args: ["aTodo"],
+source: "initializeWithTodo: aTodo\x0a\x09super initialize.\x0a\x09todo := aTodo.",
+messageSends: ["initialize"],
+referencedClasses: []
+}),
+globals.TodoEditInput);
+
+smalltalk.addMethod(
+smalltalk.method({
+selector: "renderOn:",
+protocol: 'rendering',
+fn: function (html){
+var self=this;
+return smalltalk.withContext(function($ctx1) { 
+var $1,$2;
+$1=_st(html)._input();
+_st($1)._class_("edit");
+$2=_st($1)._value_(_st(self._todo())._text());
+self["@root"]=$2;
+return self}, function($ctx1) {$ctx1.fill(self,"renderOn:",{html:html},globals.TodoEditInput)})},
+args: ["html"],
+source: "renderOn: html\x0a\x09root := html input\x0a\x09\x09class: 'edit';\x0a\x09\x09value: (self todo) text.",
+messageSends: ["class:", "input", "value:", "text", "todo"],
+referencedClasses: []
+}),
+globals.TodoEditInput);
+
+smalltalk.addMethod(
+smalltalk.method({
+selector: "root",
+protocol: 'accessing',
+fn: function (){
+var self=this;
+var $1;
+$1=self["@root"];
+return $1;
+},
+args: [],
+source: "root\x0a\x09^ root",
+messageSends: [],
+referencedClasses: []
+}),
+globals.TodoEditInput);
+
+smalltalk.addMethod(
+smalltalk.method({
+selector: "todo",
+protocol: 'accessing',
+fn: function (){
+var self=this;
+var $1;
+$1=self["@todo"];
+return $1;
+},
+args: [],
+source: "todo\x0a\x09^ todo.",
+messageSends: [],
+referencedClasses: []
+}),
+globals.TodoEditInput);
+
+
+smalltalk.addMethod(
+smalltalk.method({
+selector: "newWithTodo:",
+protocol: 'initialization',
+fn: function (aTodo){
+var self=this;
+return smalltalk.withContext(function($ctx1) { 
+var $1;
+$1=_st(self._basicNew())._initializeWithTodo_(aTodo);
+return $1;
+}, function($ctx1) {$ctx1.fill(self,"newWithTodo:",{aTodo:aTodo},globals.TodoEditInput.klass)})},
+args: ["aTodo"],
+source: "newWithTodo: aTodo\x0a\x09^ self basicNew initializeWithTodo: aTodo.",
+messageSends: ["initializeWithTodo:", "basicNew"],
+referencedClasses: []
+}),
+globals.TodoEditInput.klass);
 
 
 smalltalk.addClass('TodoFilterActive', globals.Widget, ['root'], 'Examples-ToDo-Views');
@@ -1203,7 +1313,7 @@ globals.TodoInput);
 
 
 
-smalltalk.addClass('TodoLabel', globals.Object, ['todo'], 'Examples-ToDo-Views');
+smalltalk.addClass('TodoLabel', globals.Object, ['todo', 'root'], 'Examples-ToDo-Views');
 smalltalk.addMethod(
 smalltalk.method({
 selector: "initialize",
@@ -1246,11 +1356,28 @@ protocol: 'rendering',
 fn: function (html){
 var self=this;
 return smalltalk.withContext(function($ctx1) { 
-_st(_st(html)._label())._with_(_st(self["@todo"])._text());
+self["@root"]=_st(_st(html)._label())._with_(_st(self["@todo"])._text());
 return self}, function($ctx1) {$ctx1.fill(self,"renderOn:",{html:html},globals.TodoLabel)})},
 args: ["html"],
-source: "renderOn: html\x0a\x09html label with: (todo text).",
+source: "renderOn: html\x0a\x09root := html label with: (todo text).",
 messageSends: ["with:", "label", "text"],
+referencedClasses: []
+}),
+globals.TodoLabel);
+
+smalltalk.addMethod(
+smalltalk.method({
+selector: "root",
+protocol: 'accessing',
+fn: function (){
+var self=this;
+var $1;
+$1=self["@root"];
+return $1;
+},
+args: [],
+source: "root\x0a\x09^ root.",
+messageSends: [],
 referencedClasses: []
 }),
 globals.TodoLabel);
@@ -1356,7 +1483,7 @@ globals.TodoList);
 
 
 
-smalltalk.addClass('TodoListItem', globals.Widget, ['root', 'todo', 'checkbox', 'label', 'button'], 'Examples-ToDo-Views');
+smalltalk.addClass('TodoListItem', globals.Widget, ['root', 'todo', 'checkbox', 'label', 'button', 'editInput'], 'Examples-ToDo-Views');
 smalltalk.addMethod(
 smalltalk.method({
 selector: "button",
@@ -1393,6 +1520,63 @@ globals.TodoListItem);
 
 smalltalk.addMethod(
 smalltalk.method({
+selector: "editInput",
+protocol: 'accessing',
+fn: function (){
+var self=this;
+var $1;
+$1=self["@editInput"];
+return $1;
+},
+args: [],
+source: "editInput\x0a\x09^ editInput",
+messageSends: [],
+referencedClasses: []
+}),
+globals.TodoListItem);
+
+smalltalk.addMethod(
+smalltalk.method({
+selector: "endEditingMode:",
+protocol: 'events',
+fn: function (anEvent){
+var self=this;
+var builder,newTodo;
+function $TodoBuilder(){return globals.TodoBuilder||(typeof TodoBuilder=="undefined"?nil:TodoBuilder)}
+function $TodoApp(){return globals.TodoApp||(typeof TodoApp=="undefined"?nil:TodoApp)}
+return smalltalk.withContext(function($ctx1) { 
+builder=_st($TodoBuilder())._newWithTodo_(self._todo());
+_st(builder)._addText_(_st(_st(anEvent)._target())._value());
+newTodo=_st(builder)._build();
+_st(_st($TodoApp())._current())._update_(newTodo);
+_st(_st(self["@root"])._asJQuery())._removeClass_("editing");
+return self}, function($ctx1) {$ctx1.fill(self,"endEditingMode:",{anEvent:anEvent,builder:builder,newTodo:newTodo},globals.TodoListItem)})},
+args: ["anEvent"],
+source: "endEditingMode: anEvent\x0a\x09| builder newTodo |\x0a\x09builder := TodoBuilder newWithTodo: (self todo).\x0a\x09builder addText: (anEvent target value).\x0a\x09newTodo := builder build.\x0a\x09(TodoApp current) update: newTodo.\x0a\x09root asJQuery removeClass: 'editing'.",
+messageSends: ["newWithTodo:", "todo", "addText:", "value", "target", "build", "update:", "current", "removeClass:", "asJQuery"],
+referencedClasses: ["TodoBuilder", "TodoApp"]
+}),
+globals.TodoListItem);
+
+smalltalk.addMethod(
+smalltalk.method({
+selector: "enterEditingMode",
+protocol: 'events',
+fn: function (){
+var self=this;
+return smalltalk.withContext(function($ctx1) { 
+_st(console)._log_("Editing list item");
+_st(_st(self["@root"])._asJQuery())._addClass_("editing");
+return self}, function($ctx1) {$ctx1.fill(self,"enterEditingMode",{},globals.TodoListItem)})},
+args: [],
+source: "enterEditingMode\x0a\x09console log: 'Editing list item'.\x0a\x09root asJQuery addClass: 'editing'.",
+messageSends: ["log:", "addClass:", "asJQuery"],
+referencedClasses: []
+}),
+globals.TodoListItem);
+
+smalltalk.addMethod(
+smalltalk.method({
 selector: "initialize",
 protocol: 'initialization',
 fn: function (){
@@ -1416,6 +1600,7 @@ var self=this;
 function $TodoCheckbox(){return globals.TodoCheckbox||(typeof TodoCheckbox=="undefined"?nil:TodoCheckbox)}
 function $TodoDeleteButton(){return globals.TodoDeleteButton||(typeof TodoDeleteButton=="undefined"?nil:TodoDeleteButton)}
 function $TodoLabel(){return globals.TodoLabel||(typeof TodoLabel=="undefined"?nil:TodoLabel)}
+function $TodoEditInput(){return globals.TodoEditInput||(typeof TodoEditInput=="undefined"?nil:TodoEditInput)}
 return smalltalk.withContext(function($ctx1) { 
 ($ctx1.supercall = true, globals.TodoListItem.superclass.fn.prototype._initialize.apply(_st(self), []));
 $ctx1.supercall = false;
@@ -1425,11 +1610,13 @@ $ctx1.sendIdx["newWithTodo:"]=1;
 self["@button"]=_st($TodoDeleteButton())._newWithTodo_(aTodo);
 $ctx1.sendIdx["newWithTodo:"]=2;
 self["@label"]=_st($TodoLabel())._newWithTodo_(aTodo);
+$ctx1.sendIdx["newWithTodo:"]=3;
+self["@editInput"]=_st($TodoEditInput())._newWithTodo_(aTodo);
 return self}, function($ctx1) {$ctx1.fill(self,"initializeWithTodo:",{aTodo:aTodo},globals.TodoListItem)})},
 args: ["aTodo"],
-source: "initializeWithTodo: aTodo\x0a\x09super initialize.\x0a\x09todo := aTodo.\x0a\x09checkbox := TodoCheckbox newWithTodo: aTodo.\x0a\x09button := TodoDeleteButton newWithTodo: aTodo.\x0a\x09label := TodoLabel newWithTodo: aTodo.",
+source: "initializeWithTodo: aTodo\x0a\x09super initialize.\x0a\x09todo := aTodo.\x0a\x09checkbox := TodoCheckbox newWithTodo: aTodo.\x0a\x09button := TodoDeleteButton newWithTodo: aTodo.\x0a\x09label := TodoLabel newWithTodo: aTodo.\x0a\x09editInput := TodoEditInput newWithTodo: aTodo.",
 messageSends: ["initialize", "newWithTodo:"],
-referencedClasses: ["TodoCheckbox", "TodoDeleteButton", "TodoLabel"]
+referencedClasses: ["TodoCheckbox", "TodoDeleteButton", "TodoLabel", "TodoEditInput"]
 }),
 globals.TodoListItem);
 
@@ -1452,12 +1639,41 @@ globals.TodoListItem);
 
 smalltalk.addMethod(
 smalltalk.method({
+selector: "renderContentOn:",
+protocol: 'rendering',
+fn: function (html){
+var self=this;
+return smalltalk.withContext(function($ctx1) { 
+var $1,$2;
+$1=_st(html)._div();
+_st($1)._class_("view");
+$2=_st($1)._with_((function(){
+return smalltalk.withContext(function($ctx2) {
+_st(self["@checkbox"])._renderOn_(html);
+$ctx2.sendIdx["renderOn:"]=1;
+_st(self["@label"])._renderOn_(html);
+$ctx2.sendIdx["renderOn:"]=2;
+return _st(self["@button"])._renderOn_(html);
+$ctx2.sendIdx["renderOn:"]=3;
+}, function($ctx2) {$ctx2.fillBlock({},$ctx1,1)})}));
+_st(self["@editInput"])._renderOn_(html);
+self._setupEditingMode();
+return self}, function($ctx1) {$ctx1.fill(self,"renderContentOn:",{html:html},globals.TodoListItem)})},
+args: ["html"],
+source: "renderContentOn: html\x0a\x09html div\x0a\x09\x09class: 'view';\x0a\x09\x09with: [\x0a\x09\x09\x09checkbox renderOn: html.\x0a\x09\x09\x09label renderOn: html.\x0a\x09\x09\x09button renderOn: html. ].\x0a\x09editInput renderOn: html.\x0a\x09self setupEditingMode.",
+messageSends: ["class:", "div", "with:", "renderOn:", "setupEditingMode"],
+referencedClasses: []
+}),
+globals.TodoListItem);
+
+smalltalk.addMethod(
+smalltalk.method({
 selector: "renderOn:",
 protocol: 'rendering',
 fn: function (html){
 var self=this;
 return smalltalk.withContext(function($ctx1) { 
-var $1,$2,$4,$3,$6,$7,$5;
+var $1,$2,$4,$3,$5;
 $1=_st(html)._li();
 $2=$1;
 $4=_st(self["@todo"])._isDone();
@@ -1467,28 +1683,16 @@ $3="completed";
 $3="";
 };
 _st($2)._class_($3);
-$ctx1.sendIdx["class:"]=1;
 _st($1)._id_(_st(self["@todo"])._id());
 $5=_st($1)._with_((function(){
 return smalltalk.withContext(function($ctx2) {
-$6=_st(html)._div();
-_st($6)._class_("view");
-$7=_st($6)._with_((function(){
-return smalltalk.withContext(function($ctx3) {
-_st(self["@checkbox"])._renderOn_(html);
-$ctx3.sendIdx["renderOn:"]=1;
-_st(self["@label"])._renderOn_(html);
-$ctx3.sendIdx["renderOn:"]=2;
-return _st(self["@button"])._renderOn_(html);
-}, function($ctx3) {$ctx3.fillBlock({},$ctx2,4)})}));
-return $7;
+return self._renderContentOn_(html);
 }, function($ctx2) {$ctx2.fillBlock({},$ctx1,3)})}));
-$ctx1.sendIdx["with:"]=1;
 self["@root"]=$5;
 return self}, function($ctx1) {$ctx1.fill(self,"renderOn:",{html:html},globals.TodoListItem)})},
 args: ["html"],
-source: "renderOn: html\x0a\x09root := html li\x0a\x09\x09class: ((todo isDone) ifTrue: [ 'completed' ] ifFalse: [''] );\x0a\x09\x09id: (todo id);\x0a\x09\x09with: [\x0a\x09\x09\x09html div\x0a\x09\x09\x09\x09class: 'view';\x0a\x09\x09\x09\x09with: [\x0a                  \x09checkbox renderOn: html.\x0a\x09\x09\x09\x09\x09label renderOn: html.\x0a\x09\x09\x09\x09\x09button renderOn: html. ]].",
-messageSends: ["class:", "li", "ifTrue:ifFalse:", "isDone", "id:", "id", "with:", "div", "renderOn:"],
+source: "renderOn: html\x0a\x09root := html li\x0a\x09\x09class: ((todo isDone) ifTrue: [ 'completed' ] ifFalse: [''] );\x0a\x09\x09id: (todo id);\x0a\x09\x09with: [ \x0a\x09\x09\x09self renderContentOn: html. ]",
+messageSends: ["class:", "li", "ifTrue:ifFalse:", "isDone", "id:", "id", "with:", "renderContentOn:"],
 referencedClasses: []
 }),
 globals.TodoListItem);
@@ -1512,6 +1716,32 @@ globals.TodoListItem);
 
 smalltalk.addMethod(
 smalltalk.method({
+selector: "setupEditingMode",
+protocol: 'events',
+fn: function (){
+var self=this;
+return smalltalk.withContext(function($ctx1) { 
+var $1;
+$1=_st(self["@label"])._root();
+$ctx1.sendIdx["root"]=1;
+_st($1)._onDblClick_((function(){
+return smalltalk.withContext(function($ctx2) {
+return self._enterEditingMode();
+}, function($ctx2) {$ctx2.fillBlock({},$ctx1,1)})}));
+_st(_st(self["@editInput"])._root())._onKeyPress_((function(evt){
+return smalltalk.withContext(function($ctx2) {
+return self._updateOnEnter_(evt);
+}, function($ctx2) {$ctx2.fillBlock({evt:evt},$ctx1,2)})}));
+return self}, function($ctx1) {$ctx1.fill(self,"setupEditingMode",{},globals.TodoListItem)})},
+args: [],
+source: "setupEditingMode\x0a\x09label root onDblClick: [ self enterEditingMode ].\x0a\x09editInput root \x09onKeyPress: [ :evt | self updateOnEnter: evt ].",
+messageSends: ["onDblClick:", "root", "enterEditingMode", "onKeyPress:", "updateOnEnter:"],
+referencedClasses: []
+}),
+globals.TodoListItem);
+
+smalltalk.addMethod(
+smalltalk.method({
 selector: "todo",
 protocol: 'accessing',
 fn: function (){
@@ -1523,6 +1753,27 @@ return $1;
 args: [],
 source: "todo\x0a\x09^ todo.",
 messageSends: [],
+referencedClasses: []
+}),
+globals.TodoListItem);
+
+smalltalk.addMethod(
+smalltalk.method({
+selector: "updateOnEnter:",
+protocol: 'events',
+fn: function (anEvent){
+var self=this;
+return smalltalk.withContext(function($ctx1) { 
+var $1;
+_st(console)._log_(anEvent);
+$1=_st(_st(anEvent)._which()).__eq((13));
+if(smalltalk.assert($1)){
+self._endEditingMode_(anEvent);
+};
+return self}, function($ctx1) {$ctx1.fill(self,"updateOnEnter:",{anEvent:anEvent},globals.TodoListItem)})},
+args: ["anEvent"],
+source: "updateOnEnter: anEvent\x0a\x09console log: anEvent.\x0a\x09(anEvent which = 13)\x0a\x09\x09ifTrue: [ self endEditingMode: anEvent ].",
+messageSends: ["log:", "ifTrue:", "=", "which", "endEditingMode:"],
 referencedClasses: []
 }),
 globals.TodoListItem);
