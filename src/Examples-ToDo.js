@@ -2,7 +2,28 @@ define("Examples/Examples-ToDo", ["amber_vm/smalltalk", "amber_vm/nil", "amber_v
 smalltalk.addPackage('Examples-ToDo');
 smalltalk.packages["Examples-ToDo"].transport = {"type":"amd","amdNamespace":"Examples"};
 
-smalltalk.addClass('TodoApp', globals.Widget, ['todos'], 'Examples-ToDo');
+smalltalk.addClass('TodoApp', globals.Widget, ['todos', 'filter'], 'Examples-ToDo');
+smalltalk.addMethod(
+smalltalk.method({
+selector: "activeTodos",
+protocol: 'filtering',
+fn: function (){
+var self=this;
+return smalltalk.withContext(function($ctx1) { 
+var $1;
+$1=_st(self["@todos"])._select_((function(each){
+return smalltalk.withContext(function($ctx2) {
+return _st(_st(each)._isDone()).__eq(false);
+}, function($ctx2) {$ctx2.fillBlock({each:each},$ctx1,1)})}));
+return $1;
+}, function($ctx1) {$ctx1.fill(self,"activeTodos",{},globals.TodoApp)})},
+args: [],
+source: "activeTodos\x0a\x09^ todos select: [ :each | each isDone = false ].",
+messageSends: ["select:", "=", "isDone"],
+referencedClasses: []
+}),
+globals.TodoApp);
+
 smalltalk.addMethod(
 smalltalk.method({
 selector: "add:",
@@ -27,8 +48,25 @@ globals.TodoApp);
 
 smalltalk.addMethod(
 smalltalk.method({
+selector: "allTodos",
+protocol: 'filtering',
+fn: function (){
+var self=this;
+var $1;
+$1=self["@todos"];
+return $1;
+},
+args: [],
+source: "allTodos\x0a\x09^ todos.",
+messageSends: [],
+referencedClasses: []
+}),
+globals.TodoApp);
+
+smalltalk.addMethod(
+smalltalk.method({
 selector: "completedTodos",
-protocol: 'state',
+protocol: 'filtering',
 fn: function (){
 var self=this;
 return smalltalk.withContext(function($ctx1) { 
@@ -48,6 +86,60 @@ globals.TodoApp);
 
 smalltalk.addMethod(
 smalltalk.method({
+selector: "filter",
+protocol: 'filtering',
+fn: function (){
+var self=this;
+var $1;
+$1=self["@filter"];
+return $1;
+},
+args: [],
+source: "filter\x0a\x09^ filter",
+messageSends: [],
+referencedClasses: []
+}),
+globals.TodoApp);
+
+smalltalk.addMethod(
+smalltalk.method({
+selector: "filter:",
+protocol: 'filtering',
+fn: function (aString){
+var self=this;
+return smalltalk.withContext(function($ctx1) { 
+var $1;
+self["@filter"]=aString;
+$1=self._perform_(_st(aString).__comma("Todos"));
+return $1;
+}, function($ctx1) {$ctx1.fill(self,"filter:",{aString:aString},globals.TodoApp)})},
+args: ["aString"],
+source: "filter: aString\x0a\x09filter := aString.\x0a\x09^ self perform: (aString, 'Todos').",
+messageSends: ["perform:", ","],
+referencedClasses: []
+}),
+globals.TodoApp);
+
+smalltalk.addMethod(
+smalltalk.method({
+selector: "filteredTodos",
+protocol: 'state',
+fn: function (){
+var self=this;
+return smalltalk.withContext(function($ctx1) { 
+var $1;
+$1=self._perform_(_st(self._filter()).__comma("Todos"));
+return $1;
+}, function($ctx1) {$ctx1.fill(self,"filteredTodos",{},globals.TodoApp)})},
+args: [],
+source: "filteredTodos\x0a\x09^ self perform: ((self filter), 'Todos').",
+messageSends: ["perform:", ",", "filter"],
+referencedClasses: []
+}),
+globals.TodoApp);
+
+smalltalk.addMethod(
+smalltalk.method({
 selector: "initialize",
 protocol: 'initializing',
 fn: function (){
@@ -56,9 +148,10 @@ return smalltalk.withContext(function($ctx1) {
 ($ctx1.supercall = true, globals.TodoApp.superclass.fn.prototype._initialize.apply(_st(self), []));
 $ctx1.supercall = false;
 self._seed();
+self["@filter"]="all";
 return self}, function($ctx1) {$ctx1.fill(self,"initialize",{},globals.TodoApp)})},
 args: [],
-source: "initialize\x0a\x09super initialize.\x0a\x09self seed.",
+source: "initialize\x0a\x09super initialize.\x0a\x09self seed.\x0a\x09filter := 'all'.",
 messageSends: ["initialize", "seed"],
 referencedClasses: []
 }),
@@ -154,12 +247,12 @@ globals.TodoApp);
 smalltalk.addMethod(
 smalltalk.method({
 selector: "sortedTodos",
-protocol: 'state',
+protocol: 'filtering',
 fn: function (){
 var self=this;
 return smalltalk.withContext(function($ctx1) { 
 var $2,$1;
-$1=_st(self["@todos"])._sort_((function(a,b){
+$1=_st(self._filteredTodos())._sort_((function(a,b){
 return smalltalk.withContext(function($ctx2) {
 $2=_st(a)._id();
 $ctx2.sendIdx["id"]=1;
@@ -168,8 +261,8 @@ return _st($2).__lt(_st(b)._id());
 return $1;
 }, function($ctx1) {$ctx1.fill(self,"sortedTodos",{},globals.TodoApp)})},
 args: [],
-source: "sortedTodos\x0a\x09^ todos sort: [ :a :b | (a id) < (b id) ]",
-messageSends: ["sort:", "<", "id"],
+source: "sortedTodos\x0a\x09^ (self filteredTodos) sort: [ :a :b | (a id) < (b id) ]",
+messageSends: ["sort:", "filteredTodos", "<", "id"],
 referencedClasses: []
 }),
 globals.TodoApp);

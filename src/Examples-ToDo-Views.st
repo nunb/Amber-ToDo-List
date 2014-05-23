@@ -143,9 +143,7 @@ Widget subclass: #TodoCount
 !TodoCount methodsFor: 'accessing'!
 
 count
-	| active |
-	active := (TodoApp current todos) select: [ :each | each isDone = false ].
-	^ active size.
+	^ TodoApp current activeTodos size.
 !
 
 root

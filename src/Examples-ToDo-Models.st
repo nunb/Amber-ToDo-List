@@ -36,7 +36,7 @@ toggleIsDone
 !Todo methodsFor: 'initializing'!
 
 initialize
-	self initializeWithText: 'Untitled' done: false id: (Date now asNumber * Math random) ceiling.
+	self initializeWithText: 'Untitled' done: false id: (Date now asNumber).
 !
 
 initializeWithText: aString done: aBoolean id: anId

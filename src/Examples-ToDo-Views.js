@@ -437,20 +437,15 @@ selector: "count",
 protocol: 'accessing',
 fn: function (){
 var self=this;
-var active;
 function $TodoApp(){return globals.TodoApp||(typeof TodoApp=="undefined"?nil:TodoApp)}
 return smalltalk.withContext(function($ctx1) { 
 var $1;
-active=_st(_st(_st($TodoApp())._current())._todos())._select_((function(each){
-return smalltalk.withContext(function($ctx2) {
-return _st(_st(each)._isDone()).__eq(false);
-}, function($ctx2) {$ctx2.fillBlock({each:each},$ctx1,1)})}));
-$1=_st(active)._size();
+$1=_st(_st(_st($TodoApp())._current())._activeTodos())._size();
 return $1;
-}, function($ctx1) {$ctx1.fill(self,"count",{active:active},globals.TodoCount)})},
+}, function($ctx1) {$ctx1.fill(self,"count",{},globals.TodoCount)})},
 args: [],
-source: "count\x0a\x09| active |\x0a\x09active := (TodoApp current todos) select: [ :each | each isDone = false ].\x0a\x09^ active size.",
-messageSends: ["select:", "todos", "current", "=", "isDone", "size"],
+source: "count\x0a\x09^ TodoApp current activeTodos size.",
+messageSends: ["size", "activeTodos", "current"],
 referencedClasses: ["TodoApp"]
 }),
 globals.TodoCount);

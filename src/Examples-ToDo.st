@@ -1,13 +1,41 @@
 Smalltalk createPackage: 'Examples-ToDo'!
 Widget subclass: #TodoApp
-	instanceVariableNames: 'todos'
+	instanceVariableNames: 'todos filter'
 	package: 'Examples-ToDo'!
+
+!TodoApp methodsFor: 'filtering'!
+
+activeTodos
+	^ todos select: [ :each | each isDone = false ].
+!
+
+allTodos
+	^ todos.
+!
+
+completedTodos
+	^ todos select: [ :each | each isDone = true ].
+!
+
+filter
+	^ filter
+!
+
+filter: aString
+	filter := aString.
+	^ self perform: (aString, 'Todos').
+!
+
+sortedTodos
+	^ (self filteredTodos) sort: [ :a :b | (a id) < (b id) ]
+! !
 
 !TodoApp methodsFor: 'initializing'!
 
 initialize
 	super initialize.
 	self seed.
+	filter := 'all'.
 !
 
 seed
@@ -34,8 +62,8 @@ add: aTodo
 	^ aTodo.
 !
 
-completedTodos
-	^ todos select: [ :each | each isDone = true ].
+filteredTodos
+	^ self perform: ((self filter), 'Todos').
 !
 
 remove: aTodo
@@ -51,10 +79,6 @@ removeAll
 	(self todos) removeAll.
 	announcer := TodoAnnouncer current.
 	announcer announce: TodoDeleted new.
-!
-
-sortedTodos
-	^ todos sort: [ :a :b | (a id) < (b id) ]
 !
 
 todos

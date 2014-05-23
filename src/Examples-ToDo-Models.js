@@ -47,14 +47,13 @@ protocol: 'initializing',
 fn: function (){
 var self=this;
 function $Date(){return globals.Date||(typeof Date=="undefined"?nil:Date)}
-function $Math(){return globals.Math||(typeof Math=="undefined"?nil:Math)}
 return smalltalk.withContext(function($ctx1) { 
-self._initializeWithText_done_id_("Untitled",false,_st(_st(_st(_st($Date())._now())._asNumber()).__star(_st($Math())._random()))._ceiling());
+self._initializeWithText_done_id_("Untitled",false,_st(_st($Date())._now())._asNumber());
 return self}, function($ctx1) {$ctx1.fill(self,"initialize",{},globals.Todo)})},
 args: [],
-source: "initialize\x0a\x09self initializeWithText: 'Untitled' done: false id: (Date now asNumber * Math random) ceiling.",
-messageSends: ["initializeWithText:done:id:", "ceiling", "*", "asNumber", "now", "random"],
-referencedClasses: ["Date", "Math"]
+source: "initialize\x0a\x09self initializeWithText: 'Untitled' done: false id: (Date now asNumber).",
+messageSends: ["initializeWithText:done:id:", "asNumber", "now"],
+referencedClasses: ["Date"]
 }),
 globals.Todo);
 
