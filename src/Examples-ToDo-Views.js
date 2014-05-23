@@ -1301,7 +1301,6 @@ _st(html)._h1_("todos");
 $3=_st(html)._input();
 _st($3)._id_("new-todo");
 _st($3)._type_("text");
-_st($3)._autofocus();
 $4=_st($3)._onKeyUp_((function(event){
 return smalltalk.withContext(function($ctx3) {
 $5=_st(_st(event)._keyCode()).__eq((13));
@@ -1316,8 +1315,8 @@ return input;
 _st(_st(input)._element())._placeholder_(defaultText);
 return self}, function($ctx1) {$ctx1.fill(self,"renderOn:",{html:html,input:input,defaultText:defaultText},globals.TodoInput)})},
 args: ["html"],
-source: "renderOn: html\x0a\x09| input defaultText |\x0a\x09defaultText := 'What needs to be done?'.\x0a\x09html header\x0a\x09\x09id: 'header';\x0a\x09\x09with: [\x0a\x09\x09\x09\x09   html h1: 'todos'.\x0a                   input := html input\x0a\x09\x09\x09\x09    id: 'new-todo';\x0a                  \x09type: 'text';\x0a\x09\x09\x09\x09\x09autofocus;\x0a                  \x09onKeyUp: [ :event |\x0a                                  (event keyCode = 13) ifTrue: [\x0a                                    \x09self handleInput: event.\x0a                                    \x09input asJQuery val: '' ] ] ].\x0a\x09input element placeholder: defaultText.",
-messageSends: ["id:", "header", "with:", "h1:", "input", "type:", "autofocus", "onKeyUp:", "ifTrue:", "=", "keyCode", "handleInput:", "val:", "asJQuery", "placeholder:", "element"],
+source: "renderOn: html\x0a\x09| input defaultText |\x0a\x09defaultText := 'What needs to be done?'.\x0a\x09html header\x0a\x09\x09id: 'header';\x0a\x09\x09with: [\x0a\x09\x09\x09\x09   html h1: 'todos'.\x0a                   input := html input\x0a\x09\x09\x09\x09    id: 'new-todo';\x0a                  \x09type: 'text';\x0a                  \x09onKeyUp: [ :event |\x0a                                  (event keyCode = 13) ifTrue: [\x0a                                    \x09self handleInput: event.\x0a                                    \x09input asJQuery val: '' ] ] ].\x0a\x09input element placeholder: defaultText.",
+messageSends: ["id:", "header", "with:", "h1:", "input", "type:", "onKeyUp:", "ifTrue:", "=", "keyCode", "handleInput:", "val:", "asJQuery", "placeholder:", "element"],
 referencedClasses: []
 }),
 globals.TodoInput);

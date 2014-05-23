@@ -3,5 +3,4 @@
 #    bower install
 # See README.md
 
-.DS-store
-bower_components
+.DS-Store

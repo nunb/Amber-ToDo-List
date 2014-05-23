@@ -451,7 +451,6 @@ renderOn: html
                    input := html input
 				    id: 'new-todo';
                   	type: 'text';
-					autofocus;
                   	onKeyUp: [ :event |
                                   (event keyCode = 13) ifTrue: [
                                     	self handleInput: event.
