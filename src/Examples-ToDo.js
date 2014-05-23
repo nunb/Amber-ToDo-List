@@ -151,12 +151,11 @@ var self=this;
 return smalltalk.withContext(function($ctx1) { 
 ($ctx1.supercall = true, globals.TodoApp.superclass.fn.prototype._initialize.apply(_st(self), []));
 $ctx1.supercall = false;
-self._seed();
 self["@filter"]="all";
 return self}, function($ctx1) {$ctx1.fill(self,"initialize",{},globals.TodoApp)})},
 args: [],
-source: "initialize\x0a\x09super initialize.\x0a\x09self seed.\x0a\x09filter := 'all'.",
-messageSends: ["initialize", "seed"],
+source: "initialize\x0a\x09super initialize.\x0a\x09\x22self seed.\x22\x0a\x09filter := 'all'.",
+messageSends: ["initialize"],
 referencedClasses: []
 }),
 globals.TodoApp);

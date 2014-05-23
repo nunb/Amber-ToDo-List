@@ -404,7 +404,10 @@ renderOn: html
 		id: 'info';
 		with: [ 
 			html p with: 'Double-click to edit a todo'.
-			html p with: 'Written by rbistolfi, @statonjr, & others'.
+			html p: [
+				html with: 'Written by rbistolfi, '.
+				html a href: 'https://github.com/statonjr'; with: 'statonjr'.
+				html with: ' & others'. ].
 			html p: [
 				html with: 'Part of '.
 				html a href: 'http://todomvc.com'; with: 'TodoMVC']].

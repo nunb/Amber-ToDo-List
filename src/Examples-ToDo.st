@@ -37,7 +37,7 @@ sortedTodos
 
 initialize
 	super initialize.
-	self seed.
+	"self seed."
 	filter := 'all'.
 !
 
