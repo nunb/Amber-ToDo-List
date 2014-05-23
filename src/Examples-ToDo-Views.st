@@ -198,8 +198,7 @@ todo
 !TodoDeleteButton methodsFor: 'events'!
 
 deleteTodo: aTodo
-	"FIXME: State!!"
-	console log: 'delete'
+	TodoApp current remove: aTodo.
 ! !
 
 !TodoDeleteButton methodsFor: 'initialization'!
@@ -218,7 +217,7 @@ initializeWithTodo: aTodo
 renderOn: html
 	html button
 		class: 'destroy';
-		onClick: [ console log: 'delete todo' ].
+		onClick: [ self deleteTodo: (self todo) ].
 ! !
 
 !TodoDeleteButton class methodsFor: 'initialization'!

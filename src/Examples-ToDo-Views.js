@@ -588,13 +588,14 @@ selector: "deleteTodo:",
 protocol: 'events',
 fn: function (aTodo){
 var self=this;
+function $TodoApp(){return globals.TodoApp||(typeof TodoApp=="undefined"?nil:TodoApp)}
 return smalltalk.withContext(function($ctx1) { 
-_st(console)._log_("delete");
+_st(_st($TodoApp())._current())._remove_(aTodo);
 return self}, function($ctx1) {$ctx1.fill(self,"deleteTodo:",{aTodo:aTodo},globals.TodoDeleteButton)})},
 args: ["aTodo"],
-source: "deleteTodo: aTodo\x0a\x09\x22FIXME: State!\x22\x0a\x09console log: 'delete'",
-messageSends: ["log:"],
-referencedClasses: []
+source: "deleteTodo: aTodo\x0a\x09TodoApp current remove: aTodo.",
+messageSends: ["remove:", "current"],
+referencedClasses: ["TodoApp"]
 }),
 globals.TodoDeleteButton);
 
@@ -645,12 +646,12 @@ $1=_st(html)._button();
 _st($1)._class_("destroy");
 $2=_st($1)._onClick_((function(){
 return smalltalk.withContext(function($ctx2) {
-return _st(console)._log_("delete todo");
+return self._deleteTodo_(self._todo());
 }, function($ctx2) {$ctx2.fillBlock({},$ctx1,1)})}));
 return self}, function($ctx1) {$ctx1.fill(self,"renderOn:",{html:html},globals.TodoDeleteButton)})},
 args: ["html"],
-source: "renderOn: html\x0a\x09html button\x0a\x09\x09class: 'destroy';\x0a\x09\x09onClick: [ console log: 'delete todo' ].",
-messageSends: ["class:", "button", "onClick:", "log:"],
+source: "renderOn: html\x0a\x09html button\x0a\x09\x09class: 'destroy';\x0a\x09\x09onClick: [ self deleteTodo: (self todo) ].",
+messageSends: ["class:", "button", "onClick:", "deleteTodo:", "todo"],
 referencedClasses: []
 }),
 globals.TodoDeleteButton);
