@@ -1565,12 +1565,11 @@ protocol: 'events',
 fn: function (){
 var self=this;
 return smalltalk.withContext(function($ctx1) { 
-_st(console)._log_("Editing list item");
 _st(_st(self["@root"])._asJQuery())._addClass_("editing");
 return self}, function($ctx1) {$ctx1.fill(self,"enterEditingMode",{},globals.TodoListItem)})},
 args: [],
-source: "enterEditingMode\x0a\x09console log: 'Editing list item'.\x0a\x09root asJQuery addClass: 'editing'.",
-messageSends: ["log:", "addClass:", "asJQuery"],
+source: "enterEditingMode\x0a\x09root asJQuery addClass: 'editing'.",
+messageSends: ["addClass:", "asJQuery"],
 referencedClasses: []
 }),
 globals.TodoListItem);
@@ -1699,6 +1698,22 @@ globals.TodoListItem);
 
 smalltalk.addMethod(
 smalltalk.method({
+selector: "revertEditingMode",
+protocol: 'events',
+fn: function (){
+var self=this;
+return smalltalk.withContext(function($ctx1) { 
+_st(_st(self["@root"])._asJQuery())._removeClass_("editing");
+return self}, function($ctx1) {$ctx1.fill(self,"revertEditingMode",{},globals.TodoListItem)})},
+args: [],
+source: "revertEditingMode\x0a\x09root asJQuery removeClass: 'editing'.",
+messageSends: ["removeClass:", "asJQuery"],
+referencedClasses: []
+}),
+globals.TodoListItem);
+
+smalltalk.addMethod(
+smalltalk.method({
 selector: "root",
 protocol: 'accessing',
 fn: function (){
@@ -1728,14 +1743,14 @@ _st($1)._onDblClick_((function(){
 return smalltalk.withContext(function($ctx2) {
 return self._enterEditingMode();
 }, function($ctx2) {$ctx2.fillBlock({},$ctx1,1)})}));
-_st(_st(self["@editInput"])._root())._onKeyPress_((function(evt){
+_st(_st(self["@editInput"])._root())._onKeyUp_((function(evt){
 return smalltalk.withContext(function($ctx2) {
 return self._updateOnEnter_(evt);
 }, function($ctx2) {$ctx2.fillBlock({evt:evt},$ctx1,2)})}));
 return self}, function($ctx1) {$ctx1.fill(self,"setupEditingMode",{},globals.TodoListItem)})},
 args: [],
-source: "setupEditingMode\x0a\x09label root onDblClick: [ self enterEditingMode ].\x0a\x09editInput root \x09onKeyPress: [ :evt | self updateOnEnter: evt ].",
-messageSends: ["onDblClick:", "root", "enterEditingMode", "onKeyPress:", "updateOnEnter:"],
+source: "setupEditingMode\x0a\x09label root onDblClick: [ self enterEditingMode ].\x0a\x09editInput root onKeyUp: [ :evt | self updateOnEnter: evt ].",
+messageSends: ["onDblClick:", "root", "enterEditingMode", "onKeyUp:", "updateOnEnter:"],
 referencedClasses: []
 }),
 globals.TodoListItem);
@@ -1764,16 +1779,23 @@ protocol: 'events',
 fn: function (anEvent){
 var self=this;
 return smalltalk.withContext(function($ctx1) { 
-var $1;
-_st(console)._log_(anEvent);
-$1=_st(_st(anEvent)._which()).__eq((13));
+var $2,$1,$3;
+$2=_st(anEvent)._keyCode();
+$ctx1.sendIdx["keyCode"]=1;
+$1=_st($2).__eq((13));
+$ctx1.sendIdx["="]=1;
 if(smalltalk.assert($1)){
 self._endEditingMode_(anEvent);
+} else {
+$3=_st(_st(anEvent)._keyCode()).__eq((27));
+if(smalltalk.assert($3)){
+self._revertEditingMode();
+};
 };
 return self}, function($ctx1) {$ctx1.fill(self,"updateOnEnter:",{anEvent:anEvent},globals.TodoListItem)})},
 args: ["anEvent"],
-source: "updateOnEnter: anEvent\x0a\x09console log: anEvent.\x0a\x09(anEvent which = 13)\x0a\x09\x09ifTrue: [ self endEditingMode: anEvent ].",
-messageSends: ["log:", "ifTrue:", "=", "which", "endEditingMode:"],
+source: "updateOnEnter: anEvent\x0a\x09(anEvent keyCode = 13)\x0a\x09\x09ifTrue: [ self endEditingMode: anEvent ]\x0a\x09\x09ifFalse: [ (anEvent keyCode = 27) ifTrue: [ self revertEditingMode ]].",
+messageSends: ["ifTrue:ifFalse:", "=", "keyCode", "endEditingMode:", "ifTrue:", "revertEditingMode"],
 referencedClasses: []
 }),
 globals.TodoListItem);

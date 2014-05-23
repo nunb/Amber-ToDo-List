@@ -557,19 +557,22 @@ endEditingMode: anEvent
 !
 
 enterEditingMode
-	console log: 'Editing list item'.
 	root asJQuery addClass: 'editing'.
+!
+
+revertEditingMode
+	root asJQuery removeClass: 'editing'.
 !
 
 setupEditingMode
 	label root onDblClick: [ self enterEditingMode ].
-	editInput root 	onKeyPress: [ :evt | self updateOnEnter: evt ].
+	editInput root onKeyUp: [ :evt | self updateOnEnter: evt ].
 !
 
 updateOnEnter: anEvent
-	console log: anEvent.
-	(anEvent which = 13)
-		ifTrue: [ self endEditingMode: anEvent ].
+	(anEvent keyCode = 13)
+		ifTrue: [ self endEditingMode: anEvent ]
+		ifFalse: [ (anEvent keyCode = 27) ifTrue: [ self revertEditingMode ]].
 ! !
 
 !TodoListItem methodsFor: 'initialization'!
