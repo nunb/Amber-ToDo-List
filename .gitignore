@@ -1,0 +1,6 @@
+# Do not include the Amber bower components in the repository.
+# Get them with
+#    bower install
+# See README.md
+
+bower_components
