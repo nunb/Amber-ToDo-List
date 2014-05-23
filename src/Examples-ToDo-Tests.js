@@ -388,6 +388,25 @@ globals.TodoTest);
 
 smalltalk.addMethod(
 smalltalk.method({
+selector: "testTextTrimmed",
+protocol: 'tests',
+fn: function (){
+var self=this;
+var t1;
+function $Todo(){return globals.Todo||(typeof Todo=="undefined"?nil:Todo)}
+return smalltalk.withContext(function($ctx1) { 
+t1=_st($Todo())._newWithText_done_id_("    Amber     ",false,(1234));
+self._assert_(_st(_st(t1)._text()).__eq("Amber"));
+return self}, function($ctx1) {$ctx1.fill(self,"testTextTrimmed",{t1:t1},globals.TodoTest)})},
+args: [],
+source: "testTextTrimmed\x0a\x09| t1 |\x0a\x09t1 := Todo newWithText: '    Amber     ' done: false id: 1234.\x0a\x09self assert: (t1 text = 'Amber').",
+messageSends: ["newWithText:done:id:", "assert:", "=", "text"],
+referencedClasses: ["Todo"]
+}),
+globals.TodoTest);
+
+smalltalk.addMethod(
+smalltalk.method({
 selector: "testToggleIsDone",
 protocol: 'tests',
 fn: function (){

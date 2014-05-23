@@ -67,12 +67,12 @@ return smalltalk.withContext(function($ctx1) {
 ($ctx1.supercall = true, globals.Todo.superclass.fn.prototype._initialize.apply(_st(self), []));
 $ctx1.supercall = false;
 self["@id"]=anId;
-self["@text"]=aString;
+self["@text"]=_st(aString)._trimBoth();
 self["@isDone"]=aBoolean;
 return self}, function($ctx1) {$ctx1.fill(self,"initializeWithText:done:id:",{aString:aString,aBoolean:aBoolean,anId:anId},globals.Todo)})},
 args: ["aString", "aBoolean", "anId"],
-source: "initializeWithText: aString done: aBoolean id: anId\x0a\x09super initialize.\x0a\x09id := anId.\x0a\x09text := aString.\x0a\x09isDone := aBoolean.",
-messageSends: ["initialize"],
+source: "initializeWithText: aString done: aBoolean id: anId\x0a\x09super initialize.\x0a\x09id := anId.\x0a\x09text := aString trimBoth.\x0a\x09isDone := aBoolean.",
+messageSends: ["initialize", "trimBoth"],
 referencedClasses: []
 }),
 globals.Todo);

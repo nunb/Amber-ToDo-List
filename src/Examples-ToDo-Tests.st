@@ -142,6 +142,12 @@ testNewWithTextDoneId
 	self assert: (t1 class = Todo).
 !
 
+testTextTrimmed
+	| t1 |
+	t1 := Todo newWithText: '    Amber     ' done: false id: 1234.
+	self assert: (t1 text = 'Amber').
+!
+
 testToggleIsDone
 	| t1 t2 |
 	t1 := Todo new.

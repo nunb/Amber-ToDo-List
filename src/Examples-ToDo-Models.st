@@ -42,7 +42,7 @@ initialize
 initializeWithText: aString done: aBoolean id: anId
 	super initialize.
 	id := anId.
-	text := aString.
+	text := aString trimBoth.
 	isDone := aBoolean.
 ! !
 
