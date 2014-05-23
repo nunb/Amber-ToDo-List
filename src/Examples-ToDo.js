@@ -35,13 +35,14 @@ function $TodoAnnouncer(){return globals.TodoAnnouncer||(typeof TodoAnnouncer=="
 function $TodoAdded(){return globals.TodoAdded||(typeof TodoAdded=="undefined"?nil:TodoAdded)}
 return smalltalk.withContext(function($ctx1) { 
 _st(self._todos())._add_(aTodo);
+self._save();
 announcer=_st($TodoAnnouncer())._current();
 _st(announcer)._announce_(_st($TodoAdded())._new());
 return aTodo;
 }, function($ctx1) {$ctx1.fill(self,"add:",{aTodo:aTodo,announcer:announcer},globals.TodoApp)})},
 args: ["aTodo"],
-source: "add: aTodo\x0a\x09| announcer |\x0a\x09(self todos) add: aTodo.\x0a\x09announcer := TodoAnnouncer current.\x0a\x09announcer announce: TodoAdded new.\x0a\x09^ aTodo.",
-messageSends: ["add:", "todos", "current", "announce:", "new"],
+source: "add: aTodo\x0a\x09| announcer |\x0a\x09(self todos) add: aTodo.\x0a\x09self save.\x0a\x09announcer := TodoAnnouncer current.\x0a\x09announcer announce: TodoAdded new.\x0a\x09^ aTodo.",
+messageSends: ["add:", "todos", "save", "current", "announce:", "new"],
 referencedClasses: ["TodoAnnouncer", "TodoAdded"]
 }),
 globals.TodoApp);
@@ -171,13 +172,14 @@ function $TodoAnnouncer(){return globals.TodoAnnouncer||(typeof TodoAnnouncer=="
 function $TodoDeleted(){return globals.TodoDeleted||(typeof TodoDeleted=="undefined"?nil:TodoDeleted)}
 return smalltalk.withContext(function($ctx1) { 
 _st(self._todos())._remove_(aTodo);
+self._save();
 announcer=_st($TodoAnnouncer())._current();
 _st(announcer)._announce_(_st($TodoDeleted())._new());
 return aTodo;
 }, function($ctx1) {$ctx1.fill(self,"remove:",{aTodo:aTodo,announcer:announcer},globals.TodoApp)})},
 args: ["aTodo"],
-source: "remove: aTodo\x0a\x09| announcer |\x0a\x09(self todos) remove: aTodo.\x0a\x09announcer := TodoAnnouncer current.\x0a\x09announcer announce: TodoDeleted new.\x0a\x09^ aTodo.",
-messageSends: ["remove:", "todos", "current", "announce:", "new"],
+source: "remove: aTodo\x0a\x09| announcer |\x0a\x09(self todos) remove: aTodo.\x0a\x09self save.\x0a\x09announcer := TodoAnnouncer current.\x0a\x09announcer announce: TodoDeleted new.\x0a\x09^ aTodo.",
+messageSends: ["remove:", "todos", "save", "current", "announce:", "new"],
 referencedClasses: ["TodoAnnouncer", "TodoDeleted"]
 }),
 globals.TodoApp);
@@ -193,12 +195,13 @@ function $TodoAnnouncer(){return globals.TodoAnnouncer||(typeof TodoAnnouncer=="
 function $TodoDeleted(){return globals.TodoDeleted||(typeof TodoDeleted=="undefined"?nil:TodoDeleted)}
 return smalltalk.withContext(function($ctx1) { 
 _st(self._todos())._removeAll();
+self._save();
 announcer=_st($TodoAnnouncer())._current();
 _st(announcer)._announce_(_st($TodoDeleted())._new());
 return self}, function($ctx1) {$ctx1.fill(self,"removeAll",{announcer:announcer},globals.TodoApp)})},
 args: [],
-source: "removeAll\x0a\x09| announcer |\x0a\x09(self todos) removeAll.\x0a\x09announcer := TodoAnnouncer current.\x0a\x09announcer announce: TodoDeleted new.",
-messageSends: ["removeAll", "todos", "current", "announce:", "new"],
+source: "removeAll\x0a\x09| announcer |\x0a\x09(self todos) removeAll.\x0a\x09self save.\x0a\x09announcer := TodoAnnouncer current.\x0a\x09announcer announce: TodoDeleted new.",
+messageSends: ["removeAll", "todos", "save", "current", "announce:", "new"],
 referencedClasses: ["TodoAnnouncer", "TodoDeleted"]
 }),
 globals.TodoApp);
@@ -223,6 +226,22 @@ args: ["html"],
 source: "renderOn: html\x0a\x09TodoAppSection new renderOn: html.\x0a    TodoInfo new renderOn: html.",
 messageSends: ["renderOn:", "new"],
 referencedClasses: ["TodoAppSection", "TodoInfo"]
+}),
+globals.TodoApp);
+
+smalltalk.addMethod(
+smalltalk.method({
+selector: "save",
+protocol: 'state',
+fn: function (){
+var self=this;
+return smalltalk.withContext(function($ctx1) { 
+_st(localStorage)._setItem_value_("todos-amber",_st(self["@todos"])._asJSONString());
+return self}, function($ctx1) {$ctx1.fill(self,"save",{},globals.TodoApp)})},
+args: [],
+source: "save\x0a\x09localStorage setItem: 'todos-amber' value: todos asJSONString.",
+messageSends: ["setItem:value:", "asJSONString"],
+referencedClasses: []
 }),
 globals.TodoApp);
 
@@ -316,13 +335,14 @@ $2=self._todos();
 $ctx1.sendIdx["todos"]=2;
 _st($2)._remove_(old);
 _st(self._todos())._add_(aTodo);
+self._save();
 announcer=_st($TodoAnnouncer())._current();
 _st(announcer)._announce_(_st($TodoUpdated())._new());
 return aTodo;
 }, function($ctx1) {$ctx1.fill(self,"update:",{aTodo:aTodo,old:old,announcer:announcer},globals.TodoApp)})},
 args: ["aTodo"],
-source: "update: aTodo\x0a\x09| old announcer |\x0a\x09old := (self todos) detect: [ :each | each = aTodo ].\x0a\x09(self todos) remove: old.\x0a\x09(self todos) add: aTodo.\x0a\x09announcer := TodoAnnouncer current.\x0a\x09announcer announce: TodoUpdated new.\x0a\x09^ aTodo.",
-messageSends: ["detect:", "todos", "=", "remove:", "add:", "current", "announce:", "new"],
+source: "update: aTodo\x0a\x09| old announcer |\x0a\x09old := (self todos) detect: [ :each | each = aTodo ].\x0a\x09(self todos) remove: old.\x0a\x09(self todos) add: aTodo.\x0a\x09self save.\x0a\x09announcer := TodoAnnouncer current.\x0a\x09announcer announce: TodoUpdated new.\x0a\x09^ aTodo.",
+messageSends: ["detect:", "todos", "=", "remove:", "add:", "save", "current", "announce:", "new"],
 referencedClasses: ["TodoAnnouncer", "TodoUpdated"]
 }),
 globals.TodoApp);

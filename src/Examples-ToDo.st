@@ -60,6 +60,7 @@ renderOn: html
 add: aTodo
 	| announcer |
 	(self todos) add: aTodo.
+	self save.
 	announcer := TodoAnnouncer current.
 	announcer announce: TodoAdded new.
 	^ aTodo.
@@ -72,6 +73,7 @@ filteredTodos
 remove: aTodo
 	| announcer |
 	(self todos) remove: aTodo.
+	self save.
 	announcer := TodoAnnouncer current.
 	announcer announce: TodoDeleted new.
 	^ aTodo.
@@ -80,8 +82,13 @@ remove: aTodo
 removeAll
 	| announcer |
 	(self todos) removeAll.
+	self save.
 	announcer := TodoAnnouncer current.
 	announcer announce: TodoDeleted new.
+!
+
+save
+	localStorage setItem: 'todos-amber' value: todos asJSONString.
 !
 
 todos
@@ -93,6 +100,7 @@ update: aTodo
 	old := (self todos) detect: [ :each | each = aTodo ].
 	(self todos) remove: old.
 	(self todos) add: aTodo.
+	self save.
 	announcer := TodoAnnouncer current.
 	announcer announce: TodoUpdated new.
 	^ aTodo.
