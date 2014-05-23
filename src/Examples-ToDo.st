@@ -22,8 +22,11 @@ filter
 !
 
 filter: aString
+	| announcer |
 	filter := aString.
-	^ self perform: (aString, 'Todos').
+	self perform: (aString, 'Todos').
+	announcer := TodoAnnouncer current.
+	announcer announce: TodoFiltered new.
 !
 
 sortedTodos

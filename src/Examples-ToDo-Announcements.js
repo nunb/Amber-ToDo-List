@@ -190,6 +190,26 @@ referencedClasses: []
 globals.TodoDeleted.klass);
 
 
+smalltalk.addClass('TodoFiltered', globals.TodoStorageAnnouncement, ['todo'], 'Examples-ToDo-Announcements');
+smalltalk.addMethod(
+smalltalk.method({
+selector: "initialize",
+protocol: 'initialization',
+fn: function (){
+var self=this;
+return smalltalk.withContext(function($ctx1) { 
+($ctx1.supercall = true, globals.TodoFiltered.superclass.fn.prototype._initialize.apply(_st(self), []));
+$ctx1.supercall = false;
+return self}, function($ctx1) {$ctx1.fill(self,"initialize",{},globals.TodoFiltered)})},
+args: [],
+source: "initialize\x0a\x09super initialize.",
+messageSends: ["initialize"],
+referencedClasses: []
+}),
+globals.TodoFiltered);
+
+
+
 smalltalk.addClass('TodoSaved', globals.TodoStorageAnnouncement, ['todo'], 'Examples-ToDo-Announcements');
 smalltalk.addMethod(
 smalltalk.method({
@@ -278,28 +298,5 @@ messageSends: ["todo:", "new"],
 referencedClasses: []
 }),
 globals.TodoUpdated.klass);
-
-
-smalltalk.addClass('TodoViewAnnouncement', globals.SystemAnnouncement, [], 'Examples-ToDo-Announcements');
-
-
-smalltalk.addClass('TodoClearCompleted', globals.TodoViewAnnouncement, [], 'Examples-ToDo-Announcements');
-smalltalk.addMethod(
-smalltalk.method({
-selector: "initialize",
-protocol: 'initialization',
-fn: function (){
-var self=this;
-return smalltalk.withContext(function($ctx1) { 
-($ctx1.supercall = true, globals.TodoClearCompleted.superclass.fn.prototype._initialize.apply(_st(self), []));
-$ctx1.supercall = false;
-return self}, function($ctx1) {$ctx1.fill(self,"initialize",{},globals.TodoClearCompleted)})},
-args: [],
-source: "initialize\x0a\x09super initialize.",
-messageSends: ["initialize"],
-referencedClasses: []
-}),
-globals.TodoClearCompleted);
-
 
 });

@@ -14,6 +14,7 @@ function $TodoAnnouncer(){return globals.TodoAnnouncer||(typeof TodoAnnouncer=="
 function $TodoAdded(){return globals.TodoAdded||(typeof TodoAdded=="undefined"?nil:TodoAdded)}
 function $TodoUpdated(){return globals.TodoUpdated||(typeof TodoUpdated=="undefined"?nil:TodoUpdated)}
 function $TodoDeleted(){return globals.TodoDeleted||(typeof TodoDeleted=="undefined"?nil:TodoDeleted)}
+function $TodoFiltered(){return globals.TodoFiltered||(typeof TodoFiltered=="undefined"?nil:TodoFiltered)}
 return smalltalk.withContext(function($ctx1) { 
 ($ctx1.supercall = true, globals.TodoAppSection.superclass.fn.prototype._initialize.apply(_st(self), []));
 $ctx1.supercall = false;
@@ -33,12 +34,18 @@ $ctx1.sendIdx["on:do:"]=2;
 _st(announcer)._on_do_($TodoDeleted(),(function(){
 return smalltalk.withContext(function($ctx2) {
 return self._refresh();
+$ctx2.sendIdx["refresh"]=3;
 }, function($ctx2) {$ctx2.fillBlock({},$ctx1,3)})}));
+$ctx1.sendIdx["on:do:"]=3;
+_st(announcer)._on_do_($TodoFiltered(),(function(){
+return smalltalk.withContext(function($ctx2) {
+return self._refresh();
+}, function($ctx2) {$ctx2.fillBlock({},$ctx1,4)})}));
 return self}, function($ctx1) {$ctx1.fill(self,"initialize",{announcer:announcer},globals.TodoAppSection)})},
 args: [],
-source: "initialize\x0a\x09| announcer |\x0a\x09super initialize.\x0a\x09announcer := TodoAnnouncer current.\x0a\x09announcer on: TodoAdded do: [ self refresh ].\x0a\x09announcer on: TodoUpdated do: [ self refresh ].\x0a\x09announcer on: TodoDeleted do: [ self refresh ].",
+source: "initialize\x0a\x09| announcer |\x0a\x09super initialize.\x0a\x09announcer := TodoAnnouncer current.\x0a\x09announcer on: TodoAdded do: [ self refresh ].\x0a\x09announcer on: TodoUpdated do: [ self refresh ].\x0a\x09announcer on: TodoDeleted do: [ self refresh ].\x0a\x09announcer on: TodoFiltered do: [ self refresh ].",
 messageSends: ["initialize", "current", "on:do:", "refresh"],
-referencedClasses: ["TodoAnnouncer", "TodoAdded", "TodoUpdated", "TodoDeleted"]
+referencedClasses: ["TodoAnnouncer", "TodoAdded", "TodoUpdated", "TodoDeleted", "TodoFiltered"]
 }),
 globals.TodoAppSection);
 
@@ -688,8 +695,25 @@ globals.TodoDeleteButton.klass);
 smalltalk.addClass('TodoFilterActive', globals.Widget, ['root'], 'Examples-ToDo-Views');
 smalltalk.addMethod(
 smalltalk.method({
+selector: "filterTodos",
+protocol: 'events',
+fn: function (){
+var self=this;
+function $TodoApp(){return globals.TodoApp||(typeof TodoApp=="undefined"?nil:TodoApp)}
+return smalltalk.withContext(function($ctx1) { 
+_st(_st($TodoApp())._current())._filter_("active");
+return self}, function($ctx1) {$ctx1.fill(self,"filterTodos",{},globals.TodoFilterActive)})},
+args: [],
+source: "filterTodos\x0a\x09TodoApp current filter: 'active'.",
+messageSends: ["filter:", "current"],
+referencedClasses: ["TodoApp"]
+}),
+globals.TodoFilterActive);
+
+smalltalk.addMethod(
+smalltalk.method({
 selector: "initialize",
-protocol: 'rendering',
+protocol: 'initialization',
 fn: function (){
 var self=this;
 return smalltalk.withContext(function($ctx1) { 
@@ -709,30 +733,56 @@ selector: "renderOn:",
 protocol: 'rendering',
 fn: function (html){
 var self=this;
+function $TodoApp(){return globals.TodoApp||(typeof TodoApp=="undefined"?nil:TodoApp)}
 return smalltalk.withContext(function($ctx1) { 
-var $1,$2;
+var $1,$2,$4,$3,$5;
 _st(html)._li_((function(){
 return smalltalk.withContext(function($ctx2) {
 $1=_st(html)._a();
 _st($1)._href_("#");
+$2=$1;
+$4=_st(_st(_st($TodoApp())._current())._filter()).__eq("active");
+if(smalltalk.assert($4)){
+$3="selected";
+} else {
+$3="";
+};
+_st($2)._class_($3);
 _st($1)._with_("Active");
-$2=_st($1)._onClick_((function(){
+$5=_st($1)._onClick_((function(){
 return smalltalk.withContext(function($ctx3) {
-return _st(console)._log_("active");
-}, function($ctx3) {$ctx3.fillBlock({},$ctx2,2)})}));
-return $2;
+return self._filterTodos();
+}, function($ctx3) {$ctx3.fillBlock({},$ctx2,4)})}));
+return $5;
 }, function($ctx2) {$ctx2.fillBlock({},$ctx1,1)})}));
 return self}, function($ctx1) {$ctx1.fill(self,"renderOn:",{html:html},globals.TodoFilterActive)})},
 args: ["html"],
-source: "renderOn: html\x0a\x09html li: [\x0a\x09\x09html a href: '#';\x0a\x09\x09\x09with: 'Active';\x0a\x09\x09\x09onClick: [ console log: 'active' ]].",
-messageSends: ["li:", "href:", "a", "with:", "onClick:", "log:"],
-referencedClasses: []
+source: "renderOn: html\x0a\x09html li: [\x0a\x09\x09html a href: '#';\x0a\x09\x09\x09class: ((TodoApp current filter = 'active') ifTrue: [ 'selected' ] ifFalse: [ '' ]);\x0a\x09\x09\x09with: 'Active';\x0a\x09\x09\x09onClick: [ self filterTodos ]].",
+messageSends: ["li:", "href:", "a", "class:", "ifTrue:ifFalse:", "=", "filter", "current", "with:", "onClick:", "filterTodos"],
+referencedClasses: ["TodoApp"]
 }),
 globals.TodoFilterActive);
 
 
 
 smalltalk.addClass('TodoFilterAll', globals.Widget, ['root'], 'Examples-ToDo-Views');
+smalltalk.addMethod(
+smalltalk.method({
+selector: "filterTodos",
+protocol: 'events',
+fn: function (){
+var self=this;
+function $TodoApp(){return globals.TodoApp||(typeof TodoApp=="undefined"?nil:TodoApp)}
+return smalltalk.withContext(function($ctx1) { 
+_st(_st($TodoApp())._current())._filter_("all");
+return self}, function($ctx1) {$ctx1.fill(self,"filterTodos",{},globals.TodoFilterAll)})},
+args: [],
+source: "filterTodos\x0a\x09TodoApp current filter: 'all'.",
+messageSends: ["filter:", "current"],
+referencedClasses: ["TodoApp"]
+}),
+globals.TodoFilterAll);
+
 smalltalk.addMethod(
 smalltalk.method({
 selector: "initialize",
@@ -756,31 +806,56 @@ selector: "renderOn:",
 protocol: 'rendering',
 fn: function (html){
 var self=this;
+function $TodoApp(){return globals.TodoApp||(typeof TodoApp=="undefined"?nil:TodoApp)}
 return smalltalk.withContext(function($ctx1) { 
-var $1,$2;
+var $1,$2,$4,$3,$5;
 _st(html)._li_((function(){
 return smalltalk.withContext(function($ctx2) {
 $1=_st(html)._a();
 _st($1)._href_("#");
-_st($1)._class_("selected");
+$2=$1;
+$4=_st(_st(_st($TodoApp())._current())._filter()).__eq("all");
+if(smalltalk.assert($4)){
+$3="selected";
+} else {
+$3="";
+};
+_st($2)._class_($3);
 _st($1)._with_("All");
-$2=_st($1)._onClick_((function(){
+$5=_st($1)._onClick_((function(){
 return smalltalk.withContext(function($ctx3) {
-return _st(console)._log_("all");
-}, function($ctx3) {$ctx3.fillBlock({},$ctx2,2)})}));
-return $2;
+return self._filterTodos();
+}, function($ctx3) {$ctx3.fillBlock({},$ctx2,4)})}));
+return $5;
 }, function($ctx2) {$ctx2.fillBlock({},$ctx1,1)})}));
 return self}, function($ctx1) {$ctx1.fill(self,"renderOn:",{html:html},globals.TodoFilterAll)})},
 args: ["html"],
-source: "renderOn: html\x0a\x09html li: [\x0a\x09\x09html a href: '#';\x0a\x09\x09\x09class: 'selected'; \x0a\x09\x09\x09with: 'All';\x0a\x09\x09\x09onClick: [ console log: 'all' ]].",
-messageSends: ["li:", "href:", "a", "class:", "with:", "onClick:", "log:"],
-referencedClasses: []
+source: "renderOn: html\x0a\x09html li: [\x0a\x09\x09html a href: '#';\x0a\x09\x09\x09class: ((TodoApp current filter = 'all') ifTrue: [ 'selected' ] ifFalse: [ '' ]);\x0a\x09\x09\x09with: 'All';\x0a\x09\x09\x09onClick: [ self filterTodos ]].",
+messageSends: ["li:", "href:", "a", "class:", "ifTrue:ifFalse:", "=", "filter", "current", "with:", "onClick:", "filterTodos"],
+referencedClasses: ["TodoApp"]
 }),
 globals.TodoFilterAll);
 
 
 
 smalltalk.addClass('TodoFilterCompleted', globals.Widget, ['root'], 'Examples-ToDo-Views');
+smalltalk.addMethod(
+smalltalk.method({
+selector: "filterTodos",
+protocol: 'rendering',
+fn: function (){
+var self=this;
+function $TodoApp(){return globals.TodoApp||(typeof TodoApp=="undefined"?nil:TodoApp)}
+return smalltalk.withContext(function($ctx1) { 
+_st(_st($TodoApp())._current())._filter_("completed");
+return self}, function($ctx1) {$ctx1.fill(self,"filterTodos",{},globals.TodoFilterCompleted)})},
+args: [],
+source: "filterTodos\x0a\x09TodoApp current filter: 'completed'.",
+messageSends: ["filter:", "current"],
+referencedClasses: ["TodoApp"]
+}),
+globals.TodoFilterCompleted);
+
 smalltalk.addMethod(
 smalltalk.method({
 selector: "initialize",
@@ -804,24 +879,33 @@ selector: "renderOn:",
 protocol: 'rendering',
 fn: function (html){
 var self=this;
+function $TodoApp(){return globals.TodoApp||(typeof TodoApp=="undefined"?nil:TodoApp)}
 return smalltalk.withContext(function($ctx1) { 
-var $1,$2;
+var $1,$2,$4,$3,$5;
 _st(html)._li_((function(){
 return smalltalk.withContext(function($ctx2) {
 $1=_st(html)._a();
 _st($1)._href_("#");
+$2=$1;
+$4=_st(_st(_st($TodoApp())._current())._filter()).__eq("completed");
+if(smalltalk.assert($4)){
+$3="selected";
+} else {
+$3="";
+};
+_st($2)._class_($3);
 _st($1)._with_("Completed");
-$2=_st($1)._onClick_((function(){
+$5=_st($1)._onClick_((function(){
 return smalltalk.withContext(function($ctx3) {
-return _st(console)._log_("completed");
-}, function($ctx3) {$ctx3.fillBlock({},$ctx2,2)})}));
-return $2;
+return self._filterTodos();
+}, function($ctx3) {$ctx3.fillBlock({},$ctx2,4)})}));
+return $5;
 }, function($ctx2) {$ctx2.fillBlock({},$ctx1,1)})}));
 return self}, function($ctx1) {$ctx1.fill(self,"renderOn:",{html:html},globals.TodoFilterCompleted)})},
 args: ["html"],
-source: "renderOn: html\x0a\x09html li: [\x0a\x09\x09html a href: '#';\x0a\x09\x09\x09with: 'Completed';\x0a\x09\x09\x09onClick: [ console log: 'completed' ]].",
-messageSends: ["li:", "href:", "a", "with:", "onClick:", "log:"],
-referencedClasses: []
+source: "renderOn: html\x0a\x09html li: [\x0a\x09\x09html a href: '#';\x0a\x09\x09\x09class: ((TodoApp current filter = 'completed') ifTrue: [ 'selected' ] ifFalse: [ '' ]);\x0a\x09\x09\x09with: 'Completed';\x0a\x09\x09\x09onClick: [ self filterTodos ]].",
+messageSends: ["li:", "href:", "a", "class:", "ifTrue:ifFalse:", "=", "filter", "current", "with:", "onClick:", "filterTodos"],
+referencedClasses: ["TodoApp"]
 }),
 globals.TodoFilterCompleted);
 

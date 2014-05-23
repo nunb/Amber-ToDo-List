@@ -12,6 +12,7 @@ initialize
 	announcer on: TodoAdded do: [ self refresh ].
 	announcer on: TodoUpdated do: [ self refresh ].
 	announcer on: TodoDeleted do: [ self refresh ].
+	announcer on: TodoFiltered do: [ self refresh ].
 ! !
 
 !TodoAppSection methodsFor: 'rendering'!
@@ -230,22 +231,37 @@ Widget subclass: #TodoFilterActive
 	instanceVariableNames: 'root'
 	package: 'Examples-ToDo-Views'!
 
-!TodoFilterActive methodsFor: 'rendering'!
+!TodoFilterActive methodsFor: 'events'!
+
+filterTodos
+	TodoApp current filter: 'active'.
+! !
+
+!TodoFilterActive methodsFor: 'initialization'!
 
 initialize
 	super initialize.
-!
+! !
+
+!TodoFilterActive methodsFor: 'rendering'!
 
 renderOn: html
 	html li: [
 		html a href: '#';
+			class: ((TodoApp current filter = 'active') ifTrue: [ 'selected' ] ifFalse: [ '' ]);
 			with: 'Active';
-			onClick: [ console log: 'active' ]].
+			onClick: [ self filterTodos ]].
 ! !
 
 Widget subclass: #TodoFilterAll
 	instanceVariableNames: 'root'
 	package: 'Examples-ToDo-Views'!
+
+!TodoFilterAll methodsFor: 'events'!
+
+filterTodos
+	TodoApp current filter: 'all'.
+! !
 
 !TodoFilterAll methodsFor: 'initialization'!
 
@@ -258,9 +274,9 @@ initialize
 renderOn: html
 	html li: [
 		html a href: '#';
-			class: 'selected'; 
+			class: ((TodoApp current filter = 'all') ifTrue: [ 'selected' ] ifFalse: [ '' ]);
 			with: 'All';
-			onClick: [ console log: 'all' ]].
+			onClick: [ self filterTodos ]].
 ! !
 
 Widget subclass: #TodoFilterCompleted
@@ -275,11 +291,16 @@ initialize
 
 !TodoFilterCompleted methodsFor: 'rendering'!
 
+filterTodos
+	TodoApp current filter: 'completed'.
+!
+
 renderOn: html
 	html li: [
 		html a href: '#';
+			class: ((TodoApp current filter = 'completed') ifTrue: [ 'selected' ] ifFalse: [ '' ]);
 			with: 'Completed';
-			onClick: [ console log: 'completed' ]].
+			onClick: [ self filterTodos ]].
 ! !
 
 Widget subclass: #TodoFilters

@@ -75,6 +75,16 @@ newWithTodo: aTodo
 	^ self new todo: aTodo
 ! !
 
+TodoStorageAnnouncement subclass: #TodoFiltered
+	instanceVariableNames: 'todo'
+	package: 'Examples-ToDo-Announcements'!
+
+!TodoFiltered methodsFor: 'initialization'!
+
+initialize
+	super initialize.
+! !
+
 TodoStorageAnnouncement subclass: #TodoSaved
 	instanceVariableNames: 'todo'
 	package: 'Examples-ToDo-Announcements'!
@@ -110,19 +120,5 @@ initialize
 
 newWithTodo: aTodo
 	^ self new todo: aTodo
-! !
-
-SystemAnnouncement subclass: #TodoViewAnnouncement
-	instanceVariableNames: ''
-	package: 'Examples-ToDo-Announcements'!
-
-TodoViewAnnouncement subclass: #TodoClearCompleted
-	instanceVariableNames: ''
-	package: 'Examples-ToDo-Announcements'!
-
-!TodoClearCompleted methodsFor: 'initialization'!
-
-initialize
-	super initialize.
 ! !
 

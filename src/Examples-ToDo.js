@@ -107,16 +107,19 @@ selector: "filter:",
 protocol: 'filtering',
 fn: function (aString){
 var self=this;
+var announcer;
+function $TodoAnnouncer(){return globals.TodoAnnouncer||(typeof TodoAnnouncer=="undefined"?nil:TodoAnnouncer)}
+function $TodoFiltered(){return globals.TodoFiltered||(typeof TodoFiltered=="undefined"?nil:TodoFiltered)}
 return smalltalk.withContext(function($ctx1) { 
-var $1;
 self["@filter"]=aString;
-$1=self._perform_(_st(aString).__comma("Todos"));
-return $1;
-}, function($ctx1) {$ctx1.fill(self,"filter:",{aString:aString},globals.TodoApp)})},
+self._perform_(_st(aString).__comma("Todos"));
+announcer=_st($TodoAnnouncer())._current();
+_st(announcer)._announce_(_st($TodoFiltered())._new());
+return self}, function($ctx1) {$ctx1.fill(self,"filter:",{aString:aString,announcer:announcer},globals.TodoApp)})},
 args: ["aString"],
-source: "filter: aString\x0a\x09filter := aString.\x0a\x09^ self perform: (aString, 'Todos').",
-messageSends: ["perform:", ","],
-referencedClasses: []
+source: "filter: aString\x0a\x09| announcer |\x0a\x09filter := aString.\x0a\x09self perform: (aString, 'Todos').\x0a\x09announcer := TodoAnnouncer current.\x0a\x09announcer announce: TodoFiltered new.",
+messageSends: ["perform:", ",", "current", "announce:", "new"],
+referencedClasses: ["TodoAnnouncer", "TodoFiltered"]
 }),
 globals.TodoApp);
 
