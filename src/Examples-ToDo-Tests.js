@@ -19,24 +19,6 @@ referencedClasses: []
 }),
 globals.TodoAppTest);
 
-smalltalk.addMethod(
-smalltalk.method({
-selector: "testSeed",
-protocol: 'tests',
-fn: function (){
-var self=this;
-function $TodoApp(){return globals.TodoApp||(typeof TodoApp=="undefined"?nil:TodoApp)}
-return smalltalk.withContext(function($ctx1) { 
-_st($TodoApp())._new();
-self._assert_(_st(_st(_st($TodoApp())._todos())._size()).__eq((1)));
-return self}, function($ctx1) {$ctx1.fill(self,"testSeed",{},globals.TodoAppTest)})},
-args: [],
-source: "testSeed\x0a\x09TodoApp new.\x0a\x09self assert: (TodoApp todos size) = 1.",
-messageSends: ["new", "assert:", "=", "size", "todos"],
-referencedClasses: ["TodoApp"]
-}),
-globals.TodoAppTest);
-
 
 
 smalltalk.addClass('TodoBuilderTest', globals.TestCase, [], 'Examples-ToDo-Tests');
@@ -292,11 +274,11 @@ return smalltalk.withContext(function($ctx1) {
 t1=_st($Todo())._new();
 $ctx1.sendIdx["new"]=1;
 t2=_st($Todo())._new();
-self._deny_(_st(t1).__eq(t2));
+self._assert_(_st(t1).__eq(t2));
 return self}, function($ctx1) {$ctx1.fill(self,"testEqual",{t1:t1,t2:t2},globals.TodoTest)})},
 args: [],
-source: "testEqual\x0a\x09| t1 t2 |\x0a\x09t1 := Todo new.\x0a\x09t2 := Todo new.\x0a\x09self deny: (t1 = t2).",
-messageSends: ["new", "deny:", "="],
+source: "testEqual\x0a\x09| t1 t2 |\x0a\x09t1 := Todo new.\x0a\x09t2 := Todo new.\x0a\x09self assert: (t1 = t2).",
+messageSends: ["new", "assert:", "="],
 referencedClasses: ["Todo"]
 }),
 globals.TodoTest);
@@ -401,33 +383,6 @@ return self}, function($ctx1) {$ctx1.fill(self,"testTextTrimmed",{t1:t1},globals
 args: [],
 source: "testTextTrimmed\x0a\x09| t1 |\x0a\x09t1 := Todo newWithText: '    Amber     ' done: false id: 1234.\x0a\x09self assert: (t1 text = 'Amber').",
 messageSends: ["newWithText:done:id:", "assert:", "=", "text"],
-referencedClasses: ["Todo"]
-}),
-globals.TodoTest);
-
-smalltalk.addMethod(
-smalltalk.method({
-selector: "testToggleIsDone",
-protocol: 'tests',
-fn: function (){
-var self=this;
-var t1,t2;
-function $Todo(){return globals.Todo||(typeof Todo=="undefined"?nil:Todo)}
-return smalltalk.withContext(function($ctx1) { 
-var $2,$1;
-t1=_st($Todo())._new();
-t2=_st(t1)._toggleIsDone();
-$2=_st(t1)._isDone();
-$ctx1.sendIdx["isDone"]=1;
-$1=_st($2).__eq(false);
-$ctx1.sendIdx["="]=1;
-self._assert_($1);
-$ctx1.sendIdx["assert:"]=1;
-self._assert_(_st(_st(t2)._isDone()).__eq(true));
-return self}, function($ctx1) {$ctx1.fill(self,"testToggleIsDone",{t1:t1,t2:t2},globals.TodoTest)})},
-args: [],
-source: "testToggleIsDone\x0a\x09| t1 t2 |\x0a\x09t1 := Todo new.\x0a\x09t2 := t1 toggleIsDone.\x0a\x09self assert: (t1 isDone = false).\x0a\x09self assert: (t2 isDone = true).",
-messageSends: ["new", "toggleIsDone", "assert:", "=", "isDone"],
 referencedClasses: ["Todo"]
 }),
 globals.TodoTest);

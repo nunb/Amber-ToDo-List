@@ -7,11 +7,6 @@ TestCase subclass: #TodoAppTest
 
 tearDown
 	localStorage clear.
-!
-
-testSeed
-	TodoApp new.
-	self assert: (TodoApp todos size) = 1.
 ! !
 
 TestCase subclass: #TodoBuilderTest
@@ -113,7 +108,7 @@ testEqual
 	| t1 t2 |
 	t1 := Todo new.
 	t2 := Todo new.
-	self deny: (t1 = t2).
+	self assert: (t1 = t2).
 !
 
 testNew
@@ -146,13 +141,5 @@ testTextTrimmed
 	| t1 |
 	t1 := Todo newWithText: '    Amber     ' done: false id: 1234.
 	self assert: (t1 text = 'Amber').
-!
-
-testToggleIsDone
-	| t1 t2 |
-	t1 := Todo new.
-	t2 := t1 toggleIsDone.
-	self assert: (t1 isDone = false).
-	self assert: (t2 isDone = true).
 ! !
 

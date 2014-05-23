@@ -387,8 +387,8 @@ addTodo: aTodo
 handleInput: anEvent
 	| text builder |
     text := anEvent target value.
-    builder := (TodoBuilder new) addText: text.
- 	self addTodo: (builder build).
+	(text size > 0)
+		ifTrue: [ builder := (TodoBuilder new) addText: text. self addTodo: (builder build). ]
 ! !
 
 !TodoInput methodsFor: 'initialization'!

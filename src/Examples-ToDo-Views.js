@@ -1128,13 +1128,18 @@ var self=this;
 var text,builder;
 function $TodoBuilder(){return globals.TodoBuilder||(typeof TodoBuilder=="undefined"?nil:TodoBuilder)}
 return smalltalk.withContext(function($ctx1) { 
+var $1;
 text=_st(_st(anEvent)._target())._value();
+$1=_st(_st(text)._size()).__gt((0));
+if(smalltalk.assert($1)){
 builder=_st(_st($TodoBuilder())._new())._addText_(text);
+builder;
 self._addTodo_(_st(builder)._build());
+};
 return self}, function($ctx1) {$ctx1.fill(self,"handleInput:",{anEvent:anEvent,text:text,builder:builder},globals.TodoInput)})},
 args: ["anEvent"],
-source: "handleInput: anEvent\x0a\x09| text builder |\x0a    text := anEvent target value.\x0a    builder := (TodoBuilder new) addText: text.\x0a \x09self addTodo: (builder build).",
-messageSends: ["value", "target", "addText:", "new", "addTodo:", "build"],
+source: "handleInput: anEvent\x0a\x09| text builder |\x0a    text := anEvent target value.\x0a\x09(text size > 0)\x0a\x09\x09ifTrue: [ builder := (TodoBuilder new) addText: text. self addTodo: (builder build). ]",
+messageSends: ["value", "target", "ifTrue:", ">", "size", "addText:", "new", "addTodo:", "build"],
 referencedClasses: ["TodoBuilder"]
 }),
 globals.TodoInput);
