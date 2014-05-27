@@ -3,4 +3,6 @@
 #    bower install
 # See README.md
 
-.DS-Store
+.DS_Store
+build/
+compressed/
