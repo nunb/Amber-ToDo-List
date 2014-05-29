@@ -18,8 +18,10 @@
 
   <body>
     <script type='text/javascript'>
-      require.config({ paths: {
-          'Examples': 'src' //mapping compiled .js files and smalltalk source files
+      require.config({
+        paths: {
+          'Examples': 'src', //mapping compiled .js files and smalltalk source files
+          director: 'bower_components/director/build'
       }});
       require([
           'amber/devel',
@@ -27,7 +29,8 @@
           'Examples/Examples-ToDo-Models',
           'Examples/Examples-ToDo-Views',
           'Examples/Examples-ToDo-Announcements',
-          'Examples/Examples-ToDo-Tests'
+          'Examples/Examples-ToDo-Tests',
+          'director/director.min'
       ], function (smalltalk) {
           //used for all new packages in IDE
           smalltalk.initialize({

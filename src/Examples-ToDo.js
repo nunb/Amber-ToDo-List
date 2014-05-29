@@ -379,13 +379,43 @@ selector: "run",
 protocol: 'lifecycle',
 fn: function (){
 var self=this;
+var routes,router;
+function $HashedCollection(){return globals.HashedCollection||(typeof HashedCollection=="undefined"?nil:HashedCollection)}
+function $Router(){return globals.Router||(typeof Router=="undefined"?nil:Router)}
 return smalltalk.withContext(function($ctx1) { 
-_st(self._current())._appendToJQuery_("body"._asJQuery());
-return self}, function($ctx1) {$ctx1.fill(self,"run",{},globals.TodoApp.klass)})},
+var $1,$2,$3;
+$1=self._current();
+$ctx1.sendIdx["current"]=1;
+_st($1)._appendToJQuery_("body"._asJQuery());
+routes=_st($HashedCollection())._new();
+_st(routes)._at_put_("/",(function(){
+return smalltalk.withContext(function($ctx2) {
+$2=self._current();
+$ctx2.sendIdx["current"]=2;
+return _st($2)._filter_("all");
+$ctx2.sendIdx["filter:"]=1;
+}, function($ctx2) {$ctx2.fillBlock({},$ctx1,1)})}));
+$ctx1.sendIdx["at:put:"]=1;
+_st(routes)._at_put_("/active",(function(){
+return smalltalk.withContext(function($ctx2) {
+$3=self._current();
+$ctx2.sendIdx["current"]=3;
+return _st($3)._filter_("active");
+$ctx2.sendIdx["filter:"]=2;
+}, function($ctx2) {$ctx2.fillBlock({},$ctx1,2)})}));
+$ctx1.sendIdx["at:put:"]=2;
+_st(routes)._at_put_("/completed",(function(){
+return smalltalk.withContext(function($ctx2) {
+return _st(self._current())._filter_("completed");
+}, function($ctx2) {$ctx2.fillBlock({},$ctx1,3)})}));
+router=_st($Router())._newValue_(routes);
+_st(router)._init();
+_st(console)._log_(router);
+return self}, function($ctx1) {$ctx1.fill(self,"run",{routes:routes,router:router},globals.TodoApp.klass)})},
 args: [],
-source: "run\x0a\x09self current appendToJQuery: 'body' asJQuery",
-messageSends: ["appendToJQuery:", "current", "asJQuery"],
-referencedClasses: []
+source: "run\x0a\x09| routes router |\x0a\x09self current appendToJQuery: 'body' asJQuery.\x0a\x09routes := HashedCollection new.\x0a\x09routes at: '/' put: [ self current filter: 'all' ].\x0a\x09routes at: '/active' put:  [ self current filter: 'active' ].\x0a\x09routes at: '/completed' put:  [ self current filter: 'completed' ].\x0a\x0a\x09router := Router newValue: routes.\x0a\x09router init.\x0a\x09console log: router.",
+messageSends: ["appendToJQuery:", "current", "asJQuery", "new", "at:put:", "filter:", "newValue:", "init", "log:"],
+referencedClasses: ["HashedCollection", "Router"]
 }),
 globals.TodoApp.klass);
 

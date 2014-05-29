@@ -850,7 +850,7 @@ var $1,$2,$4,$3,$5;
 _st(html)._li_((function(){
 return smalltalk.withContext(function($ctx2) {
 $1=_st(html)._a();
-_st($1)._href_("#");
+_st($1)._href_("#/active");
 $2=$1;
 $4=_st(_st(_st($TodoApp())._current())._filter()).__eq("active");
 if(smalltalk.assert($4)){
@@ -868,7 +868,7 @@ return $5;
 }, function($ctx2) {$ctx2.fillBlock({},$ctx1,1)})}));
 return self}, function($ctx1) {$ctx1.fill(self,"renderOn:",{html:html},globals.TodoFilterActive)})},
 args: ["html"],
-source: "renderOn: html\x0a\x09html li: [\x0a\x09\x09html a href: '#';\x0a\x09\x09\x09class: ((TodoApp current filter = 'active') ifTrue: [ 'selected' ] ifFalse: [ '' ]);\x0a\x09\x09\x09with: 'Active';\x0a\x09\x09\x09onClick: [ self filterTodos ]].",
+source: "renderOn: html\x0a\x09html li: [\x0a\x09\x09html a href: '#/active';\x0a\x09\x09\x09class: ((TodoApp current filter = 'active') ifTrue: [ 'selected' ] ifFalse: [ '' ]);\x0a\x09\x09\x09with: 'Active';\x0a\x09\x09\x09onClick: [ self filterTodos ]].",
 messageSends: ["li:", "href:", "a", "class:", "ifTrue:ifFalse:", "=", "filter", "current", "with:", "onClick:", "filterTodos"],
 referencedClasses: ["TodoApp"]
 }),
@@ -923,7 +923,7 @@ var $1,$2,$4,$3,$5;
 _st(html)._li_((function(){
 return smalltalk.withContext(function($ctx2) {
 $1=_st(html)._a();
-_st($1)._href_("#");
+_st($1)._href_("#/");
 $2=$1;
 $4=_st(_st(_st($TodoApp())._current())._filter()).__eq("all");
 if(smalltalk.assert($4)){
@@ -941,7 +941,7 @@ return $5;
 }, function($ctx2) {$ctx2.fillBlock({},$ctx1,1)})}));
 return self}, function($ctx1) {$ctx1.fill(self,"renderOn:",{html:html},globals.TodoFilterAll)})},
 args: ["html"],
-source: "renderOn: html\x0a\x09html li: [\x0a\x09\x09html a href: '#';\x0a\x09\x09\x09class: ((TodoApp current filter = 'all') ifTrue: [ 'selected' ] ifFalse: [ '' ]);\x0a\x09\x09\x09with: 'All';\x0a\x09\x09\x09onClick: [ self filterTodos ]].",
+source: "renderOn: html\x0a\x09html li: [\x0a\x09\x09html a href: '#/';\x0a\x09\x09\x09class: ((TodoApp current filter = 'all') ifTrue: [ 'selected' ] ifFalse: [ '' ]);\x0a\x09\x09\x09with: 'All';\x0a\x09\x09\x09onClick: [ self filterTodos ]].",
 messageSends: ["li:", "href:", "a", "class:", "ifTrue:ifFalse:", "=", "filter", "current", "with:", "onClick:", "filterTodos"],
 referencedClasses: ["TodoApp"]
 }),
@@ -996,7 +996,7 @@ var $1,$2,$4,$3,$5;
 _st(html)._li_((function(){
 return smalltalk.withContext(function($ctx2) {
 $1=_st(html)._a();
-_st($1)._href_("#");
+_st($1)._href_("#/completed");
 $2=$1;
 $4=_st(_st(_st($TodoApp())._current())._filter()).__eq("completed");
 if(smalltalk.assert($4)){
@@ -1014,7 +1014,7 @@ return $5;
 }, function($ctx2) {$ctx2.fillBlock({},$ctx1,1)})}));
 return self}, function($ctx1) {$ctx1.fill(self,"renderOn:",{html:html},globals.TodoFilterCompleted)})},
 args: ["html"],
-source: "renderOn: html\x0a\x09html li: [\x0a\x09\x09html a href: '#';\x0a\x09\x09\x09class: ((TodoApp current filter = 'completed') ifTrue: [ 'selected' ] ifFalse: [ '' ]);\x0a\x09\x09\x09with: 'Completed';\x0a\x09\x09\x09onClick: [ self filterTodos ]].",
+source: "renderOn: html\x0a\x09html li: [\x0a\x09\x09html a href: '#/completed';\x0a\x09\x09\x09class: ((TodoApp current filter = 'completed') ifTrue: [ 'selected' ] ifFalse: [ '' ]);\x0a\x09\x09\x09with: 'Completed';\x0a\x09\x09\x09onClick: [ self filterTodos ]].",
 messageSends: ["li:", "href:", "a", "class:", "ifTrue:ifFalse:", "=", "filter", "current", "with:", "onClick:", "filterTodos"],
 referencedClasses: ["TodoApp"]
 }),

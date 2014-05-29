@@ -115,6 +115,15 @@ current
 !
 
 run
-	self current appendToJQuery: 'body' asJQuery
+	| routes router |
+	self current appendToJQuery: 'body' asJQuery.
+	routes := HashedCollection new.
+	routes at: '/' put: [ self current filter: 'all' ].
+	routes at: '/active' put:  [ self current filter: 'active' ].
+	routes at: '/completed' put:  [ self current filter: 'completed' ].
+
+	router := Router newValue: routes.
+	router init.
+	console log: router.
 ! !
 
