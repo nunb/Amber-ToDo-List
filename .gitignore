@@ -4,5 +4,5 @@
 # See README.md
 
 .DS_Store
-build/
-compressed/
+/build/
+/compressed/

@@ -285,7 +285,7 @@ initialize
 
 renderOn: html
 	html li: [
-		html a href: '#';
+		html a href: '#/active';
 			class: ((TodoApp current filter = 'active') ifTrue: [ 'selected' ] ifFalse: [ '' ]);
 			with: 'Active';
 			onClick: [ self filterTodos ]].
@@ -311,7 +311,7 @@ initialize
 
 renderOn: html
 	html li: [
-		html a href: '#';
+		html a href: '#/';
 			class: ((TodoApp current filter = 'all') ifTrue: [ 'selected' ] ifFalse: [ '' ]);
 			with: 'All';
 			onClick: [ self filterTodos ]].
@@ -335,7 +335,7 @@ filterTodos
 
 renderOn: html
 	html li: [
-		html a href: '#';
+		html a href: '#/completed';
 			class: ((TodoApp current filter = 'completed') ifTrue: [ 'selected' ] ifFalse: [ '' ]);
 			with: 'Completed';
 			onClick: [ self filterTodos ]].

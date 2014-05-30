@@ -6,7 +6,8 @@ requirejs.config({
     'amber_css': 'bower_components/amber/css',
     'amber_core': 'bower_components/amber/src',
     'amber_lib': 'bower_components',
-    'jquery': 'bower_components/jquery/jquery.min'
+    'jquery': 'bower_components/jquery/jquery.min',
+    'director': 'bower_components/director/build/director.min'
   }
 });
 
