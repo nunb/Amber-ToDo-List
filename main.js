@@ -7,7 +7,7 @@ requirejs.config({
     'amber_core': 'bower_components/amber/src',
     'amber_lib': 'bower_components',
     'jquery': 'bower_components/jquery/jquery.min',
-    'director': 'bower_components/director/build/director.min'
+    'director': 'bower_components/director/build'
   }
 });
 
@@ -17,7 +17,8 @@ requirejs([
     'Examples/Examples-ToDo',
     'Examples/Examples-ToDo-Models',
     'Examples/Examples-ToDo-Views',
-    'Examples/Examples-ToDo-Announcements'
+    'Examples/Examples-ToDo-Announcements',
+    'director/director.min'
   ],
   function (_, smalltalk) {
     console.log(smalltalk);
