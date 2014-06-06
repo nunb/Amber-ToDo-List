@@ -124,6 +124,5 @@ run
 
 	router := Router newValue: routes.
 	router init.
-	console log: router.
 ! !
 

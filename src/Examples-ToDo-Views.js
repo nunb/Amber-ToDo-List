@@ -235,7 +235,7 @@ newTodo=_st(builder)._build();
 _st(_st($TodoApp())._current())._update_(newTodo);
 return self}, function($ctx1) {$ctx1.fill(self,"updateTodo:",{aTodo:aTodo,builder:builder,newTodo:newTodo},globals.TodoCheckbox)})},
 args: ["aTodo"],
-source: "updateTodo: aTodo\x0a\x09| builder newTodo |\x0a\x09builder := TodoBuilder newWithTodo: aTodo.\x0a\x09builder addIsDone: (aTodo isDone) not.\x0a\x09newTodo := builder build.\x0a\x09(TodoApp current) update: newTodo.",
+source: "updateTodo: aTodo\x0a\x09| builder newTodo |\x0a\x09builder := TodoBuilder newWithTodo: aTodo.\x0a\x09builder addIsDone: (aTodo isDone) not.\x0a\x09newTodo := builder build.\x0a\x09TodoApp current update: newTodo.",
 messageSends: ["newWithTodo:", "addIsDone:", "not", "isDone", "build", "update:", "current"],
 referencedClasses: ["TodoBuilder", "TodoApp"]
 }),

@@ -54,7 +54,7 @@ updateTodo: aTodo
 	builder := TodoBuilder newWithTodo: aTodo.
 	builder addIsDone: (aTodo isDone) not.
 	newTodo := builder build.
-	(TodoApp current) update: newTodo.
+	TodoApp current update: newTodo.
 ! !
 
 !TodoCheckbox methodsFor: 'initialization'!

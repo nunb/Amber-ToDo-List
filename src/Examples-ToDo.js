@@ -410,11 +410,10 @@ return _st(self._current())._filter_("completed");
 }, function($ctx2) {$ctx2.fillBlock({},$ctx1,3)})}));
 router=_st($Router())._newValue_(routes);
 _st(router)._init();
-_st(console)._log_(router);
 return self}, function($ctx1) {$ctx1.fill(self,"run",{routes:routes,router:router},globals.TodoApp.klass)})},
 args: [],
-source: "run\x0a\x09| routes router |\x0a\x09self current appendToJQuery: 'body' asJQuery.\x0a\x09routes := HashedCollection new.\x0a\x09routes at: '/' put: [ self current filter: 'all' ].\x0a\x09routes at: '/active' put:  [ self current filter: 'active' ].\x0a\x09routes at: '/completed' put:  [ self current filter: 'completed' ].\x0a\x0a\x09router := Router newValue: routes.\x0a\x09router init.\x0a\x09console log: router.",
-messageSends: ["appendToJQuery:", "current", "asJQuery", "new", "at:put:", "filter:", "newValue:", "init", "log:"],
+source: "run\x0a\x09| routes router |\x0a\x09self current appendToJQuery: 'body' asJQuery.\x0a\x09routes := HashedCollection new.\x0a\x09routes at: '/' put: [ self current filter: 'all' ].\x0a\x09routes at: '/active' put:  [ self current filter: 'active' ].\x0a\x09routes at: '/completed' put:  [ self current filter: 'completed' ].\x0a\x0a\x09router := Router newValue: routes.\x0a\x09router init.",
+messageSends: ["appendToJQuery:", "current", "asJQuery", "new", "at:put:", "filter:", "newValue:", "init"],
 referencedClasses: ["HashedCollection", "Router"]
 }),
 globals.TodoApp.klass);
